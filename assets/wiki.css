@@ -313,19 +313,24 @@ h2.sec-head[aria-expanded="false"] {
   color: var(--muted);
   margin-bottom: 22px;
 }
-/* 한 줄에 한 덩어리씩 세로로 쌓는다.
-   프로필(.side)이 위, 본문(.main)이 그 아래. 본문이 화면 폭을 그대로 쓴다. */
+/* 윗줄은 프로필(왼쪽) + 목차(오른쪽), 아랫줄은 본문이 폭 전체.
+   마크업 순서(목차 → 본문 → 프로필)와 무관하게 grid-area 로 자리를 지정한다. */
 .layout {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 450px minmax(0, 1fr);
   gap: 28px;
   align-items: start;
 }
-.main {
-  min-width: 0;
-}
 .side {
-  order: -1; /* 마크업에서 본문 뒤에 있어도 화면에서는 위로 */
+  grid-area: 1 / 1;
+}
+.layout > .toc {
+  grid-area: 1 / 2;
+  margin: 0; /* 격자가 간격을 만들므로 기본 위아래 여백은 없앤다 */
+}
+.main {
+  grid-area: 2 / 1 / 3 / -1;
+  min-width: 0;
 }
 
 /* ---------- 인포박스 (우측 표) ----------
@@ -618,6 +623,18 @@ mark {
 
 /* ---------- 반응형 ---------- */
 @media (max-width: 980px) {
+  /* 좁은 화면에서는 프로필 → 목차 → 본문 순으로 세로로 쌓는다. */
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .side,
+  .layout > .toc,
+  .main {
+    grid-area: auto;
+  }
+  .side {
+    order: -1;
+  }
   .article {
     padding: 24px 20px;
   }
