@@ -560,6 +560,13 @@ textarea.suggest-input {
   height: auto;
   display: block;
 }
+/* 원본이 작은 이미지(채널 아바타 등)는 .avatar 를 붙인다.
+   폭을 꽉 채우면 몇 배로 늘어나 흐려지므로 적당한 크기로 가운데 놓는다. */
+.infobox .image img.avatar {
+  width: min(240px, 100%);
+  margin: auto;
+  border-radius: 10px;
+}
 
 /* 플랫폼 로고 — <img class="platform-logo" src="..." alt="CHZZK">
    원본 비율 그대로 높이만 맞춘다.

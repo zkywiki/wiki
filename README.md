@@ -217,6 +217,8 @@ assets/favicon-180.png    iOS 홈 화면 (apple-touch-icon)
 
 - 이미지는 `assets/` 에 넣고 `<img src="assets/파일명.png">` 로 씁니다.
 - 인포박스 이미지 칸과 썸네일 카드(`.small-card .img`)는 세로가 긴 그림도 잘리지 않게 늘어납니다.
+- 인포박스 이미지는 기본적으로 칸 폭을 꽉 채웁니다. 원본이 작은 그림(채널 아바타 등)은
+  몇 배로 늘어나 흐려지므로 `<img class="avatar">` 를 주면 240px 로 가운데 놓입니다.
 - 플랫폼 로고는 `.platform-logo`, 심볼형(정사각형에 가까운) 로고는 `.mark` 를 함께 줍니다.
   한 칸에 계정이 여러 개면 각각 `.platform` 으로 묶고 사이에 `<span class="platform-sep">·</span>`.
 
