@@ -5,7 +5,7 @@
      initGlobal()   : 페이지에 한 번만. 테마 토글, 문서 내 검색, 각주 툴팁,
                       문단 접기 클릭 등 화면 전체에 거는 이벤트.
      initDocument() : 문서를 새로 그릴 때마다. 문단 접기 구성, 각주 번호 매기기,
-                      경과일 채우기처럼 문서 내용에 붙는 작업.
+                      --취소선-- 변환, 경과일 채우기처럼 문서 내용에 붙는 작업.
 
    문서를 갈아끼우는 쪽(app.js)이 순서대로 불러 준다.
    ============================================================ */
@@ -186,7 +186,69 @@ function setupFootnotes() {
   });
 }
 
-/* ---------- 4. 경과일 ---------- */
+/* ---------- 4. 취소선 ---------- */
+/* 나무위키식 --취소선-- 표기를 <s class="strike"> 로 바꾼다.
+   본문에 그대로 --속마음-- 이라고 쓰면 취소선 + 흐린 글자로 나온다.
+
+   오작동을 막기 위한 조건:
+     · 코드 블록(code, pre)과 속성값은 건드리지 않는다 (텍스트 노드만 훑는다)
+     · 여는 -- 뒤와 닫는 -- 앞에 공백이 오면 무시한다 (뺄셈·구분선 오인 방지)
+     · 안쪽에 또 -- 가 있거나 80자를 넘으면 무시한다 */
+const STRIKE = /--([\s\S]{1,80}?)--/g;
+const SKIP_TAGS = { CODE: 1, PRE: 1, SCRIPT: 1, STYLE: 1, S: 1 };
+
+function looksLikeStrike(inner) {
+  return (
+    inner.length > 0 &&
+    !/^\s/.test(inner) &&
+    !/\s$/.test(inner) &&
+    !inner.includes("--")
+  );
+}
+
+function applyStrike() {
+  const scope = document.querySelector(".article .main");
+  if (!scope) return;
+
+  const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      for (let p = node.parentNode; p && p !== scope; p = p.parentNode) {
+        if (SKIP_TAGS[p.tagName]) return NodeFilter.FILTER_REJECT;
+      }
+      return node.nodeValue.includes("--")
+        ? NodeFilter.FILTER_ACCEPT
+        : NodeFilter.FILTER_REJECT;
+    },
+  });
+
+  const targets = [];
+  while (walker.nextNode()) targets.push(walker.currentNode);
+
+  targets.forEach((node) => {
+    let changed = false;
+    const frag = document.createDocumentFragment();
+    let last = 0;
+
+    for (const m of node.nodeValue.matchAll(STRIKE)) {
+      if (!looksLikeStrike(m[1])) continue;
+
+      frag.append(document.createTextNode(node.nodeValue.slice(last, m.index)));
+      const s = document.createElement("s");
+      s.className = "strike";
+      s.textContent = m[1];
+      frag.append(s);
+
+      last = m.index + m[0].length;
+      changed = true;
+    }
+
+    if (!changed) return;
+    frag.append(document.createTextNode(node.nodeValue.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+  });
+}
+
+/* ---------- 5. 경과일 ---------- */
 /* <span class="elapsed" data-since="2025-10-16"></span> → "319일 경과".
    문서를 열 때마다 오늘 기준으로 다시 계산하므로 날짜 수를 적어 두고 잊을 일이 없다. */
 function fillElapsed() {
@@ -210,7 +272,7 @@ function fillElapsed() {
   });
 }
 
-/* ---------- 5. 문서 내 검색 ---------- */
+/* ---------- 6. 문서 내 검색 ---------- */
 function doSearch() {
   const input = document.getElementById("q");
   const article = document.querySelector(".article");
@@ -338,6 +400,7 @@ export function initGlobal() {
 export function initDocument() {
   hideTip();
   paintToggle();
+  applyStrike(); // 각주 안의 --취소선-- 도 함께 처리되도록 먼저
   setupFootnotes();
   setupSections();
   fillElapsed();

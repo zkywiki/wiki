@@ -738,6 +738,14 @@ textarea.suggest-input {
   background: var(--answer-bg);
 }
 
+/* 취소선 — 본문에 --이렇게-- 라고 쓰면 wiki.js 가 <s class="strike"> 로 바꾼다.
+   속마음·정정 같은 곁말에 쓴다. */
+.strike {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+
 /* ---------- 각주 ----------
    본문의 <span class="note">부연 설명</span> 을 wiki.js 가 [1] 윗첨자로 바꾸고,
    내용은 마우스 오버·포커스 시 툴팁(.fn-tip)으로 띄운다. HTML 은 그대로 두면 된다. */
