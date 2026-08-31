@@ -501,7 +501,8 @@ h2.sec-head[aria-expanded="false"] {
 }
 
 /* ---------- 접기 블록 ----------
-   <details class="fold"><summary>제목</summary><div class="fold-body">내용</div></details> */
+   <details class="fold"><summary>제목</summary><div class="fold-body">내용</div></details>
+   기본은 접힌 상태. 펼친 채로 시작하려면 <details class="fold" open>. */
 .fold {
   border: 1px solid var(--line);
   border-radius: 6px;
