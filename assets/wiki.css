@@ -519,13 +519,27 @@ h2.sec-head[aria-expanded="false"] {
 .fold > summary::-webkit-details-marker {
   display: none;
 }
+/* 화살표는 문단 접기(.sec-head)와 같은 mdi chevron 을 쓴다. */
 .fold > summary:before {
-  content: "▶";
-  font-size: 11px;
-  margin-right: 8px;
+  content: "";
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  margin-right: 0.2em;
+  vertical-align: -0.25em;
+  background-color: var(--muted);
+  -webkit-mask-image: var(--chev-right);
+  mask-image: var(--chev-right);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
 }
 .fold[open] > summary:before {
-  content: "▼";
+  -webkit-mask-image: var(--chev-down);
+  mask-image: var(--chev-down);
 }
 .fold-body {
   padding: 14px 16px;
@@ -672,6 +686,19 @@ mark {
 .track-src {
   color: var(--muted);
   font-size: 13px;
+}
+/* 접기 블록 안에 넣었을 때 — 블록 테두리와 첫 줄 구분선이 겹치지 않도록 */
+.fold-body > .tracknotes {
+  margin: 0;
+  max-width: none;
+}
+.fold-body > .tracknotes > li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.fold-body > .tracknotes > li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
 }
 
 /* 2단 목록 — <ul class="game-list"> */
