@@ -492,6 +492,10 @@ textarea.suggest-input {
 .side {
   grid-area: 1 / 2;
 }
+/* 프로필이 없는 문서(예: 팬아트)에서는 목차가 두 칸을 다 쓴다. */
+.layout:not(:has(.side)) > .toc {
+  grid-area: 1 / 1 / 2 / -1;
+}
 .main {
   grid-area: 2 / 1 / 3 / -1;
   min-width: 0;
@@ -804,6 +808,42 @@ mark {
   width: 100%;
   height: 100%;
   border: 0;
+}
+
+/* 팬아트 갤러리 — <div class="gallery"><figure class="art">…</figure></div>
+   칸 수는 폭에 맞춰 자동으로 늘고 줄어든다. */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 16px 0;
+}
+.art {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--panel);
+}
+.art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: linear-gradient(135deg, var(--ph-1), var(--ph-2));
+}
+.art figcaption {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.art-date {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
 }
 
 /* 곡 해설 목록 — <ol class="tracknotes">

@@ -42,7 +42,7 @@ export const DOCS = {
     title: "즈키쿠",
     updated: "2026-08-31 17:44",
     file: "docs/cuzky.html",
-    related: ["cupotify"], // 관련 문서 박스
+    related: ["cupotify", "fanart"], // 관련 문서 박스
     shortcuts: [
       // 바로가기 박스
       {
@@ -68,6 +68,14 @@ export const DOCS = {
         href: "https://www.youtube.com/@쿠포티파이",
       },
     ],
+  },
+
+  fanart: {
+    title: "팬아트",
+    updated: "2026-08-31 20:40",
+    file: "docs/fanart.html",
+    related: ["cuzky", "cupotify"],
+    shortcuts: [],
   },
 };
 

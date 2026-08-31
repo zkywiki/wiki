@@ -175,6 +175,23 @@ HTML 에 표시할 것은 없고, `wiki.js` 가 각 제목 아래 내용을 `.se
 - 목차 링크나 `#앵커` 로 이동하면 접혀 있던 문단이 자동으로 펼쳐집니다. 검색도 마찬가지입니다.
 - 문서 끝의 `.category`(분류) · `.footer` 는 어떤 문단에도 딸려 들어가지 않습니다.
 
+## 팬아트
+
+이미지는 `assets/fanart/` 에 넣고, `docs/fanart.html` 의 `.gallery` 안에 `<figure>` 를
+하나씩 더합니다. 칸 수는 화면 폭에 맞춰 자동으로 늘고 줄어듭니다.
+
+```html
+<div class="gallery">
+  <figure class="art">
+    <img src="assets/fanart/작가명_소재.png" alt="즈키쿠 팬아트" />
+    <figcaption>작가명<span class="art-date">2026-08-31</span></figcaption>
+  </figure>
+</div>
+```
+
+**작가명은 반드시 함께 적습니다.** 게시 기준은 문서 3장에 적어 두었습니다 —
+허락받은 그림만, 출처 표기, 요청 시 즉시 삭제.
+
 ## 인용
 
 ```html
