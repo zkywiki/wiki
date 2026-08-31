@@ -141,17 +141,21 @@ h4{font-size:17px;margin:22px 0 8px}
 /* ---------- 문단 접기 ----------
    .main 안의 h2/h3/h4 는 wiki.js 가 자동으로 접기 가능한 제목(.sec-head)으로 만들고,
    그 아래 내용을 .sec-body 로 감싼다. HTML 에는 따로 표시할 것이 없다. */
-.sec-head{cursor:pointer;-webkit-user-select:none;user-select:none}
+.sec-head{cursor:pointer;-webkit-user-select:none;user-select:none;transition:opacity .12s}
 .sec-head:before{
   content:"▼";
-  display:inline-block;width:1em;
-  font-size:.55em;vertical-align:middle;
+  display:inline-block;
+  margin-right:.42em;                /* 아이콘과 글자 사이 간격 */
+  font-size:.72em;vertical-align:middle;
   color:var(--muted);
-  transform:translateY(-.15em);
+  transform:translateY(-.1em);
 }
 .sec-head[aria-expanded="false"]:before{content:"▶"}
 .sec-head:hover:before{color:var(--accent)}
 .sec-head:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+/* 접힌 문단은 제목을 살짝 흐리게 해서 펼쳐진 문단과 구분한다. */
+.sec-head[aria-expanded="false"]{opacity:.55}
+.sec-head[aria-expanded="false"]:hover{opacity:.8}
 /* 접힌 h2 는 아래 여백을 줄여 문단들이 붙어 보이게 한다. */
 h2.sec-head[aria-expanded="false"]{margin-bottom:14px}
 
@@ -241,6 +245,15 @@ h2.sec-head[aria-expanded="false"]{margin-bottom:14px}
    채널 주소가 있으면 <a class="platform" href="...">, 없으면 <span class="platform">. */
 .platform{display:inline-block;white-space:nowrap}
 .platform-sep{color:var(--muted);margin:0 4px}
+/* 로고 옆 채널 이름은 윗첨자로 작게.
+   링크 안에 있지만 파란 링크색 대신 본문 글자색을 쓴다.
+   (다크에선 흰색, 라이트에선 검정 — 어느 쪽 바탕에서도 읽힌다) */
+.platform-name{font-size:.72em;vertical-align:super;line-height:0;color:var(--text)}
+
+/* 경과일 — <span class="elapsed" data-since="2025-10-16"></span>
+   wiki.js 가 페이지를 열 때마다 오늘 기준으로 채운다.
+   자바스크립트가 꺼져 있으면 비어 있으므로 앞의 구분점도 나오지 않는다. */
+.elapsed:not(:empty):before{content:" · "}
 
 
 /* ---------- 목차 ----------

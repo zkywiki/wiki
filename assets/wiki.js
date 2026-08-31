@@ -13,6 +13,7 @@
    3) 문단 접기   : .main 안의 h2/h3/h4 를 누르면 그 문단이 접히고 펴진다.
                  HTML 은 그대로 두고 스크립트가 문단 내용을 감싸므로,
                  새 문단을 추가해도 따로 손댈 것이 없다.
+   4) 경과일     : <span data-since="YYYY-MM-DD"></span> 를 오늘 기준 경과 일수로 채운다.
    ============================================================ */
 (function () {
   'use strict';
@@ -219,8 +220,35 @@
     }
   }
 
+  /* ---------- 4. 경과일 ---------- */
+  /* <span class="elapsed" data-since="2025-10-16"></span>
+     → "319일 경과". 페이지를 열 때마다 오늘 기준으로 다시 계산하므로
+     문서에 날짜 수를 적어 두고 잊어버릴 일이 없다. */
+  function fillElapsed() {
+    var els = document.querySelectorAll('[data-since]');
+    var now = new Date();
+    /* 시:분:초를 버리고 '날짜'끼리만 뺀다. UTC 로 맞춰야 서머타임 영향이 없다. */
+    var today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+
+    for (var i = 0; i < els.length; i++) {
+      var raw = els[i].getAttribute('data-since');
+      var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(raw);
+      if (!m) continue;
+
+      var from = Date.UTC(+m[1], +m[2] - 1, +m[3]);
+      var days = Math.round((today - from) / 86400000);
+
+      els[i].textContent =
+        days >= 0
+          ? days.toLocaleString('ko-KR') + '일 경과'
+          : (-days).toLocaleString('ko-KR') + '일 남음';
+      els[i].setAttribute('title', raw + ' 기준');
+    }
+  }
+
   /* ---------- 초기화 ---------- */
   paintToggle();
   setupSections();
+  fillElapsed();
   if (location.hash) revealTarget(decodeURIComponent(location.hash.slice(1)));
 })();
