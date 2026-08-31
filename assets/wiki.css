@@ -653,6 +653,55 @@ mark {
   color: var(--muted);
 }
 
+/* 곡 해설 목록 — <ol class="tracknotes">
+   곡마다 설명이 붙는 경우. 번호는 CSS 카운터가 매긴다. */
+.tracknotes {
+  max-width: 720px;
+  margin: 14px 0;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: track;
+}
+.tracknotes > li {
+  counter-increment: track;
+  border-top: 1px solid var(--line);
+  padding: 12px 0;
+}
+.tracknotes > li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.track-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-weight: 700;
+}
+.track-head:before {
+  content: counter(track) ".";
+  min-width: 1.4em;
+  color: var(--muted);
+  font-weight: 400;
+}
+.track-tag {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  border: 1px solid var(--soft-line);
+  border-radius: 10px;
+  padding: 1px 7px;
+  white-space: nowrap;
+}
+.track-time {
+  margin-left: auto; /* 오른쪽 끝으로 */
+  font-size: 13px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.tracknotes p {
+  margin: 6px 0 0;
+}
+
 /* 2단 목록 — <ul class="game-list"> */
 .game-list {
   columns: 2;
