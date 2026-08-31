@@ -14,6 +14,8 @@
                  HTML 은 그대로 두고 스크립트가 문단 내용을 감싸므로,
                  새 문단을 추가해도 따로 손댈 것이 없다.
    4) 경과일     : <span data-since="YYYY-MM-DD"></span> 를 오늘 기준 경과 일수로 채운다.
+   5) 각주        : 본문(.main) 안의 <span class="note">…</span> 를 [1] [2] … 윗첨자로 바꾸고
+                 내용은 마우스를 올리거나 포커스했을 때 툴팁으로 보여준다.
    ============================================================ */
 (function () {
   'use strict';
@@ -166,7 +168,8 @@
 
   document.addEventListener('click', function (e) {
     var h = e.target.closest && e.target.closest('.sec-head');
-    if (!h || e.target.closest('a')) return;   // 제목 안의 링크 클릭은 그대로 링크로
+    if (!h) return;
+    if (e.target.closest('a') || e.target.closest('.fn')) return;   // 제목 안의 링크·각주는 예외
     setSection(h, h.getAttribute('aria-expanded') === 'false');
   });
 
@@ -246,8 +249,103 @@
     }
   }
 
+  /* ---------- 5. 각주 ---------- */
+  /* 본문의 <span class="note">부연 설명</span> → [1] 윗첨자 + 마우스 오버 툴팁.
+     인포박스 등 본문 밖의 .note 는 그대로 둔다 (거기서는 각주가 아니라 항목 설명이므로). */
+  var tip = null;
+
+  function ensureTip() {
+    if (tip) return tip;
+    tip = document.createElement('div');
+    tip.className = 'fn-tip';
+    tip.id = 'fn-tip';
+    tip.setAttribute('role', 'tooltip');
+    tip.hidden = true;
+    document.body.appendChild(tip);
+    return tip;
+  }
+
+  function showTip(ref) {
+    var el = ensureTip();
+    el.innerHTML = ref.__note;
+    el.hidden = false;
+
+    /* 위치를 재기 전에 화면 왼쪽 위로 보내 두어야 크기가 제대로 나온다. */
+    el.style.left = '0px';
+    el.style.top = '0px';
+
+    var r = ref.getBoundingClientRect();
+    var t = el.getBoundingClientRect();
+    var pad = 8;
+
+    var left = r.left + r.width / 2 - t.width / 2;
+    left = Math.max(pad, Math.min(left, window.innerWidth - t.width - pad));
+
+    var top = r.bottom + pad;                       // 기본은 각주 아래
+    if (top + t.height > window.innerHeight - pad) {
+      top = r.top - t.height - pad;                 // 아래가 좁으면 위로
+    }
+
+    el.style.left = left + 'px';
+    el.style.top = Math.max(pad, top) + 'px';
+  }
+
+  function hideTip() {
+    if (tip) tip.hidden = true;
+  }
+
+  function setupFootnotes() {
+    var scope = document.querySelector('.article .main');
+    if (!scope) return;
+
+    var notes = scope.querySelectorAll('.note');
+    for (var i = 0; i < notes.length; i++) {
+      var n = notes[i];
+      var sup = document.createElement('sup');
+      sup.className = 'fn';
+      sup.textContent = '[' + (i + 1) + ']';
+      sup.tabIndex = 0;
+      sup.setAttribute('role', 'button');
+      sup.setAttribute('aria-describedby', 'fn-tip');
+      sup.setAttribute('aria-label', '각주 ' + (i + 1));
+      sup.__note = n.innerHTML;
+      n.parentNode.replaceChild(sup, n);
+    }
+    if (notes.length) ensureTip();
+  }
+
+  document.addEventListener('mouseover', function (e) {
+    var fn = e.target.closest && e.target.closest('.fn');
+    if (fn) showTip(fn);
+  });
+  document.addEventListener('mouseout', function (e) {
+    var fn = e.target.closest && e.target.closest('.fn');
+    if (fn && !(e.relatedTarget && fn.contains(e.relatedTarget))) hideTip();
+  });
+  document.addEventListener('focusin', function (e) {
+    var fn = e.target.closest && e.target.closest('.fn');
+    if (fn) showTip(fn);
+  });
+  document.addEventListener('focusout', function (e) {
+    if (e.target.closest && e.target.closest('.fn')) hideTip();
+  });
+  /* 터치 기기에는 마우스 오버가 없으므로 탭으로도 열리게 한다. */
+  document.addEventListener('click', function (e) {
+    var fn = e.target.closest && e.target.closest('.fn');
+    if (!fn) return;
+    e.stopPropagation();
+    if (tip && !tip.hidden) hideTip();
+    else showTip(fn);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') hideTip();
+  });
+  window.addEventListener('scroll', hideTip, true);
+  window.addEventListener('resize', hideTip);
+
   /* ---------- 초기화 ---------- */
   paintToggle();
+  setupFootnotes();
   setupSections();
   fillElapsed();
   if (location.hash) revealTarget(decodeURIComponent(location.hash.slice(1)));

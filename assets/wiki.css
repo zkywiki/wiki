@@ -20,7 +20,6 @@
      </main>
    ============================================================ */
 
-
 /* ============================================================
    색상 토큰
 
@@ -29,186 +28,298 @@
    ─ prefers-color-scheme: dark   OS 설정이 다크일 때 자동 적용
    ─ [data-theme="dark|light"]    사용자가 토글로 고른 값이 항상 우선
    ============================================================ */
-:root{
-  color-scheme:light;
+:root {
+  color-scheme: light;
 
-  --bg:#f6f7f8;          /* 페이지 바탕 */
-  --panel:#fff;          /* 문서 카드 바탕 */
-  --text:#1f2328;        /* 본문 글자 */
-  --muted:#6e7781;       /* 부가 설명 글자 */
-  --line:#d0d7de;        /* 테두리·구분선 */
-  --accent:#00a495;      /* 강조색 (브랜드, 답변 라인) */
-  --link:#0275d8;        /* 링크 */
+  --bg: #f6f7f8; /* 페이지 바탕 */
+  --panel: #fff; /* 문서 카드 바탕 */
+  --text: #1f2328; /* 본문 글자 */
+  --muted: #6e7781; /* 부가 설명 글자 */
+  --line: #d0d7de; /* 테두리·구분선 */
+  --accent: #00a495; /* 강조색 (브랜드, 답변 라인) */
+  --link: #0275d8; /* 링크 */
 
-  --soft:#fafbfc;        /* 옅은 면 (목차, 접기 머리, 분류 칩) */
-  --soft-line:#dddddd;   /* 옅은 구분선 */
-  --input-bg:#f9fafb;    /* 검색창 */
+  --soft: #fafbfc; /* 옅은 면 (목차, 접기 머리, 분류 칩) */
+  --soft-line: #dddddd; /* 옅은 구분선 */
+  --input-bg: #f9fafb; /* 검색창 */
 
-  --ib-bg:#fff;          /* 인포박스 바탕 */
-  --ib-border:#111;      /* 인포박스 바깥 테두리 */
-  --ib-line:#c9c9c9;     /* 인포박스 칸 구분선 */
-  --ib-head-bg:#000;     /* 인포박스 제목·항목명 바탕 */
-  --ib-head-text:#fff;
+  --ib-bg: #fff; /* 인포박스 바탕 */
+  --ib-border: #111; /* 인포박스 바깥 테두리 */
+  --ib-line: #c9c9c9; /* 인포박스 칸 구분선 */
+  --ib-head-bg: #000; /* 인포박스 제목·항목명 바탕 */
+  --ib-head-text: #fff;
 
-  --ph-1:#f2f2f2;        /* 이미지 자리 그라데이션 */
-  --ph-2:#dddddd;
-  --answer-bg:#f5fffd;   /* 답변 블록 바탕 */
-  --mark-bg:#fff3a3;     /* 검색 하이라이트 */
-  --mark-text:#1f2328;
+  --ph-1: #f2f2f2; /* 이미지 자리 그라데이션 */
+  --ph-2: #dddddd;
+  --answer-bg: #f5fffd; /* 답변 블록 바탕 */
+  --mark-bg: #fff3a3; /* 검색 하이라이트 */
+  --mark-text: #1f2328;
+  --fn: #ec9f19; /* 각주 번호 (주황노랑) */
+
+  /* 문단 접기 화살표 — Material Design Icons (mdi:chevron-down / mdi:chevron-right).
+     mask 로 넣기 때문에 색은 background-color 로 바꾼다. */
+  --chev-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.41 8.58 12 13.17l4.59-4.59L18 10l-6 6-6-6z'/%3E%3C/svg%3E");
+  --chev-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8.59 16.58 13.17 12 8.59 7.41 10 6l6 6-6 6z'/%3E%3C/svg%3E");
+  --tip-shadow: rgba(27, 31, 36, 0.18);
 }
 
 /* OS 가 다크일 때. 단, 사용자가 라이트를 직접 고른 경우는 제외. */
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
 
-    --bg:#0d1117;
-    --panel:#161b22;
-    --text:#e6edf3;
-    --muted:#9198a1;
-    --line:#30363d;
-    --accent:#2ee6d0;
-    --link:#6cb6ff;
+    --bg: #0d1117;
+    --panel: #161b22;
+    --text: #e6edf3;
+    --muted: #9198a1;
+    --line: #30363d;
+    --accent: #2ee6d0;
+    --link: #6cb6ff;
 
-    --soft:#1c2128;
-    --soft-line:#30363d;
-    --input-bg:#0d1117;
+    --soft: #1c2128;
+    --soft-line: #30363d;
+    --input-bg: #0d1117;
 
-    --ib-bg:#161b22;
-    --ib-border:#3d444d;
-    --ib-line:#30363d;
-    --ib-head-bg:#010409;
-    --ib-head-text:#e6edf3;
+    --ib-bg: #161b22;
+    --ib-border: #3d444d;
+    --ib-line: #30363d;
+    --ib-head-bg: #010409;
+    --ib-head-text: #e6edf3;
 
-    --ph-1:#21262d;
-    --ph-2:#161b22;
-    --answer-bg:#132b2a;
-    --mark-bg:#6b5300;
-    --mark-text:#ffeaa7;
+    --ph-1: #21262d;
+    --ph-2: #161b22;
+    --answer-bg: #132b2a;
+    --mark-bg: #6b5300;
+    --mark-text: #ffeaa7;
+    --fn: #ec9f19;
+    --tip-shadow: rgba(0, 0, 0, 0.55);
   }
 }
 
 /* 토글로 다크를 직접 고른 경우 — OS 설정과 무관하게 적용. */
-:root[data-theme="dark"]{
-  color-scheme:dark;
+:root[data-theme="dark"] {
+  color-scheme: dark;
 
-  --bg:#0d1117;
-  --panel:#161b22;
-  --text:#e6edf3;
-  --muted:#9198a1;
-  --line:#30363d;
-  --accent:#2ee6d0;
-  --link:#6cb6ff;
+  --bg: #0d1117;
+  --panel: #161b22;
+  --text: #e6edf3;
+  --muted: #9198a1;
+  --line: #30363d;
+  --accent: #2ee6d0;
+  --link: #6cb6ff;
 
-  --soft:#1c2128;
-  --soft-line:#30363d;
-  --input-bg:#0d1117;
+  --soft: #1c2128;
+  --soft-line: #30363d;
+  --input-bg: #0d1117;
 
-  --ib-bg:#161b22;
-  --ib-border:#3d444d;
-  --ib-line:#30363d;
-  --ib-head-bg:#010409;
-  --ib-head-text:#e6edf3;
+  --ib-bg: #161b22;
+  --ib-border: #3d444d;
+  --ib-line: #30363d;
+  --ib-head-bg: #010409;
+  --ib-head-text: #e6edf3;
 
-  --ph-1:#21262d;
-  --ph-2:#161b22;
-  --answer-bg:#132b2a;
-  --mark-bg:#6b5300;
-  --mark-text:#ffeaa7;
+  --ph-1: #21262d;
+  --ph-2: #161b22;
+  --answer-bg: #132b2a;
+  --mark-bg: #6b5300;
+  --mark-text: #ffeaa7;
+  --fn: #ec9f19;
+  --tip-shadow: rgba(0, 0, 0, 0.55);
 }
-
 
 /* ---------- 기본 요소 ---------- */
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR","Segoe UI",sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  line-height:1.7;
+* {
+  box-sizing: border-box;
 }
-a{color:var(--link);text-decoration:none}
-a:hover{text-decoration:underline}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", "Segoe UI",
+    sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+}
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
 
-p{margin:8px 0 14px}
-ul{padding-left:22px}
-h2{font-size:25px;border-bottom:1px solid var(--line);padding-bottom:7px;margin:38px 0 16px}
-h3{font-size:20px;margin:28px 0 10px}
-h4{font-size:17px;margin:22px 0 8px}
-
+p {
+  margin: 8px 0 14px;
+}
+ul {
+  padding-left: 22px;
+}
+h2 {
+  font-size: 25px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 7px;
+  margin: 38px 0 16px;
+}
+h3 {
+  font-size: 20px;
+  margin: 28px 0 10px;
+}
+h4 {
+  font-size: 17px;
+  margin: 22px 0 8px;
+}
 
 /* ---------- 문단 접기 ----------
    .main 안의 h2/h3/h4 는 wiki.js 가 자동으로 접기 가능한 제목(.sec-head)으로 만들고,
    그 아래 내용을 .sec-body 로 감싼다. HTML 에는 따로 표시할 것이 없다. */
-.sec-head{cursor:pointer;-webkit-user-select:none;user-select:none;transition:opacity .12s}
-.sec-head:before{
-  content:"▼";
-  display:inline-block;
-  margin-right:.42em;                /* 아이콘과 글자 사이 간격 */
-  font-size:.72em;vertical-align:middle;
-  color:var(--muted);
-  transform:translateY(-.1em);
+.sec-head {
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: opacity 0.12s;
 }
-.sec-head[aria-expanded="false"]:before{content:"▶"}
-.sec-head:hover:before{color:var(--accent)}
-.sec-head:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sec-head:before {
+  content: "";
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  margin-right: 0.3em; /* 아이콘과 글자 사이 간격 */
+  vertical-align: -0.08em;
+  background-color: var(--muted);
+  -webkit-mask-image: var(--chev-down);
+  mask-image: var(--chev-down);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+.sec-head[aria-expanded="false"]:before {
+  -webkit-mask-image: var(--chev-right);
+  mask-image: var(--chev-right);
+}
+.sec-head:hover:before {
+  background-color: var(--accent);
+}
+.sec-head:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
 /* 접힌 문단은 제목을 살짝 흐리게 해서 펼쳐진 문단과 구분한다. */
-.sec-head[aria-expanded="false"]{opacity:.55}
-.sec-head[aria-expanded="false"]:hover{opacity:.8}
+.sec-head[aria-expanded="false"] {
+  opacity: 0.55;
+}
+.sec-head[aria-expanded="false"]:hover {
+  opacity: 0.8;
+}
 /* 접힌 h2 는 아래 여백을 줄여 문단들이 붙어 보이게 한다. */
-h2.sec-head[aria-expanded="false"]{margin-bottom:14px}
-
+h2.sec-head[aria-expanded="false"] {
+  margin-bottom: 14px;
+}
 
 /* ---------- 상단 바 ----------
    .topbar > .topbar-inner > (.brand, .search, .theme-toggle) */
-.topbar{
-  position:sticky;top:0;z-index:10;
-  height:58px;
-  background:var(--panel);
-  border-bottom:1px solid var(--line);
-  display:flex;align-items:center;
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 58px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
 }
-.topbar-inner{
-  width:min(1200px,calc(100% - 32px));margin:auto;
-  display:flex;align-items:center;gap:18px;
+.topbar-inner {
+  width: min(1200px, calc(100% - 32px));
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
-.brand{font-size:21px;font-weight:800;color:var(--text);white-space:nowrap}
-.brand span{color:var(--accent)}          /* 브랜드명 뒷부분 강조 */
-.search{flex:1;max-width:520px}
-.search input{
-  width:100%;
-  border:1px solid var(--line);border-radius:7px;
-  padding:9px 12px;font-size:14px;
-  background:var(--input-bg);color:var(--text);
+.brand {
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--text);
+  white-space: nowrap;
+}
+.brand span {
+  color: var(--accent);
+} /* 브랜드명 뒷부분 강조 */
+.search {
+  flex: 1;
+  max-width: 520px;
+}
+.search input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 9px 12px;
+  font-size: 14px;
+  background: var(--input-bg);
+  color: var(--text);
 }
 
 /* 테마 토글 버튼 — <button class="theme-toggle"> (wiki.js 가 아이콘을 채운다) */
-.theme-toggle{
-  margin-left:auto;
-  width:36px;height:36px;flex:none;
-  display:inline-flex;align-items:center;justify-content:center;
-  border:1px solid var(--line);border-radius:8px;
-  background:var(--soft);color:var(--text);
-  font-size:16px;line-height:1;cursor:pointer;
+.theme-toggle {
+  margin-left: auto;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--soft);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
 }
-.theme-toggle:hover{border-color:var(--accent)}
-.theme-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-
+.theme-toggle:hover {
+  border-color: var(--accent);
+}
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 
 /* ---------- 문서 레이아웃 ----------
    .wrap > .article > .layout > (.main, .side) */
-.wrap{width:min(1200px,calc(100% - 32px));margin:26px auto 60px}
-.article{
-  background:var(--panel);
-  border:1px solid var(--line);border-radius:8px;
-  padding:34px 38px;
+.wrap {
+  width: min(1200px, calc(100% - 32px));
+  margin: 26px auto 60px;
 }
-.title{font-size:34px;font-weight:800;letter-spacing:-.5px;margin:0 0 6px}
-.subtitle{font-size:13px;color:var(--muted);margin-bottom:22px}
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 450px;gap:28px;align-items:start}
-.main{min-width:0}
-
+.article {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 34px 38px;
+}
+.title {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin: 0 0 6px;
+}
+.subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 22px;
+}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 450px;
+  gap: 28px;
+  align-items: start;
+}
+.main {
+  min-width: 0;
+}
 
 /* ---------- 인포박스 (우측 표) ----------
    <table class="infobox">
@@ -216,119 +327,318 @@ h2.sec-head[aria-expanded="false"]{margin-bottom:14px}
      <tr><td class="image" colspan="2"><img src="assets/사진.png" alt=""></td></tr>
      <tr><th>항목</th><td>값</td></tr>
    </table> */
-.infobox{border:1px solid var(--ib-border);border-collapse:collapse;width:100%;font-size:14px;background:var(--ib-bg)}
+.infobox {
+  border: 1px solid var(--ib-border);
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+  background: var(--ib-bg);
+}
 .infobox th,
-.infobox td{border:1px solid var(--ib-line);padding:8px 10px;vertical-align:middle}
-.infobox th{width:25%;background:var(--ib-head-bg);color:var(--ib-head-text);text-align:center;font-weight:700}
-.infobox .head{background:var(--ib-head-bg);color:var(--ib-head-text);text-align:center;padding:14px}
-.infobox .name{font-size:24px;font-weight:800}
-.infobox .eng{font-size:13px;font-weight:600;opacity:.9}
+.infobox td {
+  border: 1px solid var(--ib-line);
+  padding: 8px 10px;
+  vertical-align: middle;
+}
+.infobox th {
+  width: 25%;
+  background: var(--ib-head-bg);
+  color: var(--ib-head-text);
+  text-align: center;
+  font-weight: 700;
+}
+.infobox .head {
+  background: var(--ib-head-bg);
+  color: var(--ib-head-text);
+  text-align: center;
+  padding: 14px;
+}
+.infobox .name {
+  font-size: 24px;
+  font-weight: 800;
+}
+.infobox .eng {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.9;
+}
 /* 주의: 여기에 display:flex 를 주면 <td> 가 표 셀에서 빠져나가 colspan 이 무시된다.
    (이미지가 첫 번째 좁은 열에만 들어가고 옆이 비는 현상) 그래서 표 셀 그대로 둔다.
    height 는 표 셀에서 '최소 높이'로 동작하므로 내용이 크면 셀이 늘어난다. */
-.infobox .image{
-  padding:0;height:300px;
-  background:linear-gradient(135deg,var(--ph-1),var(--ph-2));
-  text-align:center;vertical-align:middle;
-  color:var(--muted);font-size:13px;
+.infobox .image {
+  padding: 0;
+  height: 300px;
+  background: linear-gradient(135deg, var(--ph-1), var(--ph-2));
+  text-align: center;
+  vertical-align: middle;
+  color: var(--muted);
+  font-size: 13px;
 }
 /* 실제 이미지는 인포박스 가로폭을 꽉 채운다. 비율은 그대로 유지. */
-.infobox .image img{width:100%;height:auto;display:block}
+.infobox .image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 
 /* 플랫폼 로고 — <img class="platform-logo" src="..." alt="CHZZK">
    원본 비율 그대로 높이만 맞춘다.
    .mark 를 함께 주면(정사각형에 가까운 심볼형 로고) 조금 작게. */
-.platform-logo{height:22px;width:auto;display:inline-block;vertical-align:middle;margin-right:6px}
-.platform-logo.mark{height:15px}
+.platform-logo {
+  height: 22px;
+  width: auto;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+.platform-logo.mark {
+  height: 15px;
+}
 /* 한 칸에 계정이 여러 개일 때 — 로고+이름을 .platform 하나로 묶고 사이에
    <span class="platform-sep">·</span>. 로고와 이름은 줄바꿈으로 떨어지지 않는다.
    채널 주소가 있으면 <a class="platform" href="...">, 없으면 <span class="platform">. */
-.platform{display:inline-block;white-space:nowrap}
-.platform-sep{color:var(--muted);margin:0 4px}
+.platform {
+  display: inline-block;
+  white-space: nowrap;
+}
+.platform-sep {
+  color: var(--muted);
+  margin: 0 4px;
+}
 /* 로고 옆 채널 이름은 윗첨자로 작게.
    링크 안에 있지만 파란 링크색 대신 본문 글자색을 쓴다.
    (다크에선 흰색, 라이트에선 검정 — 어느 쪽 바탕에서도 읽힌다) */
-.platform-name{font-size:.72em;vertical-align:super;line-height:0;color:var(--text)}
+.platform-name {
+  font-size: 0.72em;
+  vertical-align: super;
+  line-height: 0;
+  color: var(--text);
+}
 
 /* 경과일 — <span class="elapsed" data-since="2025-10-16"></span>
    wiki.js 가 페이지를 열 때마다 오늘 기준으로 채운다.
    자바스크립트가 꺼져 있으면 비어 있으므로 앞의 구분점도 나오지 않는다. */
-.elapsed:not(:empty):before{content:" · "}
-
+.elapsed:not(:empty):before {
+  content: " · ";
+}
 
 /* ---------- 목차 ----------
    <nav class="toc"><div class="toc-title">목차</div><ol>...</ol></nav> */
-.toc{border:1px solid var(--line);background:var(--soft);border-radius:6px;padding:14px 18px;margin:24px 0}
-.toc-title{font-weight:800;margin-bottom:6px}
-.toc ol{margin:0;padding-left:24px}
-.toc li{margin:3px 0}
-
+.toc {
+  border: 1px solid var(--line);
+  background: var(--soft);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 24px 0;
+}
+.toc-title {
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+.toc ol {
+  margin: 0;
+  padding-left: 24px;
+}
+.toc li {
+  margin: 3px 0;
+}
 
 /* ---------- 접기 블록 ----------
    <details class="fold"><summary>제목</summary><div class="fold-body">내용</div></details> */
-.fold{border:1px solid var(--line);border-radius:6px;margin:12px 0;background:var(--panel);overflow:hidden}
-.fold>summary{cursor:pointer;padding:11px 14px;font-weight:700;background:var(--soft);list-style:none}
-.fold>summary::-webkit-details-marker{display:none}
-.fold>summary:before{content:"▶";font-size:11px;margin-right:8px}
-.fold[open]>summary:before{content:"▼"}
-.fold-body{padding:14px 16px}
-
+.fold {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  margin: 12px 0;
+  background: var(--panel);
+  overflow: hidden;
+}
+.fold > summary {
+  cursor: pointer;
+  padding: 11px 14px;
+  font-weight: 700;
+  background: var(--soft);
+  list-style: none;
+}
+.fold > summary::-webkit-details-marker {
+  display: none;
+}
+.fold > summary:before {
+  content: "▶";
+  font-size: 11px;
+  margin-right: 8px;
+}
+.fold[open] > summary:before {
+  content: "▼";
+}
+.fold-body {
+  padding: 14px 16px;
+}
 
 /* ---------- 문답 ----------
    <div class="question">질문<div class="answer">답변</div></div> */
-.question{padding:12px 0;border-bottom:1px dashed var(--soft-line)}
-.question:last-child{border-bottom:0}
-.answer{margin-top:8px;border-left:3px solid var(--accent);padding:7px 10px;background:var(--answer-bg)}
+.question {
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--soft-line);
+}
+.question:last-child {
+  border-bottom: 0;
+}
+.answer {
+  margin-top: 8px;
+  border-left: 3px solid var(--accent);
+  padding: 7px 10px;
+  background: var(--answer-bg);
+}
 
+/* ---------- 각주 ----------
+   본문의 <span class="note">부연 설명</span> 을 wiki.js 가 [1] 윗첨자로 바꾸고,
+   내용은 마우스 오버·포커스 시 툴팁(.fn-tip)으로 띄운다. HTML 은 그대로 두면 된다. */
+.fn {
+  color: var(--fn);
+  font-size: 0.7em;
+  vertical-align: super;
+  line-height: 0;
+  font-weight: 700;
+  margin-left: 1px;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.fn:hover,
+.fn:focus-visible {
+  text-decoration: underline;
+}
+.fn:focus-visible {
+  outline: 2px solid var(--fn);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.fn-tip {
+  position: fixed;
+  z-index: 100;
+  max-width: min(360px, calc(100vw - 16px));
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  font-weight: 400;
+  box-shadow: 0 6px 24px var(--tip-shadow);
+}
 
 /* ---------- 작은 조각들 ---------- */
-.note{font-size:12px;color:var(--muted)}                 /* 각주·부연 설명 */
-.badge{
-  display:inline-flex;align-items:center;gap:6px;
-  border:1px solid var(--soft-line);border-radius:14px;
-  padding:1px 8px;background:var(--panel);
+.note {
+  font-size: 12px;
+  color: var(--muted);
+} /* 각주·부연 설명 */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--soft-line);
+  border-radius: 14px;
+  padding: 1px 8px;
+  background: var(--panel);
 }
-mark{background:var(--mark-bg);color:var(--mark-text)}    /* 검색 하이라이트 */
+mark {
+  background: var(--mark-bg);
+  color: var(--mark-text);
+} /* 검색 하이라이트 */
 
 /* 2단 목록 — <ul class="game-list"> */
-.game-list{columns:2;column-gap:32px}
-.game-list li{break-inside:avoid}
+.game-list {
+  columns: 2;
+  column-gap: 32px;
+}
+.game-list li {
+  break-inside: avoid;
+}
 
 /* 썸네일 카드 — <div class="small-card"><div class="img">…</div><div class="cap">설명</div></div> */
-.small-card{width:200px;border:1px solid var(--line);margin:8px 0 14px}
+.small-card {
+  width: 200px;
+  border: 1px solid var(--line);
+  margin: 8px 0 14px;
+}
 /* height 가 아니라 min-height. 실제 이미지를 넣으면 세로가 긴 그림도 잘리지 않고
    카드가 그만큼 늘어난다. (이미지 자리 표시만 있을 때는 200px 정사각형) */
-.small-card .img{
-  min-height:200px;
-  background:linear-gradient(135deg,var(--ph-1),var(--ph-2));
-  display:flex;align-items:center;justify-content:center;color:var(--muted);
+.small-card .img {
+  min-height: 200px;
+  background: linear-gradient(135deg, var(--ph-1), var(--ph-2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
 }
-.small-card .img img{width:100%;height:auto;display:block}
-.small-card .cap{text-align:center;font-weight:700;background:var(--soft);padding:6px}
-
+.small-card .img img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.small-card .cap {
+  text-align: center;
+  font-weight: 700;
+  background: var(--soft);
+  padding: 6px;
+}
 
 /* ---------- 문서 하단 ---------- */
-.category{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
-.category a{
-  display:inline-block;
-  background:var(--soft);border:1px solid var(--soft-line);border-radius:4px;
-  padding:2px 7px;margin:2px;
+.category {
+  margin-top: 36px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--muted);
 }
-.footer{font-size:12px;color:var(--muted);margin-top:28px}
-
+.category a {
+  display: inline-block;
+  background: var(--soft);
+  border: 1px solid var(--soft-line);
+  border-radius: 4px;
+  padding: 2px 7px;
+  margin: 2px;
+}
+.footer {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 28px;
+}
 
 /* ---------- 반응형 ---------- */
-@media(max-width:980px){
-  .layout{grid-template-columns:1fr}
-  .side{order:-1}                    /* 좁은 화면에선 인포박스를 본문 위로 */
-  .infobox{max-width:560px;margin:auto}
-  .article{padding:24px 20px}
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .side {
+    order: -1;
+  } /* 좁은 화면에선 인포박스를 본문 위로 */
+  .infobox {
+    max-width: 560px;
+    margin: auto;
+  }
+  .article {
+    padding: 24px 20px;
+  }
 }
-@media(max-width:640px){
-  .wrap{width:min(100% - 16px,1200px);margin-top:12px}
-  .article{padding:20px 14px}
-  .title{font-size:28px}
-  .topbar-inner{width:calc(100% - 18px)}
-  .search{display:none}
-  .game-list{columns:1}
+@media (max-width: 640px) {
+  .wrap {
+    width: min(100% - 16px, 1200px);
+    margin-top: 12px;
+  }
+  .article {
+    padding: 20px 14px;
+  }
+  .title {
+    font-size: 28px;
+  }
+  .topbar-inner {
+    width: calc(100% - 18px);
+  }
+  .search {
+    display: none;
+  }
+  .game-list {
+    columns: 1;
+  }
 }
