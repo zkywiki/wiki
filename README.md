@@ -175,6 +175,17 @@ HTML 에 표시할 것은 없고, `wiki.js` 가 각 제목 아래 내용을 `.se
 - 목차 링크나 `#앵커` 로 이동하면 접혀 있던 문단이 자동으로 펼쳐집니다. 검색도 마찬가지입니다.
 - 문서 끝의 `.category`(분류) · `.footer` 는 어떤 문단에도 딸려 들어가지 않습니다.
 
+## 인용
+
+```html
+<blockquote class="quote">치킨값도 안돼, 노작이면 어때</blockquote>
+
+<!-- 출처를 붙일 때 -->
+<blockquote class="quote">문구<cite>2025-11-03 방송</cite></blockquote>
+```
+
+왼쪽에 강조색 세로선이 붙고 본문보다 조금 큰 글씨로 표시됩니다.
+
 ## 각주
 
 본문(`.main`) 안의 `<span class="note">…</span>` 는 자동으로 `[1]` `[2]` … 윗첨자가 되고,

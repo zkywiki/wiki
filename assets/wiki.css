@@ -696,6 +696,28 @@ textarea.suggest-input {
   padding: 14px 16px;
 }
 
+/* ---------- 인용 ----------
+   <blockquote class="quote">문구</blockquote>
+   출처를 붙이려면 <blockquote class="quote">문구<cite>출처</cite></blockquote> */
+.quote {
+  margin: 16px 0;
+  padding: 12px 0 12px 18px;
+  border-left: 3px solid var(--accent);
+  font-size: 1.12em;
+  line-height: 1.7;
+  color: var(--text);
+}
+.quote cite {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.78em;
+  font-style: normal;
+  color: var(--muted);
+}
+.quote cite:before {
+  content: "— ";
+}
+
 /* ---------- 문답 ----------
    <div class="question">질문<div class="answer">답변</div></div> */
 .question {
