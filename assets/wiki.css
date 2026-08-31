@@ -236,8 +236,9 @@ h2.sec-head[aria-expanded="false"]{margin-bottom:14px}
    .mark 를 함께 주면(정사각형에 가까운 심볼형 로고) 조금 작게. */
 .platform-logo{height:22px;width:auto;display:inline-block;vertical-align:middle;margin-right:6px}
 .platform-logo.mark{height:15px}
-/* 한 칸에 계정이 여러 개일 때 — <span class="platform">로고+이름</span> 사이에
-   <span class="platform-sep">·</span>. 로고와 이름은 줄바꿈으로 떨어지지 않는다. */
+/* 한 칸에 계정이 여러 개일 때 — 로고+이름을 .platform 하나로 묶고 사이에
+   <span class="platform-sep">·</span>. 로고와 이름은 줄바꿈으로 떨어지지 않는다.
+   채널 주소가 있으면 <a class="platform" href="...">, 없으면 <span class="platform">. */
 .platform{display:inline-block;white-space:nowrap}
 .platform-sep{color:var(--muted);margin:0 4px}
 
