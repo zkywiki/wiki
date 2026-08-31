@@ -125,8 +125,9 @@ function revealNode(node) {
 }
 
 /* ---------- 3. 각주 ---------- */
-/* 본문의 <span class="note">부연 설명</span> → [1] 윗첨자 + 마우스 오버 툴팁.
-   인포박스 등 본문 밖의 .note 는 그대로 둔다 (거기서는 각주가 아니라 항목 설명이므로). */
+/* <span class="note">부연 설명</span> → [1] 윗첨자 + 마우스 오버 툴팁.
+   본문과 인포박스를 모두 훑고, 문서에 나오는 순서대로 번호를 매긴다.
+   각주가 아니라 그냥 작은 글씨로 둘 곳(항목 이름 등)에는 .note-plain 을 쓴다. */
 let tip = null;
 
 function ensureTip() {
@@ -170,10 +171,12 @@ function hideTip() {
 }
 
 function setupFootnotes() {
-  const scope = document.querySelector(".article .main");
+  const scope = document.querySelector(".article");
   if (!scope) return;
 
-  scope.querySelectorAll(".note").forEach((n, i) => {
+  /* 본문과 인포박스를 함께 훑는다(문서 순서대로 번호가 붙는다).
+     각주로 만들 것이 아니라 그냥 작은 글씨로 둘 곳에는 .note-plain 을 쓴다. */
+  scope.querySelectorAll(".note:not(.note-plain)").forEach((n, i) => {
     const sup = document.createElement("sup");
     sup.className = "fn";
     sup.textContent = "[" + (i + 1) + "]";
@@ -207,7 +210,7 @@ function looksLikeStrike(inner) {
 }
 
 function applyStrike() {
-  const scope = document.querySelector(".article .main");
+  const scope = document.querySelector(".article");
   if (!scope) return;
 
   const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, {
