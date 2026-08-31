@@ -74,7 +74,7 @@
     --muted: #9198a1;
     --line: #30363d;
     --accent: #2ee6d0;
-    --link: #6cb6ff;
+    --link: #ec9f19;
 
     --soft: #1c2128;
     --soft-line: #30363d;
@@ -106,7 +106,7 @@
   --muted: #9198a1;
   --line: #30363d;
   --accent: #2ee6d0;
-  --link: #6cb6ff;
+  --link: #ec9f19;
 
   --soft: #1c2128;
   --soft-line: #30363d;
@@ -141,6 +141,7 @@ body {
     sans-serif;
   background: var(--bg);
   color: var(--text);
+  font-size: 15px; /* 본문 기준 크기. 제목·인포박스 등은 아래에서 따로 지정 */
   line-height: 1.7;
 }
 a {
