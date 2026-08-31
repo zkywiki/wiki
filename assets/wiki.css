@@ -297,6 +297,8 @@ h2.sec-head[aria-expanded="false"] {
   margin: 26px auto 60px;
 }
 .article {
+  max-width: 1032px;
+  margin-inline: auto; /* 화면이 더 넓으면 가운데 정렬 */
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 8px;
