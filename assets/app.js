@@ -13,7 +13,6 @@
 import { SITE, DOCS, HOME } from "./docs.js";
 import { Header, DocHead, Rail } from "./components.js";
 import { initGlobal, initDocument } from "./wiki.js";
-import { SuggestDialog, initSuggest, setSuggestDoc } from "./suggest.js";
 
 const headerEl = document.getElementById("site-header");
 const articleEl = document.getElementById("doc");
@@ -60,7 +59,6 @@ async function render(slug, { keepScroll = false } = {}) {
   railEl.innerHTML = Rail(slug);
 
   initDocument();
-  setSuggestDoc(slug); // 제안 메일에 어느 문서인지 담기 위해
 
   /* 주소에 #앵커가 붙어 있으면 그 문단으로, 아니면 문서 맨 위로. */
   if (location.hash) {
@@ -93,7 +91,5 @@ window.addEventListener("popstate", () => render(slugFromUrl(), { keepScroll: tr
 
 /* ---------- 시작 ---------- */
 headerEl.innerHTML = Header();
-document.body.insertAdjacentHTML("beforeend", SuggestDialog());
 initGlobal();
-initSuggest();
 render(slugFromUrl(), { keepScroll: true });
