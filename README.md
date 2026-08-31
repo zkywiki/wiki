@@ -200,6 +200,19 @@ HTML 에 표시할 것은 없고, `wiki.js` 가 각 제목 아래 내용을 `.se
 
 미래 날짜면 `N일 남음` 으로 나옵니다.
 
+## 파비콘
+
+브랜드 색(`--accent` 민트) 바탕에 흰 「즈」를 얹은 사각 마크입니다.
+
+```
+assets/favicon-32.png     브라우저 탭
+assets/favicon-180.png    iOS 홈 화면 (apple-touch-icon)
+```
+
+두 파일 모두 배경이 투명한 둥근 사각형이라 밝은 탭·어두운 탭 어디서나 같은 모양으로 보입니다.
+다시 만들려면 원하는 크기의 정사각 `<div>` 하나를 headless Chrome 으로 캡처하면 됩니다 —
+`--default-background-color=00000000` 을 주어야 모서리가 투명하게 나옵니다.
+
 ## 이미지 · 로고
 
 - 이미지는 `assets/` 에 넣고 `<img src="assets/파일명.png">` 로 씁니다.
