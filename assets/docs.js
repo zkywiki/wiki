@@ -12,10 +12,29 @@ export const SITE = {
   nameAccent: "위키", // 브랜드 뒷부분 (강조색으로 표시된다)
   searchPlaceholder: "이 문서에서 검색",
 
-  /* 편집 제안을 받을 주소.
-     통째로 적어 두면 수집 봇에 그대로 긁히기 때문에 두 토막으로 나눠 둔다.
-     (완전한 차단은 아니고, 자동 수집을 조금 번거롭게 하는 정도다) */
-  contact: { user: "ksh_1035", host: "naver.com" },
+};
+
+/* ============================================================
+   편집 제안 메일 발송 (EmailJS)
+
+   정적 페이지에서 바로 메일을 보내기 위해 EmailJS 의 REST API 를 쓴다.
+   SDK 를 따로 불러오지 않고 fetch 한 번으로 끝낸다.
+
+   아래 세 값은 EmailJS 대시보드에서 가져온다.
+     publicKey  : Account → General → Public Key
+     serviceId  : Email Services → 해당 서비스의 Service ID
+     templateId : Email Templates → 해당 템플릿의 Template ID
+   publicKey 는 공개돼도 되는 값이다(브라우저에서 쓰라고 만든 키).
+   반대로 Private Key 는 절대 이 파일에 넣지 말 것 — 소스 보기로 그대로 노출된다.
+
+   EmailJS 템플릿에서 쓸 수 있는 변수는 params 에 담아 보내는 이름들이다.
+   suggest.js 가 보내는 것: doc_title, doc_url, type, from, message
+   받는 주소는 EmailJS 템플릿의 "To Email" 에 설정한다 (코드에 적지 않는다).
+   ============================================================ */
+export const EMAIL = {
+  publicKey: "",
+  serviceId: "",
+  templateId: "",
 };
 
 /* 문서를 여는 주소는 ?doc=<슬러그> 다. */

@@ -91,6 +91,39 @@ npm run dev     # http://localhost:5173 자동으로 열림
 | `RelatedBox(slug)` | 우측 박스 1 | 관련 문서 (`related`, 없으면 나머지 전체) |
 | `ShortcutsBox(slug)` | 우측 박스 2 | 바로가기 (`shortcuts`) |
 
+## 편집 제안 (EmailJS)
+
+헤더의 **편집 제안** 버튼을 누르면 대화상자가 열리고, 보내면 페이지 안에서 바로 메일이
+발송됩니다. 방문자의 메일 앱은 열리지 않습니다. 서버는 필요 없고 EmailJS 가 발송을 맡습니다.
+
+`assets/docs.js` 의 `EMAIL` 에 대시보드 값 세 개를 넣으면 동작합니다.
+
+```js
+export const EMAIL = {
+  publicKey: "…",   // Account → General → Public Key
+  serviceId: "…",   // Email Services → Service ID
+  templateId: "…",  // Email Templates → Template ID
+};
+```
+
+- `publicKey` 는 공개돼도 되는 값입니다(브라우저에서 쓰라고 만든 키).
+  **Private Key 는 절대 넣지 마세요** — 소스 보기로 그대로 노출됩니다.
+- **받는 주소는 코드에 없습니다.** EmailJS 템플릿의 *To Email* 에 설정하세요.
+  그래야 메일 주소가 페이지에 노출되지 않습니다.
+- EmailJS 대시보드에서 허용 도메인(Allowed Origins)을 배포 주소로 제한해 두면
+  남이 키를 가져다 쓰는 것을 막을 수 있습니다.
+
+템플릿 본문에서 쓸 수 있는 변수는 이렇습니다.
+
+| 변수 | 내용 |
+| --- | --- |
+| `{{doc_title}}` | 제안이 올라온 문서 제목 |
+| `{{doc_url}}` | 그 문서 주소 |
+| `{{type}}` | 오타·표현 수정 / 내용 추가 / 내용 정정 / 기타 |
+| `{{from}}` | 작성자 (안 적으면 `(밝히지 않음)`) |
+| `{{message}}` | 제안 내용 |
+| `{{site}}` | 사이트 이름 |
+
 ## 다크 / 라이트 모드
 
 우측 상단 버튼(🌙 / ☀️)으로 전환합니다.

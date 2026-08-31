@@ -350,11 +350,23 @@ textarea.suggest-input {
   resize: vertical;
   line-height: 1.6;
 }
-.suggest-note {
+/* 보내는 중 / 성공 / 실패 안내 */
+.suggest-msg {
   margin: 12px 0 0;
-  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: var(--soft);
+  font-size: 13px;
   color: var(--muted);
-  word-break: break-all;
+}
+.suggest-msg.good {
+  border-color: var(--accent);
+  color: var(--text);
+}
+.suggest-msg.bad {
+  border-color: #d9534f;
+  color: var(--text);
 }
 .suggest-actions {
   display: flex;

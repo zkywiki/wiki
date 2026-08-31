@@ -1,21 +1,20 @@
 /* ============================================================
    suggest.js — 편집 제안
 
-   서버가 없으므로 폼 내용을 mailto: 주소로 조립해 방문자의 메일 앱을 띄운다.
-   실제 발송은 방문자가 하고, 받는 사람은 SITE.contact 이다.
+   폼 내용을 EmailJS 로 바로 보낸다. 메일 앱이 열리지 않고 페이지 안에서 끝난다.
+   받는 주소는 코드에 없다 — EmailJS 템플릿의 "To Email" 에 설정한다.
 
-   나중에 "페이지에서 바로 전송"으로 바꾸려면 send() 하나만 갈아끼우면 된다.
-   (Formspree · Web3Forms 같은 외부 폼 서비스에 fetch POST → 그쪽이 메일 발송)
+   설정값은 assets/docs.js 의 EMAIL 에 있다.
    ============================================================ */
 
-import { SITE, DOCS } from "./docs.js";
+import { SITE, DOCS, EMAIL } from "./docs.js";
 import { esc } from "./components.js";
 
-/* mailto 주소는 너무 길면 메일 앱이 잘라먹는다. 넉넉히 잡아도 이 정도가 한계. */
+const API = "https://api.emailjs.com/api/v1.0/email/send";
 const MAX = 1500;
 
-function address() {
-  return SITE.contact.user + "@" + SITE.contact.host;
+function configured() {
+  return Boolean(EMAIL.publicKey && EMAIL.serviceId && EMAIL.templateId);
 }
 
 /* ---------- 화면 ---------- */
@@ -64,12 +63,12 @@ export function SuggestDialog() {
           placeholder="닉네임이나 연락처"
         />
 
-        <p class="suggest-note" id="suggest-hint"></p>
+        <p class="suggest-msg" id="suggest-msg" role="status" hidden></p>
 
         <div class="suggest-actions">
           <button class="suggest-btn" type="button" value="cancel">취소</button>
           <button class="suggest-btn primary" type="button" id="suggest-send">
-            메일 앱으로 보내기
+            보내기
           </button>
         </div>
       </form>
@@ -87,59 +86,89 @@ export function setSuggestDoc(slug) {
   if (el && doc) el.textContent = `문서: ${doc.title}`;
 }
 
-/* 주소 조립만 따로. 이렇게 빼 두면 실제로 메일 앱을 띄우지 않고도 확인할 수 있다. */
-export function buildMailto({ slug, type, from, text, url }) {
-  const doc = DOCS[slug];
-  const subject = `[${SITE.name}${SITE.nameAccent}] 편집 제안 — ${doc.title} (${type})`;
-  const lines = [
-    `문서: ${doc.title}`,
-    `주소: ${url}`,
-    `종류: ${type}`,
-    from ? `작성자: ${from}` : null,
-    "",
-    text,
-  ].filter((l) => l !== null);
-
-  return (
-    "mailto:" +
-    encodeURIComponent(address()) +
-    "?subject=" +
-    encodeURIComponent(subject) +
-    "&body=" +
-    encodeURIComponent(lines.join("\n"))
-  );
+function say(text, kind) {
+  const el = document.getElementById("suggest-msg");
+  if (!el) return;
+  el.textContent = text || "";
+  el.className = "suggest-msg" + (kind ? " " + kind : "");
+  el.hidden = !text;
 }
 
-function send() {
+/* EmailJS 템플릿에 넘길 값들. 템플릿에서 {{doc_title}} 처럼 쓴다. */
+function params({ slug, type, from, text, url }) {
+  return {
+    doc_title: DOCS[slug].title,
+    doc_url: url,
+    type,
+    from: from || "(밝히지 않음)",
+    message: text,
+    site: SITE.name + SITE.nameAccent,
+  };
+}
+
+async function send() {
   const body = document.getElementById("suggest-body");
-  if (!body.value.trim()) {
+  const button = document.getElementById("suggest-send");
+
+  const text = body.value.trim();
+  if (!text) {
     body.focus();
+    say("내용을 입력해 주세요.", "bad");
     return;
   }
 
-  location.href = buildMailto({
-    slug: currentSlug,
-    type: document.getElementById("suggest-type").value,
-    from: document.getElementById("suggest-from").value.trim(),
-    text: body.value.trim(),
-    url: location.href,
-  });
+  if (!configured()) {
+    say(
+      "메일 발송 설정이 비어 있습니다. assets/docs.js 의 EMAIL 값을 채워 주세요.",
+      "bad",
+    );
+    return;
+  }
 
-  document.getElementById("suggest").close();
+  button.disabled = true;
+  say("보내는 중…");
+
+  try {
+    const res = await fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        service_id: EMAIL.serviceId,
+        template_id: EMAIL.templateId,
+        user_id: EMAIL.publicKey,
+        template_params: params({
+          slug: currentSlug,
+          type: document.getElementById("suggest-type").value,
+          from: document.getElementById("suggest-from").value.trim(),
+          text,
+          url: location.href,
+        }),
+      }),
+    });
+
+    if (!res.ok) {
+      /* EmailJS 는 실패 이유를 본문에 평문으로 준다. */
+      throw new Error((await res.text()) || `HTTP ${res.status}`);
+    }
+
+    say("보냈습니다. 읽어 보고 반영하겠습니다. 감사합니다!", "good");
+    body.value = "";
+    document.getElementById("suggest-from").value = "";
+    setTimeout(() => document.getElementById("suggest").close(), 1600);
+  } catch (err) {
+    say(`보내지 못했습니다 — ${err.message}`, "bad");
+  } finally {
+    button.disabled = false;
+  }
 }
 
 export function initSuggest() {
   const dialog = document.getElementById("suggest");
   if (!dialog) return;
 
-  /* 받는 주소는 화면에도 보여 준다. 메일 앱이 없는 사람은 직접 복사해서 쓸 수 있게. */
-  const hint = document.getElementById("suggest-hint");
-  if (hint) {
-    hint.textContent = `보내기를 누르면 메일 앱이 열립니다.`;
-  }
-
   document.addEventListener("click", (e) => {
     if (e.target.closest?.(".suggest-open")) {
+      say("");
       dialog.showModal();
       document.getElementById("suggest-body")?.focus();
       return;
