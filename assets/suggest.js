@@ -94,14 +94,31 @@ function say(text, kind) {
   el.hidden = !text;
 }
 
-/* EmailJS 템플릿에 넘길 값들. 템플릿에서 {{doc_title}} 처럼 쓴다. */
+/* EmailJS 템플릿에 넘길 값들.
+
+   템플릿이 쓰는 것은 name / message / time 세 개다.
+   문서·주소·종류는 따로 넘길 자리가 없으므로 message 앞머리에 함께 적어 보낸다.
+   (doc_title 같은 낱개 값도 같이 보내 두니, 나중에 템플릿에서 바로 쓸 수 있다) */
 function params({ slug, type, from, text, url }) {
+  const title = DOCS[slug].title;
+  const who = from || "(밝히지 않음)";
+
   return {
-    doc_title: DOCS[slug].title,
+    /* 템플릿이 쓰는 세 값 */
+    name: who,
+    message: [`문서: ${title}`, `주소: ${url}`, `종류: ${type}`, "", text].join(
+      "\n",
+    ),
+    time: new Date().toLocaleString("ko-KR", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    }),
+
+    /* 템플릿에서 낱개로 쓰고 싶을 때를 위해 */
+    doc_title: title,
     doc_url: url,
     type,
-    from: from || "(밝히지 않음)",
-    message: text,
+    from: who,
     site: SITE.name + SITE.nameAccent,
   };
 }
@@ -151,7 +168,10 @@ async function send() {
       throw new Error((await res.text()) || `HTTP ${res.status}`);
     }
 
-    say("보냈습니다. 읽어 보고 반영하겠습니다. 감사합니다!", "good");
+    say(
+      "전송 완료되었습니다. 검토 후 반영하도록 하겠습니다. 감사합니다!",
+      "good",
+    );
     body.value = "";
     document.getElementById("suggest-from").value = "";
     setTimeout(() => document.getElementById("suggest").close(), 1600);

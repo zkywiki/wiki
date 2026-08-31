@@ -51,7 +51,11 @@ npm run dev     # http://localhost:5173 자동으로 열림
    ```html
    <nav class="toc">…목차…</nav>
    <section class="main">…본문…</section>
-   <aside class="side"><table class="infobox">…프로필…</table></aside>
+   <aside class="side">
+     <table class="infobox">
+       …프로필…
+     </table>
+   </aside>
    ```
 
 2. `assets/docs.js` 의 `DOCS` 에 한 항목을 더합니다.
@@ -103,12 +107,12 @@ npm run dev     # http://localhost:5173 자동으로 열림
 
 `assets/components.js` 의 함수들이 HTML 문자열을 돌려주고 `app.js` 가 자리에 꽂습니다.
 
-| 함수 | 자리 | 내용 |
-| --- | --- | --- |
-| `Header()` | 상단 바 | 브랜드, 검색창, 테마 토글 |
-| `DocHead(doc)` | 문서 머리말 | 제목, 최근 수정 시각 |
-| `RelatedBox(slug)` | 우측 박스 1 | 관련 문서 (`related`, 없으면 나머지 전체) |
-| `ShortcutsBox(slug)` | 우측 박스 2 | 바로가기 (`shortcuts`) |
+| 함수                 | 자리        | 내용                                      |
+| -------------------- | ----------- | ----------------------------------------- |
+| `Header()`           | 상단 바     | 브랜드, 검색창, 테마 토글                 |
+| `DocHead(doc)`       | 문서 머리말 | 제목, 최근 수정 시각                      |
+| `RelatedBox(slug)`   | 우측 박스 1 | 관련 문서 (`related`, 없으면 나머지 전체) |
+| `ShortcutsBox(slug)` | 우측 박스 2 | 바로가기 (`shortcuts`)                    |
 
 ## 편집 제안 (EmailJS)
 
@@ -119,29 +123,35 @@ npm run dev     # http://localhost:5173 자동으로 열림
 
 ```js
 export const EMAIL = {
-  publicKey: "…",   // Account → General → Public Key
-  serviceId: "…",   // Email Services → Service ID
-  templateId: "…",  // Email Templates → Template ID
+  publicKey: "7GRnS0Lk7LJ0ptiqL", // Account → General → Public Key
+  serviceId: "service_vvp0san", // Email Services → Service ID
+  templateId: "__ejs-test-mail-service__", // Email Templates → Template ID
 };
 ```
 
 - `publicKey` 는 공개돼도 되는 값입니다(브라우저에서 쓰라고 만든 키).
   **Private Key 는 절대 넣지 마세요** — 소스 보기로 그대로 노출됩니다.
-- **받는 주소는 코드에 없습니다.** EmailJS 템플릿의 *To Email* 에 설정하세요.
+- **받는 주소는 코드에 없습니다.** EmailJS 템플릿의 _To Email_ 에 설정하세요.
   그래야 메일 주소가 페이지에 노출되지 않습니다.
 - EmailJS 대시보드에서 허용 도메인(Allowed Origins)을 배포 주소로 제한해 두면
   남이 키를 가져다 쓰는 것을 막을 수 있습니다.
 
-템플릿 본문에서 쓸 수 있는 변수는 이렇습니다.
+템플릿이 쓰는 변수는 세 개입니다.
 
-| 변수 | 내용 |
-| --- | --- |
-| `{{doc_title}}` | 제안이 올라온 문서 제목 |
-| `{{doc_url}}` | 그 문서 주소 |
-| `{{type}}` | 오타·표현 수정 / 내용 추가 / 내용 정정 / 기타 |
-| `{{from}}` | 작성자 (안 적으면 `(밝히지 않음)`) |
-| `{{message}}` | 제안 내용 |
-| `{{site}}` | 사이트 이름 |
+| 변수          | 내용                                  |
+| ------------- | ------------------------------------- |
+| `{{name}}`    | 작성자 (안 적으면 `(밝히지 않음)`)    |
+| `{{message}}` | 문서·주소·종류 + 제안 내용            |
+| `{{time}}`    | 보낸 시각 (작성자의 현지 시간)        |
+
+`{{message}}` 는 여러 줄입니다. HTML 템플릿에서는 줄바꿈이 그냥 무시되므로 이렇게 감싸세요.
+
+```html
+<div style="white-space: pre-wrap">{{message}}</div>
+```
+
+낱개로 쓰고 싶으면 아래 값들도 함께 보내지고 있으니 템플릿에 바로 넣으면 됩니다 —
+`{{doc_title}}` `{{doc_url}}` `{{type}}` `{{from}}` `{{site}}`.
 
 ## 다크 / 라이트 모드
 
@@ -171,7 +181,11 @@ HTML 에 표시할 것은 없고, `wiki.js` 가 각 제목 아래 내용을 `.se
 마우스를 올리거나 포커스하면 내용이 툴팁으로 뜹니다.
 
 ```html
-<p>대한민국의 인터넷 방송인.<span class="note">본업이 따로 있으며 취미로 진행한다.</span></p>
+<p>
+  대한민국의 인터넷 방송인.<span class="note"
+    >본업이 따로 있으며 취미로 진행한다.</span
+  >
+</p>
 ```
 
 번호 색은 `--fn` 토큰(#ec9f19)입니다. 인포박스 등 본문 밖의 `.note` 는 각주가 아니라

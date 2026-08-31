@@ -11,7 +11,6 @@ export const SITE = {
   name: "즈키",
   nameAccent: "위키", // 브랜드 뒷부분 (강조색으로 표시된다)
   searchPlaceholder: "이 문서에서 검색",
-
 };
 
 /* ============================================================
@@ -32,9 +31,9 @@ export const SITE = {
    받는 주소는 EmailJS 템플릿의 "To Email" 에 설정한다 (코드에 적지 않는다).
    ============================================================ */
 export const EMAIL = {
-  publicKey: "",
-  serviceId: "",
-  templateId: "",
+  publicKey: "7GRnS0Lk7LJ0ptiqL",
+  serviceId: "service_vvp0san",
+  templateId: "template_qy14ja6",
 };
 
 /* 문서를 여는 주소는 ?doc=<슬러그> 다. */
