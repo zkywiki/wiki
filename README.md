@@ -8,8 +8,10 @@
 
 ```
 .
-├── index.html                  # 문서 본문 (CSS·JS 인라인 포함)
-├── assets/                     # 문서에서 쓰는 이미지
+├── index.html                  # 문서 본문
+├── assets/
+│   ├── wiki.css                # 문서 공통 스타일
+│   └── (이미지 파일)
 ├── .nojekyll                   # GitHub Pages 의 Jekyll 처리 비활성화
 └── .github/workflows/deploy.yml  # main 푸시 시 Pages 자동 배포
 ```
@@ -26,13 +28,25 @@ python3 -m http.server 8000
 ## 이미지 추가하기
 
 1. 이미지를 `assets/` 에 넣습니다. (예: `assets/즈키쿠_빵떡이.png`)
-2. `index.html` 의 인포박스 `.image` 칸을 `<img>` 로 바꿉니다.
+2. `index.html` 의 인포박스 `.image` 칸 내용을 `<img>` 로 바꿉니다. 크기는 CSS 가 맞춰 줍니다.
 
 ```html
 <td class="image" colspan="2">
-  <img src="assets/즈키쿠_빵떡이.png" alt="즈키쿠" style="width:100%;height:100%;object-fit:cover">
+  <img src="assets/즈키쿠_빵떡이.png" alt="즈키쿠">
 </td>
 ```
+
+## 스타일
+
+모든 스타일은 `assets/wiki.css` 한 곳에 있습니다. 문서 `<head>` 에 아래 한 줄만 넣으면 됩니다.
+
+```html
+<link rel="stylesheet" href="assets/wiki.css">
+```
+
+색은 파일 맨 위 `:root` 의 CSS 변수(`--accent`, `--line` 등)만 바꾸면 문서 전체에 반영됩니다.
+자주 쓰는 클래스는 파일 안에 섹션별 주석으로 사용법이 적혀 있습니다 —
+`.topbar` / `.article` / `.layout` / `.infobox` / `.toc` / `.fold` / `.question` / `.small-card` / `.category`.
 
 ## 문서 수정하기
 
