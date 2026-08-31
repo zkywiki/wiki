@@ -810,6 +810,24 @@ mark {
   border: 0;
 }
 
+/* 용어 목록 — <dl class="terms"><dt>용어</dt><dd>설명</dd></dl> */
+.terms {
+  max-width: 720px;
+  margin: 14px 0;
+}
+.terms dt {
+  margin-top: 14px;
+  font-weight: 700;
+}
+.terms dt:first-child {
+  margin-top: 0;
+}
+.terms dd {
+  margin: 4px 0 0;
+  padding-left: 14px;
+  border-left: 2px solid var(--line);
+}
+
 /* 팬아트 갤러리 — <div class="gallery"><figure class="art">…</figure></div>
    칸 수는 폭에 맞춰 자동으로 늘고 줄어든다. */
 .gallery {
