@@ -1,9 +1,10 @@
 /* ============================================================
    wiki.css — 위키 문서 공통 스타일
 
-   새 문서를 만들 때는 <head> 에 아래 한 줄만 넣으면 된다.
+   새 문서를 만들 때는 <head> 에 아래 두 줄만 넣으면 된다.
      <link rel="stylesheet" href="assets/wiki.css">
-   (docs/ 같은 하위 폴더에 두는 문서는 "../assets/wiki.css")
+     <script src="assets/wiki.js" defer></script>
+   (docs/ 같은 하위 폴더에 두는 문서는 "../assets/...")
 
    기본 골격:
      <header class="topbar"> <div class="topbar-inner"> ... </div> </header>
@@ -20,17 +21,100 @@
    ============================================================ */
 
 
-/* ---------- 색상 토큰 ----------
-   여기 값만 바꾸면 문서 전체 색이 따라 바뀐다. */
+/* ============================================================
+   색상 토큰
+
+   색은 전부 여기서만 정의한다. 규칙 안에 색상값을 직접 쓰지 말 것.
+   ─ :root                        라이트 (기본값)
+   ─ prefers-color-scheme: dark   OS 설정이 다크일 때 자동 적용
+   ─ [data-theme="dark|light"]    사용자가 토글로 고른 값이 항상 우선
+   ============================================================ */
 :root{
-  --bg:#f6f7f8;      /* 페이지 바탕 */
-  --panel:#fff;      /* 문서 카드 바탕 */
-  --text:#1f2328;    /* 본문 글자 */
-  --muted:#6e7781;   /* 부가 설명 글자 */
-  --line:#d0d7de;    /* 테두리·구분선 */
-  --accent:#00a495;  /* 강조색 (브랜드, 답변 라인) */
-  --dark:#111;
-  --link:#0275d8;    /* 링크 */
+  color-scheme:light;
+
+  --bg:#f6f7f8;          /* 페이지 바탕 */
+  --panel:#fff;          /* 문서 카드 바탕 */
+  --text:#1f2328;        /* 본문 글자 */
+  --muted:#6e7781;       /* 부가 설명 글자 */
+  --line:#d0d7de;        /* 테두리·구분선 */
+  --accent:#00a495;      /* 강조색 (브랜드, 답변 라인) */
+  --link:#0275d8;        /* 링크 */
+
+  --soft:#fafbfc;        /* 옅은 면 (목차, 접기 머리, 분류 칩) */
+  --soft-line:#dddddd;   /* 옅은 구분선 */
+  --input-bg:#f9fafb;    /* 검색창 */
+
+  --ib-bg:#fff;          /* 인포박스 바탕 */
+  --ib-border:#111;      /* 인포박스 바깥 테두리 */
+  --ib-line:#c9c9c9;     /* 인포박스 칸 구분선 */
+  --ib-head-bg:#000;     /* 인포박스 제목·항목명 바탕 */
+  --ib-head-text:#fff;
+
+  --ph-1:#f2f2f2;        /* 이미지 자리 그라데이션 */
+  --ph-2:#dddddd;
+  --answer-bg:#f5fffd;   /* 답변 블록 바탕 */
+  --mark-bg:#fff3a3;     /* 검색 하이라이트 */
+  --mark-text:#1f2328;
+}
+
+/* OS 가 다크일 때. 단, 사용자가 라이트를 직접 고른 경우는 제외. */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+
+    --bg:#0d1117;
+    --panel:#161b22;
+    --text:#e6edf3;
+    --muted:#9198a1;
+    --line:#30363d;
+    --accent:#2ee6d0;
+    --link:#6cb6ff;
+
+    --soft:#1c2128;
+    --soft-line:#30363d;
+    --input-bg:#0d1117;
+
+    --ib-bg:#161b22;
+    --ib-border:#3d444d;
+    --ib-line:#30363d;
+    --ib-head-bg:#010409;
+    --ib-head-text:#e6edf3;
+
+    --ph-1:#21262d;
+    --ph-2:#161b22;
+    --answer-bg:#132b2a;
+    --mark-bg:#6b5300;
+    --mark-text:#ffeaa7;
+  }
+}
+
+/* 토글로 다크를 직접 고른 경우 — OS 설정과 무관하게 적용. */
+:root[data-theme="dark"]{
+  color-scheme:dark;
+
+  --bg:#0d1117;
+  --panel:#161b22;
+  --text:#e6edf3;
+  --muted:#9198a1;
+  --line:#30363d;
+  --accent:#2ee6d0;
+  --link:#6cb6ff;
+
+  --soft:#1c2128;
+  --soft-line:#30363d;
+  --input-bg:#0d1117;
+
+  --ib-bg:#161b22;
+  --ib-border:#3d444d;
+  --ib-line:#30363d;
+  --ib-head-bg:#010409;
+  --ib-head-text:#e6edf3;
+
+  --ph-1:#21262d;
+  --ph-2:#161b22;
+  --answer-bg:#132b2a;
+  --mark-bg:#6b5300;
+  --mark-text:#ffeaa7;
 }
 
 
@@ -54,12 +138,30 @@ h3{font-size:20px;margin:28px 0 10px}
 h4{font-size:17px;margin:22px 0 8px}
 
 
+/* ---------- 문단 접기 ----------
+   .main 안의 h2/h3/h4 는 wiki.js 가 자동으로 접기 가능한 제목(.sec-head)으로 만들고,
+   그 아래 내용을 .sec-body 로 감싼다. HTML 에는 따로 표시할 것이 없다. */
+.sec-head{cursor:pointer;-webkit-user-select:none;user-select:none}
+.sec-head:before{
+  content:"▼";
+  display:inline-block;width:1em;
+  font-size:.55em;vertical-align:middle;
+  color:var(--muted);
+  transform:translateY(-.15em);
+}
+.sec-head[aria-expanded="false"]:before{content:"▶"}
+.sec-head:hover:before{color:var(--accent)}
+.sec-head:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+/* 접힌 h2 는 아래 여백을 줄여 문단들이 붙어 보이게 한다. */
+h2.sec-head[aria-expanded="false"]{margin-bottom:14px}
+
+
 /* ---------- 상단 바 ----------
-   .topbar > .topbar-inner > (.brand, .search) */
+   .topbar > .topbar-inner > (.brand, .search, .theme-toggle) */
 .topbar{
   position:sticky;top:0;z-index:10;
   height:58px;
-  background:#fff;
+  background:var(--panel);
   border-bottom:1px solid var(--line);
   display:flex;align-items:center;
 }
@@ -67,14 +169,27 @@ h4{font-size:17px;margin:22px 0 8px}
   width:min(1200px,calc(100% - 32px));margin:auto;
   display:flex;align-items:center;gap:18px;
 }
-.brand{font-size:21px;font-weight:800;color:#111;white-space:nowrap}
+.brand{font-size:21px;font-weight:800;color:var(--text);white-space:nowrap}
 .brand span{color:var(--accent)}          /* 브랜드명 뒷부분 강조 */
 .search{flex:1;max-width:520px}
 .search input{
   width:100%;
   border:1px solid var(--line);border-radius:7px;
-  padding:9px 12px;font-size:14px;background:#f9fafb;
+  padding:9px 12px;font-size:14px;
+  background:var(--input-bg);color:var(--text);
 }
+
+/* 테마 토글 버튼 — <button class="theme-toggle"> (wiki.js 가 아이콘을 채운다) */
+.theme-toggle{
+  margin-left:auto;
+  width:36px;height:36px;flex:none;
+  display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);border-radius:8px;
+  background:var(--soft);color:var(--text);
+  font-size:16px;line-height:1;cursor:pointer;
+}
+.theme-toggle:hover{border-color:var(--accent)}
+.theme-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 
 /* ---------- 문서 레이아웃 ----------
@@ -97,27 +212,39 @@ h4{font-size:17px;margin:22px 0 8px}
      <tr><td class="image" colspan="2"><img src="assets/사진.png" alt=""></td></tr>
      <tr><th>항목</th><td>값</td></tr>
    </table> */
-.infobox{border:1px solid #111;border-collapse:collapse;width:100%;font-size:14px;background:#fff}
+.infobox{border:1px solid var(--ib-border);border-collapse:collapse;width:100%;font-size:14px;background:var(--ib-bg)}
 .infobox th,
-.infobox td{border:1px solid #c9c9c9;padding:8px 10px;vertical-align:middle}
-.infobox th{width:25%;background:#000;color:#fff;text-align:center;font-weight:700}
-.infobox .head{background:#000;color:#fff;text-align:center;padding:14px}
+.infobox td{border:1px solid var(--ib-line);padding:8px 10px;vertical-align:middle}
+.infobox th{width:25%;background:var(--ib-head-bg);color:var(--ib-head-text);text-align:center;font-weight:700}
+.infobox .head{background:var(--ib-head-bg);color:var(--ib-head-text);text-align:center;padding:14px}
 .infobox .name{font-size:24px;font-weight:800}
 .infobox .eng{font-size:13px;font-weight:600;opacity:.9}
+/* 주의: 여기에 display:flex 를 주면 <td> 가 표 셀에서 빠져나가 colspan 이 무시된다.
+   (이미지가 첫 번째 좁은 열에만 들어가고 옆이 비는 현상) 그래서 표 셀 그대로 둔다.
+   height 는 표 셀에서 '최소 높이'로 동작하므로 내용이 크면 셀이 늘어난다. */
 .infobox .image{
   padding:0;height:300px;
-  background:linear-gradient(135deg,#f2f2f2,#ddd);
-  display:flex;align-items:center;justify-content:center;
-  color:#666;text-align:center;font-size:13px;
+  background:linear-gradient(135deg,var(--ph-1),var(--ph-2));
+  text-align:center;vertical-align:middle;
+  color:var(--muted);font-size:13px;
 }
-/* 인포박스에 실제 이미지를 넣었을 때.
-   잘리거나 늘어나지 않게 칸(300px) 안에 비율 그대로 맞춰 가운데 정렬한다. */
-.infobox .image img{max-width:100%;max-height:100%;display:block}
+/* 실제 이미지는 인포박스 가로폭을 꽉 채운다. 비율은 그대로 유지. */
+.infobox .image img{width:100%;height:auto;display:block}
+
+/* 플랫폼 로고 — <img class="platform-logo" src="..." alt="CHZZK">
+   원본 비율 그대로 높이만 맞춘다.
+   .mark 를 함께 주면(정사각형에 가까운 심볼형 로고) 조금 작게. */
+.platform-logo{height:22px;width:auto;display:inline-block;vertical-align:middle;margin-right:6px}
+.platform-logo.mark{height:15px}
+/* 한 칸에 계정이 여러 개일 때 — <span class="platform">로고+이름</span> 사이에
+   <span class="platform-sep">·</span>. 로고와 이름은 줄바꿈으로 떨어지지 않는다. */
+.platform{display:inline-block;white-space:nowrap}
+.platform-sep{color:var(--muted);margin:0 4px}
 
 
 /* ---------- 목차 ----------
    <nav class="toc"><div class="toc-title">목차</div><ol>...</ol></nav> */
-.toc{border:1px solid var(--line);background:#fafbfc;border-radius:6px;padding:14px 18px;margin:24px 0}
+.toc{border:1px solid var(--line);background:var(--soft);border-radius:6px;padding:14px 18px;margin:24px 0}
 .toc-title{font-weight:800;margin-bottom:6px}
 .toc ol{margin:0;padding-left:24px}
 .toc li{margin:3px 0}
@@ -125,8 +252,8 @@ h4{font-size:17px;margin:22px 0 8px}
 
 /* ---------- 접기 블록 ----------
    <details class="fold"><summary>제목</summary><div class="fold-body">내용</div></details> */
-.fold{border:1px solid var(--line);border-radius:6px;margin:12px 0;background:#fff;overflow:hidden}
-.fold>summary{cursor:pointer;padding:11px 14px;font-weight:700;background:#f6f8fa;list-style:none}
+.fold{border:1px solid var(--line);border-radius:6px;margin:12px 0;background:var(--panel);overflow:hidden}
+.fold>summary{cursor:pointer;padding:11px 14px;font-weight:700;background:var(--soft);list-style:none}
 .fold>summary::-webkit-details-marker{display:none}
 .fold>summary:before{content:"▶";font-size:11px;margin-right:8px}
 .fold[open]>summary:before{content:"▼"}
@@ -135,15 +262,19 @@ h4{font-size:17px;margin:22px 0 8px}
 
 /* ---------- 문답 ----------
    <div class="question">질문<div class="answer">답변</div></div> */
-.question{padding:12px 0;border-bottom:1px dashed #ddd}
+.question{padding:12px 0;border-bottom:1px dashed var(--soft-line)}
 .question:last-child{border-bottom:0}
-.answer{margin-top:8px;border-left:3px solid var(--accent);padding:7px 10px;background:#f5fffd}
+.answer{margin-top:8px;border-left:3px solid var(--accent);padding:7px 10px;background:var(--answer-bg)}
 
 
 /* ---------- 작은 조각들 ---------- */
 .note{font-size:12px;color:var(--muted)}                 /* 각주·부연 설명 */
-.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid #d7d7d7;border-radius:14px;padding:1px 8px;background:#fff}
-mark{background:#fff3a3}                                  /* 검색 하이라이트 */
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1px solid var(--soft-line);border-radius:14px;
+  padding:1px 8px;background:var(--panel);
+}
+mark{background:var(--mark-bg);color:var(--mark-text)}    /* 검색 하이라이트 */
 
 /* 2단 목록 — <ul class="game-list"> */
 .game-list{columns:2;column-gap:32px}
@@ -151,18 +282,25 @@ mark{background:#fff3a3}                                  /* 검색 하이라이
 
 /* 썸네일 카드 — <div class="small-card"><div class="img">…</div><div class="cap">설명</div></div> */
 .small-card{width:200px;border:1px solid var(--line);margin:8px 0 14px}
+/* height 가 아니라 min-height. 실제 이미지를 넣으면 세로가 긴 그림도 잘리지 않고
+   카드가 그만큼 늘어난다. (이미지 자리 표시만 있을 때는 200px 정사각형) */
 .small-card .img{
-  height:200px;
-  background:linear-gradient(135deg,#f5f5f5,#dedede);
-  display:flex;align-items:center;justify-content:center;color:#777;
+  min-height:200px;
+  background:linear-gradient(135deg,var(--ph-1),var(--ph-2));
+  display:flex;align-items:center;justify-content:center;color:var(--muted);
 }
-.small-card .cap{text-align:center;font-weight:700;background:#eee;padding:6px}
+.small-card .img img{width:100%;height:auto;display:block}
+.small-card .cap{text-align:center;font-weight:700;background:var(--soft);padding:6px}
 
 
 /* ---------- 문서 하단 ---------- */
 .category{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
-.category a{display:inline-block;background:#f3f4f6;border:1px solid #ddd;border-radius:4px;padding:2px 7px;margin:2px}
-.footer{font-size:12px;color:#777;margin-top:28px}
+.category a{
+  display:inline-block;
+  background:var(--soft);border:1px solid var(--soft-line);border-radius:4px;
+  padding:2px 7px;margin:2px;
+}
+.footer{font-size:12px;color:var(--muted);margin-top:28px}
 
 
 /* ---------- 반응형 ---------- */

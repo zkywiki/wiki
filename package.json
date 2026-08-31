@@ -1,0 +1,12 @@
+{
+  "name": "zkywiki",
+  "private": true,
+  "version": "0.0.0",
+  "description": "즈키쿠 팬 위키 정적 페이지",
+  "scripts": {
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "vite": "^6.4.3"
+  }
+}
