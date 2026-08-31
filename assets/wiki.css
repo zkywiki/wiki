@@ -205,9 +205,6 @@ h4 {
   -webkit-mask-image: var(--chev-right);
   mask-image: var(--chev-right);
 }
-.sec-head:hover:before {
-  background-color: var(--accent);
-}
 .sec-head:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
