@@ -618,12 +618,29 @@ textarea.suggest-input {
   font-weight: 800;
   margin-bottom: 6px;
 }
+/* 번호를 링크로 만들기 위해 <ol> 의 자동 마커 대신 CSS 카운터를 쓴다.
+   (마커에는 링크를 걸 수 없다)
+   번호 = 이 문서 안의 해당 문단으로 이동.
+   글자 = 보통은 그냥 텍스트지만, 별도 문서가 있으면 그 문서로 가는 링크를 건다. */
 .toc ol {
   margin: 0;
-  padding-left: 24px;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: toc;
+}
+.toc li ol {
+  padding-left: 20px;
 }
 .toc li {
   margin: 3px 0;
+  counter-increment: toc;
+}
+.toc-no {
+  margin-right: 5px;
+  font-variant-numeric: tabular-nums;
+}
+.toc-no:before {
+  content: counter(toc) ".";
 }
 
 /* ---------- 접기 블록 ----------
