@@ -619,40 +619,6 @@ mark {
   border: 0;
 }
 
-/* 곡 목록 표 — <table class="tracklist">
-   시간 칸은 유튜브의 해당 지점으로 가는 링크다. */
-.tracklist {
-  width: 100%;
-  max-width: 720px;
-  border-collapse: collapse;
-  margin: 14px 0;
-  font-size: 14px;
-}
-.tracklist th,
-.tracklist td {
-  border-bottom: 1px solid var(--line);
-  padding: 7px 10px;
-  text-align: left;
-  vertical-align: top;
-}
-.tracklist thead th {
-  background: var(--soft);
-  font-weight: 700;
-  white-space: nowrap;
-}
-.tracklist .no {
-  width: 2.5em;
-  text-align: right;
-  color: var(--muted);
-}
-.tracklist .time {
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-.tracklist .src {
-  color: var(--muted);
-}
-
 /* 곡 해설 목록 — <ol class="tracknotes">
    곡마다 설명이 붙는 경우. 번호는 CSS 카운터가 매긴다. */
 .tracknotes {
@@ -700,6 +666,12 @@ mark {
 }
 .tracknotes p {
   margin: 6px 0 0;
+}
+/* 곡 아래 한 줄짜리 메타 정보 (소재·출처).
+   .note 를 쓰면 각주로 바뀌어 버리므로 전용 클래스를 쓴다. */
+.track-src {
+  color: var(--muted);
+  font-size: 13px;
 }
 
 /* 2단 목록 — <ul class="game-list"> */
