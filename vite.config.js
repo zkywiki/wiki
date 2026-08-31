@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { defineConfig } from "vite";
 
 /* 개발 서버 전용 설정.
@@ -12,13 +14,31 @@ export default defineConfig({
   },
   plugins: [
     {
-      /* wiki.js 는 file:// 로 열었을 때도 동작하도록 일반 <script src> 로 넣었다.
-         (type="module" 로 하면 file:// 에서 CORS 로 차단된다)
-         일반 스크립트는 vite 의 모듈 그래프 밖이라 저장해도 아무 일이 없으므로,
-         여기서 직접 새로고침 신호를 보낸다. CSS 는 vite 가 알아서 새로고침 없이 교체한다. */
+      /* docs/*.html 은 완성된 페이지가 아니라 .layout 안에 꽂히는 조각이다.
+         vite 는 .html 을 페이지로 보고 <script src="/@vite/client"> 를 끼워 넣는데,
+         그러면 그 태그가 문서 본문 안으로 딸려 들어간다. 그래서 원본 그대로 내보낸다.
+         (배포 환경에는 vite 가 없으므로 이 문제 자체가 없다) */
+      name: "wiki-raw-doc-fragments",
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          const m = req.url?.match(/^\/docs\/([\w.-]+\.html)(?:\?|$)/);
+          if (!m) return next();
+
+          const file = path.join(server.config.root, "docs", m[1]);
+          if (!fs.existsSync(file)) return next();
+
+          res.setHeader("Content-Type", "text/html; charset=utf-8");
+          res.end(fs.readFileSync(file));
+        });
+      },
+    },
+    {
+      /* wiki 의 스크립트는 file:// 호환을 위해 일반 <script> 로도 쓸 수 있게 두었다.
+         모듈 그래프 밖의 파일이 바뀌어도 새로고침이 걸리도록 신호를 보낸다.
+         CSS 는 vite 가 알아서 새로고침 없이 교체한다. */
       name: "wiki-reload-plain-scripts",
       handleHotUpdate({ file, server }) {
-        if (file.endsWith(".js") && !file.includes("node_modules")) {
+        if (file.endsWith(".html") && file.includes("/docs/")) {
           server.ws.send({ type: "full-reload" });
           return [];
         }

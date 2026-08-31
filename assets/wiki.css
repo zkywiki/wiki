@@ -247,6 +247,9 @@ h2.sec-head[aria-expanded="false"] {
   color: var(--text);
   white-space: nowrap;
 }
+.brand:hover {
+  text-decoration: none; /* 링크지만 밑줄은 긋지 않는다 */
+}
 .brand span {
   color: var(--accent);
 } /* 브랜드명 뒷부분 강조 */
@@ -320,7 +323,14 @@ h2.sec-head[aria-expanded="false"] {
 }
 .rail-title {
   font-weight: 800;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+}
+.rail-list {
+  margin: 0;
+  padding-left: 18px;
+}
+.rail-list li {
+  margin: 4px 0;
 }
 .article {
   max-width: 1032px;
