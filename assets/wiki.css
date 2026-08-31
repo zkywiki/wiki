@@ -313,14 +313,19 @@ h2.sec-head[aria-expanded="false"] {
   color: var(--muted);
   margin-bottom: 22px;
 }
+/* 한 줄에 한 덩어리씩 세로로 쌓는다.
+   프로필(.side)이 위, 본문(.main)이 그 아래. 본문이 화면 폭을 그대로 쓴다. */
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 450px;
+  grid-template-columns: 1fr;
   gap: 28px;
   align-items: start;
 }
 .main {
   min-width: 0;
+}
+.side {
+  order: -1; /* 마크업에서 본문 뒤에 있어도 화면에서는 위로 */
 }
 
 /* ---------- 인포박스 (우측 표) ----------
@@ -329,7 +334,11 @@ h2.sec-head[aria-expanded="false"] {
      <tr><td class="image" colspan="2"><img src="assets/사진.png" alt=""></td></tr>
      <tr><th>항목</th><td>값</td></tr>
    </table> */
+/* 세로로 쌓이므로 인포박스는 폭을 제한하고 가운데 정렬한다.
+   (예전 사이드바 폭과 같은 450px — 그래야 프로필 사진 크기가 그대로 유지된다) */
 .infobox {
+  max-width: 450px;
+  margin: auto;
   border: 1px solid var(--ib-border);
   border-collapse: collapse;
   width: 100%;
@@ -609,16 +618,6 @@ mark {
 
 /* ---------- 반응형 ---------- */
 @media (max-width: 980px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-  .side {
-    order: -1;
-  } /* 좁은 화면에선 인포박스를 본문 위로 */
-  .infobox {
-    max-width: 560px;
-    margin: auto;
-  }
   .article {
     padding: 24px 20px;
   }
