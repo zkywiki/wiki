@@ -455,6 +455,9 @@ h2.sec-head[aria-expanded="false"] {
   display: inline-block;
   white-space: nowrap;
 }
+.platform:hover {
+  text-decoration: none; /* 밑줄은 자손에서 못 끄므로 링크 자체에서 끈다 */
+}
 .platform-sep {
   color: var(--muted);
   margin: 0 4px;
@@ -556,10 +559,6 @@ h2.sec-head[aria-expanded="false"] {
   margin-left: 1px;
   -webkit-user-select: none;
   user-select: none;
-}
-.fn:hover,
-.fn:focus-visible {
-  text-decoration: underline;
 }
 .fn:focus-visible {
   outline: 2px solid var(--fn);
