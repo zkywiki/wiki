@@ -185,10 +185,12 @@ h4 {
 .sec-head:before {
   content: "";
   display: inline-block;
-  width: 0.85em;
-  height: 0.85em;
-  margin-right: 0.3em; /* 아이콘과 글자 사이 간격 */
-  vertical-align: -0.08em;
+  /* mdi 아이콘은 24px 상자 안에서 실제 그려지는 부분이 절반 남짓이라
+     글자 크기보다 크게 잡아야 눈에 비슷한 크기로 보인다. */
+  width: 1.2em;
+  height: 1.2em;
+  margin-right: 0.18em; /* 아이콘과 글자 사이 간격 */
+  vertical-align: -0.22em;
   background-color: var(--muted);
   -webkit-mask-image: var(--chev-down);
   mask-image: var(--chev-down);
