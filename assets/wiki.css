@@ -237,7 +237,8 @@ h2.sec-head[aria-expanded="false"] {
   align-items: center;
 }
 .topbar-inner {
-  width: min(1200px, calc(100% - 32px));
+  /* 본문(.wrap)과 좌우 여백을 맞춘다. 값을 바꾸려면 .wrap 과 함께 바꿀 것. */
+  width: calc(100% - 32px);
   margin: auto;
   display: flex;
   align-items: center;
@@ -293,8 +294,9 @@ h2.sec-head[aria-expanded="false"] {
 
 /* ---------- 문서 레이아웃 ----------
    .wrap > .article > .layout > (.main, .side) */
+/* 화면 좌우를 다 쓴다. 양옆 16px 씩만 여백. */
 .wrap {
-  width: min(1200px, calc(100% - 32px));
+  width: calc(100% - 32px);
   margin: 26px auto 60px;
 }
 .article {
@@ -626,7 +628,7 @@ mark {
 }
 @media (max-width: 640px) {
   .wrap {
-    width: min(100% - 16px, 1200px);
+    width: calc(100% - 16px);
     margin-top: 12px;
   }
   .article {
