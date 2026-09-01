@@ -39,7 +39,7 @@ function open(img) {
   big.alt = img.alt || "";
 
   /* 그림 설명(alt)을 아래에 그대로 보여 준다. 없으면 자리도 두지 않는다. */
-  const text = (img.alt || "").replace(/^즈키쿠 팬아트\s*—\s*/, "");
+  const text = img.alt || "";
   cap.textContent = text;
   cap.hidden = !text;
 
