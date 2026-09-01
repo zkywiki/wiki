@@ -14,6 +14,12 @@ import { SITE, DOCS, HOME } from "./docs.js";
 import { Header, DocHead, Rail } from "./components.js";
 import { initGlobal, initDocument } from "./wiki.js";
 import { SuggestDialog, initSuggest, setSuggestDoc } from "./suggest.js";
+import { HistoryDialog, initHistory, setHistoryDoc } from "./history.js";
+import {
+  LightboxDialog,
+  initLightbox,
+  setupLightboxTargets,
+} from "./lightbox.js";
 
 const headerEl = document.getElementById("site-header");
 const articleEl = document.getElementById("doc");
@@ -61,6 +67,8 @@ async function render(slug, { keepScroll = false } = {}) {
 
   initDocument();
   setSuggestDoc(slug); // 제안 메일에 어느 문서인지 담기 위해
+  setHistoryDoc(slug); // 역사에서 어느 파일의 커밋을 읽을지
+  setupLightboxTargets(); // 본문 그림을 눌러서 크게 볼 수 있게
 
   /* 주소에 #앵커가 붙어 있으면 그 문단으로, 아니면 문서 맨 위로. */
   if (location.hash) {
@@ -93,7 +101,12 @@ window.addEventListener("popstate", () => render(slugFromUrl(), { keepScroll: tr
 
 /* ---------- 시작 ---------- */
 headerEl.innerHTML = Header();
-document.body.insertAdjacentHTML("beforeend", SuggestDialog());
+document.body.insertAdjacentHTML(
+  "beforeend",
+  SuggestDialog() + HistoryDialog() + LightboxDialog(),
+);
 initGlobal();
 initSuggest();
+initHistory();
+initLightbox();
 render(slugFromUrl(), { keepScroll: true });

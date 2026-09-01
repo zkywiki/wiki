@@ -37,8 +37,15 @@ export function Header() {
       <div class="search">
         <input id="q" placeholder="${esc(SITE.searchPlaceholder)}" />
       </div>
-      <button class="suggest-open" type="button">편집 제안</button>
-      <button class="theme-toggle" type="button" aria-label="테마 전환"></button>
+      <div class="topbar-actions">
+        <button class="history-open" type="button">역사</button>
+        <button class="suggest-open" type="button">편집 제안</button>
+        <button
+          class="theme-toggle"
+          type="button"
+          aria-label="테마 전환"
+        ></button>
+      </div>
     </div>`;
 }
 

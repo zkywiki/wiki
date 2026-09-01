@@ -270,9 +270,19 @@ h2.sec-head[aria-expanded="false"] {
   color: var(--text);
 }
 
-/* 편집 제안 버튼 — <button class="suggest-open"> (suggest.js 가 대화상자를 연다) */
-.suggest-open {
+/* 헤더 오른쪽 버튼 묶음 — 역사 / 편집 제안 / 테마 토글 */
+.topbar-actions {
   margin-left: auto;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 역사 버튼 — <button class="history-open"> (history.js 가 대화상자를 연다)
+   편집 제안 버튼 — <button class="suggest-open"> (suggest.js) */
+.history-open,
+.suggest-open {
   flex: none;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -283,9 +293,11 @@ h2.sec-head[aria-expanded="false"] {
   font-weight: 700;
   cursor: pointer;
 }
+.history-open:hover,
 .suggest-open:hover {
   border-color: var(--accent);
 }
+.history-open:focus-visible,
 .suggest-open:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -391,6 +403,206 @@ textarea.suggest-input {
 }
 .suggest-btn:focus-visible {
   outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* 역사 대화상자 — <dialog class="hist"> (history.js)
+   목록이 길어질 수 있으므로 화면 높이에 맞춰 안쪽에서 스크롤된다. */
+.hist {
+  width: min(640px, calc(100vw - 32px));
+  max-height: min(80vh, 720px);
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--text);
+  overflow: hidden;
+}
+.hist::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+.hist-inner {
+  display: flex;
+  flex-direction: column;
+  max-height: inherit;
+  padding: 18px 20px 20px;
+}
+.hist-head {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+  font-size: 17px;
+}
+.hist-close {
+  margin-left: auto;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+.hist-doc {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--muted);
+  word-break: break-all;
+}
+/* 목록만 스크롤한다 (머리말은 위에 붙어 있다) */
+.hist-body {
+  overflow-y: auto;
+  min-height: 60px;
+}
+.hist-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hist-item {
+  border-top: 1px solid var(--line);
+  padding: 12px 0;
+}
+.hist-item:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.hist-when {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.hist-ago::before {
+  content: "·";
+  margin-right: 8px;
+}
+.hist-title {
+  margin-top: 2px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+/* 커밋 메시지 본문 — 줄바꿈을 그대로 살린다 */
+.hist-detail {
+  margin: 6px 0 0;
+  padding: 8px 10px;
+  border-radius: 7px;
+  background: var(--soft);
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+.hist-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.hist-sha {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+/* 불러오는 중 / 실패 / 비어 있음 */
+.hist-msg {
+  margin: 0;
+  padding: 10px 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+.hist-msg.bad {
+  color: var(--text);
+}
+.hist-more {
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+}
+
+/* 크게 보기 대화상자 — <dialog class="lightbox"> (lightbox.js)
+   그림만 떠 있게 보이도록 상자 자체는 투명하게 두고, 뒤 화면은 흐리게 깐다. */
+.lightbox {
+  inset: 0;
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+  /* 그림을 화면 한가운데로 */
+  display: none;
+  place-items: center;
+}
+.lightbox[open] {
+  display: grid;
+}
+.lightbox::backdrop {
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+/* 위 칸에 그림, 아래 칸에 설명. 위 칸을 minmax(0, 1fr) 로 두면
+   그림이 남은 높이에 맞춰 줄어들 뿐 잘려 나가지 않는다. */
+.lightbox-figure {
+  margin: 0;
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 48px);
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  justify-items: center;
+  gap: 10px;
+  cursor: default;
+}
+.lightbox-img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+}
+.lightbox-cap {
+  max-width: min(680px, 100%);
+  margin: 0;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.6;
+  /* 배경이 어두우므로 테마와 무관하게 밝은 글씨로 둔다 */
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+.lightbox-close {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+.lightbox-close:hover {
+  border-color: #fff;
+}
+.lightbox-close:focus-visible {
+  outline: 2px solid #fff;
   outline-offset: 2px;
 }
 
@@ -840,25 +1052,56 @@ mark {
 }
 
 /* 팬아트 갤러리 — <div class="gallery"><figure class="art">…</figure></div>
-   칸 수는 폭에 맞춰 자동으로 늘고 줄어든다. */
+
+   그림마다 크기와 비율이 제각각이라 격자에 맞추면 빈 자리가 생기거나 억지로
+   늘어난다. 그래서 .game-list 처럼 단(column)으로 흘려보낸다. 칸 수는 폭에 맞춰
+   자동으로 정해지고, 각 그림은 제 비율대로 위에서 아래로 채워진다. */
 .gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
+  column-width: 260px;
+  column-gap: 16px;
   margin: 16px 0;
 }
+/* 카드는 그림 크기에 맞춰 줄어든다(fit-content). 단 폭보다 큰 그림만 줄여 맞춘다.
+   마우스를 올리면 칸 안의 그림이 아니라 칸 자체가 커진다 —
+   그림만 키우면 .art 의 overflow:hidden 에 걸려 가장자리가 잘린다. */
 .art {
-  margin: 0;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 16px;
+  break-inside: avoid; /* 카드가 단 경계에서 잘리지 않게 */
   border: 1px solid var(--line);
   border-radius: 8px;
   overflow: hidden;
   background: var(--panel);
+  position: relative; /* 커졌을 때 옆 칸 위로 올라오도록 */
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
+.art:hover,
+.art:focus-within {
+  transform: scale(1.04);
+  z-index: 1;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
+}
+/* 원래 크기대로 둔다. 단 폭을 넘는 그림만 비율을 지킨 채 줄인다.
+   (작은 그림을 억지로 늘리지 않으므로 흐려지지 않는다) */
 .art img {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
   height: auto;
   background: linear-gradient(135deg, var(--ph-1), var(--ph-2));
+  cursor: zoom-in;
+}
+@media (prefers-reduced-motion: reduce) {
+  .art {
+    transition: none;
+  }
+  .art:hover,
+  .art:focus-within {
+    transform: none;
+  }
 }
 .art figcaption {
   display: flex;
@@ -972,6 +1215,7 @@ mark {
   width: 100%;
   height: auto;
   display: block;
+  cursor: zoom-in;
 }
 .small-card .cap {
   text-align: center;
@@ -1048,6 +1292,10 @@ mark {
   .search {
     display: none;
   }
+  .topbar-actions {
+    gap: 6px;
+  }
+  .history-open,
   .suggest-open {
     padding: 7px 10px;
     font-size: 12px;

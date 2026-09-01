@@ -15,11 +15,15 @@
 │   ├── components.js             # 헤더 / 관련 문서 / 바로가기 / 문서 머리말
 │   ├── app.js                    # 조립 + 라우팅 (?doc=슬러그)
 │   ├── wiki.js                   # 테마·접기·각주·검색·경과일
+│   ├── history.js                # 역사 (문서 파일의 커밋 목록)
+│   ├── lightbox.js               # 이미지 크게 보기
+│   ├── suggest.js                # 편집 제안 메일
 │   ├── wiki.css                  # 공통 스타일 + 테마 색상 토큰
 │   └── (이미지 파일)
 ├── docs/
 │   ├── cuzky.html                # 즈키쿠 문서 본문
-│   └── cupotify.html             # 쿠포티파이 문서 본문
+│   ├── cupotify.html             # 쿠포티파이 문서 본문
+│   └── fanart.html               # 팬아트 문서 본문
 ├── package.json / vite.config.js # 로컬 개발 서버(HMR) 전용
 ├── .nojekyll                     # GitHub Pages 의 Jekyll 처리 비활성화
 └── .github/workflows/deploy.yml  # main 푸시 시 Pages 자동 배포
@@ -109,10 +113,40 @@ npm run dev     # http://localhost:5173 자동으로 열림
 
 | 함수                 | 자리        | 내용                                      |
 | -------------------- | ----------- | ----------------------------------------- |
-| `Header()`           | 상단 바     | 브랜드, 검색창, 테마 토글                 |
+| `Header()`           | 상단 바     | 브랜드, 검색창, 역사, 편집 제안, 테마 토글 |
 | `DocHead(doc)`       | 문서 머리말 | 제목, 최근 수정 시각                      |
 | `RelatedBox(slug)`   | 우측 박스 1 | 관련 문서 (`related`, 없으면 나머지 전체) |
 | `ShortcutsBox(slug)` | 우측 박스 2 | 바로가기 (`shortcuts`)                    |
+
+## 역사 (편집 내역)
+
+헤더의 **역사** 버튼을 누르면 지금 보고 있는 문서의 편집 내역이 대화상자로 열립니다.
+이 위키는 저장소 파일을 그대로 배포하므로, 한 문서의 편집 내역은 곧 그 문서 파일의
+커밋 목록입니다. `assets/history.js` 가 GitHub REST API 로 읽어 옵니다.
+
+```
+GET https://api.github.com/repos/{owner}/{repo}/commits?path=docs/<슬러그>.html&sha=main
+```
+
+저장소 주소는 `assets/docs.js` 의 `REPO` 에 있습니다. 공개 저장소라 토큰은 필요 없지만,
+그만큼 **IP 당 시간당 60회** 제한이 걸립니다. 그래서 버튼을 눌러 열 때 한 번만 부르고
+문서별로 캐시해 둡니다. 한도를 넘기면 안내 문구와 함께 GitHub 링크를 보여 줍니다.
+
+커밋마다 한국 시각(`2026-09-01 12:30`), 상대 시각(`3일 전`), 제목, 본문,
+짧은 해시(누르면 GitHub 커밋 화면)를 보여 줍니다.
+
+새로 만든 커밋은 **푸시한 뒤에야** 목록에 나타납니다 — 로컬 커밋은 보이지 않습니다.
+
+## 이미지 크게 보기
+
+갤러리(`.gallery`)와 썸네일 카드(`.small-card`)의 그림은
+
+- 마우스를 올리면 칸 안에서 살짝 확대되고,
+- 누르면 뒷화면이 흐려지면서 원래 크기로 뜹니다. (`Esc`, 바깥 클릭, ✕ 로 닫기)
+
+`assets/lightbox.js` 가 `document` 에서 클릭을 한 번만 받아 처리하므로, 문서 HTML 에는
+아무것도 적지 않아도 됩니다. 크게 보기 창의 그림 아래 설명은 `<img>` 의 `alt` 를 그대로
+쓰니 **`alt` 에 그림 내용을 적어 두세요.**
 
 ## 편집 제안 (EmailJS)
 
@@ -194,14 +228,20 @@ HTML 에 표시할 것은 없고, `wiki.js` 가 각 제목 아래 내용을 `.se
 ```html
 <div class="gallery">
   <figure class="art">
-    <img src="assets/fanart/작가명_소재.png" alt="즈키쿠 팬아트" />
-    <figcaption>작가명<span class="art-date">2026-08-31</span></figcaption>
+    <img
+      src="assets/fanart/소재.webp"
+      alt="즈키쿠 팬아트 — 소재 설명"
+      loading="lazy"
+    />
   </figure>
 </div>
 ```
 
-**작가명은 반드시 함께 적습니다.** 게시 기준은 문서 3장에 적어 두었습니다 —
-허락받은 그림만, 출처 표기, 요청 시 즉시 삭제.
+`alt` 에는 그림 내용을 적습니다 — 크게 보기 창에서 그림 아래 설명으로도 쓰입니다.
+작가명을 함께 걸어야 할 때는 `<figcaption>작가명<span class="art-date">날짜</span></figcaption>`
+을 `<figure>` 안에 더하면 됩니다.
+
+게시 기준은 문서 3장에 적어 두었습니다 — 허락받은 그림만, 요청 시 즉시 삭제.
 
 ## 인용
 

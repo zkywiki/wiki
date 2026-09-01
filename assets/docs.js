@@ -36,6 +36,19 @@ export const EMAIL = {
   templateId: "template_qy14ja6",
 };
 
+/* ============================================================
+   저장소 정보 (역사 보기)
+
+   이 위키는 저장소 파일을 그대로 배포하는 정적 페이지라, 문서의 편집 내역은
+   곧 그 문서 파일의 커밋 목록이다. 헤더의 "역사" 버튼이 GitHub REST API 로
+   아래 저장소의 커밋을 읽어 온다. 공개 저장소라 토큰은 필요 없다.
+   ============================================================ */
+export const REPO = {
+  owner: "zkywiki",
+  name: "wiki",
+  branch: "main",
+};
+
 /* 문서를 여는 주소는 ?doc=<슬러그> 다. */
 export const DOCS = {
   cuzky: {
@@ -72,7 +85,7 @@ export const DOCS = {
 
   fanart: {
     title: "팬아트",
-    updated: "2026-08-31 20:40",
+    updated: "2026-09-01 12:30",
     file: "docs/fanart.html",
     related: ["cuzky", "cupotify"],
     shortcuts: [],
