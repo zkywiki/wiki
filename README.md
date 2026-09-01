@@ -11,15 +11,17 @@
 .
 ├── index.html                    # 껍데기. 내용은 전부 app.js 가 채운다
 ├── assets/
-│   ├── docs.js                   # 사이트 정보 + 문서 등록부   ← 문서 추가는 여기
-│   ├── components.js             # 헤더 / 관련 문서 / 바로가기 / 문서 머리말
-│   ├── app.js                    # 조립 + 라우팅 (?doc=슬러그)
-│   ├── wiki.js                   # 테마·접기·각주·검색·경과일
-│   ├── history.js                # 역사 (문서 파일의 커밋 목록)
-│   ├── lightbox.js               # 이미지 크게 보기
-│   ├── suggest.js                # 편집 제안 메일
-│   ├── wiki.css                  # 공통 스타일 + 테마 색상 토큰
-│   └── (이미지 파일)
+│   ├── js/
+│   │   ├── docs.js               # 사이트 정보 + 문서 등록부   ← 문서 추가는 여기
+│   │   ├── components.js         # 헤더 / 관련 문서 / 바로가기 / 문서 머리말
+│   │   ├── app.js                # 조립 + 라우팅 (?doc=슬러그)
+│   │   ├── wiki.js               # 테마·접기·각주·검색·경과일
+│   │   ├── history.js            # 역사 (문서 파일의 커밋 목록)
+│   │   ├── lightbox.js           # 이미지 크게 보기
+│   │   └── suggest.js            # 편집 제안 메일
+│   ├── images/                   # 문서에 쓰는 그림 + 아이콘·파비콘
+│   ├── fanart/                   # 시청자 팬아트 (문서 그림과 구분해 둔다)
+│   └── wiki.css                  # 공통 스타일 + 테마 색상 토큰
 ├── docs/
 │   ├── cuzky.html                # 즈키쿠 문서 본문
 │   ├── cupotify.html             # 쿠포티파이 문서 본문
@@ -37,7 +39,7 @@ npm run dev     # http://localhost:5173 자동으로 열림
 ```
 
 - `assets/wiki.css` 저장 → **새로고침 없이** 스타일만 교체됩니다.
-- `index.html`, `assets/*.js`, `docs/*.html` 저장 → 자동 새로고침.
+- `index.html`, `assets/js/*.js`, `docs/*.html` 저장 → 자동 새로고침.
 - 중단은 `Ctrl+C`.
 
 > **`index.html` 을 파일로 직접 열면(`file://`) 동작하지 않습니다.**
@@ -62,7 +64,7 @@ npm run dev     # http://localhost:5173 자동으로 열림
    </aside>
    ```
 
-2. `assets/docs.js` 의 `DOCS` 에 한 항목을 더합니다.
+2. `assets/js/docs.js` 의 `DOCS` 에 한 항목을 더합니다.
 
    ```js
    mapleland: {
@@ -109,7 +111,7 @@ npm run dev     # http://localhost:5173 자동으로 열림
 
 ## 컴포넌트
 
-`assets/components.js` 의 함수들이 HTML 문자열을 돌려주고 `app.js` 가 자리에 꽂습니다.
+`assets/js/components.js` 의 함수들이 HTML 문자열을 돌려주고 `app.js` 가 자리에 꽂습니다.
 
 | 함수                 | 자리        | 내용                                      |
 | -------------------- | ----------- | ----------------------------------------- |
@@ -122,13 +124,13 @@ npm run dev     # http://localhost:5173 자동으로 열림
 
 헤더의 **역사** 버튼을 누르면 지금 보고 있는 문서의 편집 내역이 대화상자로 열립니다.
 이 위키는 저장소 파일을 그대로 배포하므로, 한 문서의 편집 내역은 곧 그 문서 파일의
-커밋 목록입니다. `assets/history.js` 가 GitHub REST API 로 읽어 옵니다.
+커밋 목록입니다. `assets/js/history.js` 가 GitHub REST API 로 읽어 옵니다.
 
 ```
 GET https://api.github.com/repos/{owner}/{repo}/commits?path=docs/<슬러그>.html&sha=main
 ```
 
-저장소 주소는 `assets/docs.js` 의 `REPO` 에 있습니다. 공개 저장소라 토큰은 필요 없지만,
+저장소 주소는 `assets/js/docs.js` 의 `REPO` 에 있습니다. 공개 저장소라 토큰은 필요 없지만,
 그만큼 **IP 당 시간당 60회** 제한이 걸립니다. 그래서 버튼을 눌러 열 때 한 번만 부르고
 문서별로 캐시해 둡니다. 한도를 넘기면 안내 문구와 함께 GitHub 링크를 보여 줍니다.
 
@@ -144,7 +146,7 @@ GET https://api.github.com/repos/{owner}/{repo}/commits?path=docs/<슬러그>.ht
 - 마우스를 올리면 칸 안에서 살짝 확대되고,
 - 누르면 뒷화면이 흐려지면서 원래 크기로 뜹니다. (`Esc`, 바깥 클릭, ✕ 로 닫기)
 
-`assets/lightbox.js` 가 `document` 에서 클릭을 한 번만 받아 처리하므로, 문서 HTML 에는
+`assets/js/lightbox.js` 가 `document` 에서 클릭을 한 번만 받아 처리하므로, 문서 HTML 에는
 아무것도 적지 않아도 됩니다. 크게 보기 창의 그림 아래 설명은 `<img>` 의 `alt` 를 그대로
 쓰니 **`alt` 에 그림 내용을 적어 두세요.**
 
@@ -153,7 +155,7 @@ GET https://api.github.com/repos/{owner}/{repo}/commits?path=docs/<슬러그>.ht
 헤더의 **편집 제안** 버튼을 누르면 대화상자가 열리고, 보내면 페이지 안에서 바로 메일이
 발송됩니다. 방문자의 메일 앱은 열리지 않습니다. 서버는 필요 없고 EmailJS 가 발송을 맡습니다.
 
-`assets/docs.js` 의 `EMAIL` 에 대시보드 값 세 개를 넣으면 동작합니다.
+`assets/js/docs.js` 의 `EMAIL` 에 대시보드 값 세 개를 넣으면 동작합니다.
 
 ```js
 export const EMAIL = {
@@ -294,8 +296,8 @@ HTML 에 표시할 것은 없고, `wiki.js` 가 각 제목 아래 내용을 `.se
 브랜드 색(`--accent` 민트) 바탕에 흰 「즈」를 얹은 사각 마크입니다.
 
 ```
-assets/favicon-32.png     브라우저 탭
-assets/favicon-180.png    iOS 홈 화면 (apple-touch-icon)
+assets/images/favicon-32.png     브라우저 탭
+assets/images/favicon-180.png    iOS 홈 화면 (apple-touch-icon)
 ```
 
 두 파일 모두 배경이 투명한 둥근 사각형이라 밝은 탭·어두운 탭 어디서나 같은 모양으로 보입니다.
@@ -304,7 +306,8 @@ assets/favicon-180.png    iOS 홈 화면 (apple-touch-icon)
 
 ## 이미지 · 로고
 
-- 이미지는 `assets/` 에 넣고 `<img src="assets/파일명.png">` 로 씁니다.
+- 이미지는 `assets/images/` 에 넣고 `<img src="assets/images/파일명.png">` 로 씁니다.
+  시청자가 그려 준 팬아트만 `assets/fanart/` 로 따로 둡니다.
 - 인포박스 이미지 칸과 썸네일 카드(`.small-card .img`)는 세로가 긴 그림도 잘리지 않게 늘어납니다.
 - 인포박스 이미지는 기본적으로 칸 폭을 꽉 채웁니다. 원본이 작은 그림(채널 아바타 등)은
   몇 배로 늘어나 흐려지므로 `<img class="avatar">` 를 주면 240px 로 가운데 놓입니다.

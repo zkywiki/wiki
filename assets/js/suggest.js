@@ -4,7 +4,7 @@
    폼 내용을 EmailJS 로 바로 보낸다. 메일 앱이 열리지 않고 페이지 안에서 끝난다.
    받는 주소는 코드에 없다 — EmailJS 템플릿의 "To Email" 에 설정한다.
 
-   설정값은 assets/docs.js 의 EMAIL 에 있다.
+   설정값은 assets/js/docs.js 의 EMAIL 에 있다.
    ============================================================ */
 
 import { SITE, DOCS, EMAIL } from "./docs.js";
@@ -136,7 +136,7 @@ async function send() {
 
   if (!configured()) {
     say(
-      "메일 발송 설정이 비어 있습니다. assets/docs.js 의 EMAIL 값을 채워 주세요.",
+      "메일 발송 설정이 비어 있습니다. assets/js/docs.js 의 EMAIL 값을 채워 주세요.",
       "bad",
     );
     return;
