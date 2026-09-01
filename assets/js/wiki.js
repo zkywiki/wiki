@@ -174,7 +174,8 @@ function setupFootnotes() {
   const scope = document.querySelector(".article");
   if (!scope) return;
 
-  /* 본문과 인포박스를 함께 훑는다(문서 순서대로 번호가 붙는다).
+  /* 인포박스와 본문을 함께 훑는다. 마크업이 화면에 보이는 차례
+     (목차 → 프로필 → 본문)대로 놓여 있으므로, 문서 순서가 곧 읽는 순서다.
      각주로 만들 것이 아니라 그냥 작은 글씨로 둘 곳에는 .note-plain 을 쓴다. */
   scope.querySelectorAll(".note:not(.note-plain)").forEach((n, i) => {
     const sup = document.createElement("sup");

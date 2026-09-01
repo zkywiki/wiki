@@ -690,7 +690,8 @@ textarea.suggest-input {
   margin-bottom: 22px;
 }
 /* 윗줄은 목차(왼쪽) + 프로필(오른쪽), 아랫줄은 본문이 폭 전체.
-   마크업 순서(목차 → 본문 → 프로필)와 무관하게 grid-area 로 자리를 지정한다. */
+   마크업도 화면에 보이는 차례(목차 → 프로필 → 본문)대로 두고,
+   자리는 grid-area 로 지정한다. */
 .layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 450px;

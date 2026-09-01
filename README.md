@@ -56,13 +56,16 @@ npm run dev     # http://localhost:5173 자동으로 열림
 
    ```html
    <nav class="toc">…목차…</nav>
-   <section class="main">…본문…</section>
    <aside class="side">
      <table class="infobox">
        …프로필…
      </table>
    </aside>
+   <section class="main">…본문…</section>
    ```
+
+   화면에 보이는 차례(목차 왼쪽 위 → 프로필 오른쪽 위 → 본문 아래)와 같은 순서입니다.
+   자리는 `.layout` 의 `grid-area` 가 정하므로 순서를 바꿔도 배치는 그대로입니다.
 
 2. `assets/js/docs.js` 의 `DOCS` 에 한 항목을 더합니다.
 
