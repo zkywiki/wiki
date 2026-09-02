@@ -181,9 +181,13 @@ h4 {
   font-size: 17px;
   margin: 22px 0 8px;
 }
+h5 {
+  font-size: 15px;
+  margin: 18px 0 6px;
+}
 
 /* ---------- 문단 접기 ----------
-   .main 안의 h2/h3/h4 는 wiki.js 가 자동으로 접기 가능한 제목(.sec-head)으로 만들고,
+   .main 안의 h2/h3/h4/h5 는 wiki.js 가 자동으로 접기 가능한 제목(.sec-head)으로 만들고,
    그 아래 내용을 .sec-body 로 감싼다. HTML 에는 따로 표시할 것이 없다. */
 .sec-head {
   cursor: pointer;
@@ -835,6 +839,38 @@ textarea.suggest-input {
   content: " · ";
 }
 
+/* ---------- 본문 표 ----------
+   <table class="datatable"><tr><th>항목</th><td>값</td></tr></table>
+   본문 안에 놓는 간단한 표. 인포박스와 달리 검은 머리 없이 옅은 면만 쓴다. */
+.datatable {
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  font-size: 14px;
+  margin: 12px 0 18px;
+  min-width: min(360px, 100%);
+}
+.datatable th,
+.datatable td {
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  vertical-align: middle;
+}
+.datatable th {
+  background: var(--soft);
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+}
+/* 표 안에서는 로고 뒤 여백이 필요 없다 (아이콘만 있는 링크) */
+.datatable .platform-logo:only-child {
+  margin-right: 0;
+}
+/* 링크 아이콘처럼 가운데 두는 것이 나은 칸에 붙인다 */
+.datatable .center {
+  text-align: center;
+}
+
 /* ---------- 목차 ----------
    <nav class="toc"><div class="toc-title">목차</div><ol>...</ol></nav> */
 .toc {
@@ -926,7 +962,7 @@ textarea.suggest-input {
   margin: 16px 0;
   padding: 12px 0 12px 18px;
   border-left: 3px solid var(--accent);
-  font-size: 1.12em;
+  font-size: 1em;
   line-height: 1.7;
   color: var(--text);
 }
@@ -963,7 +999,6 @@ textarea.suggest-input {
   text-decoration: line-through;
   color: var(--muted);
 }
-
 
 /* ---------- 각주 ----------
    본문의 <span class="note">부연 설명</span> 을 wiki.js 가 [1] 윗첨자로 바꾸고,
@@ -1019,6 +1054,179 @@ mark {
   background: var(--mark-bg);
   color: var(--mark-text);
 } /* 검색 하이라이트 */
+
+/* 유튜브 카드 — <a class="yt" href="https://www.youtube.com/watch?v=아이디">제목</a>
+   wiki.js 가 썸네일과 재생 표시를 채워 카드 모양으로 만든다.
+   영상을 그대로 심는 것보다 가볍고 화면도 정돈된다.
+   카드를 여러 개 나란히 쓰면 칸 폭에 맞춰 저절로 줄바꿈된다. */
+.yt {
+  display: inline-block;
+  vertical-align: top;
+  width: min(340px, 100%);
+  margin: 14px 12px 14px 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--panel);
+  color: var(--text);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+.yt:hover {
+  text-decoration: none; /* 링크지만 밑줄은 긋지 않는다 */
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--tip-shadow);
+}
+.yt:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.yt-thumb {
+  display: block;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, var(--ph-1), var(--ph-2));
+}
+/* 썸네일이 4:3 으로 내려오는 경우가 있어 잘라서 16:9 를 맞춘다. */
+.yt-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.yt-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 62px;
+  height: auto;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
+  transition: transform 0.18s ease;
+}
+.yt:hover .yt-play {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+.yt-label {
+  display: block;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+/* 카드를 여러 장 늘어놓을 때 — <div class="ytgrid"> … </div>
+   칸 수는 폭에 맞춰 저절로 늘고 준다. */
+.ytgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+  max-width: 940px;
+}
+.ytgrid > .yt {
+  width: auto;
+  margin: 0;
+}
+.ytgrid .yt-play {
+  width: 48px;
+}
+.ytgrid .yt-label {
+  padding: 9px 11px;
+  font-size: 13px;
+}
+
+.yt-sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.yt:hover .yt-sub {
+  color: var(--accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .yt,
+  .yt-play {
+    transition: none;
+  }
+  .yt:hover {
+    transform: none;
+  }
+  .yt:hover .yt-play {
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* 음반·영상 카드 — 영상과 그에 딸린 내용을 한 덩어리로 묶는다.
+   <div class="release">
+     <a class="yt" href="…">제목</a>          ← 카드 머리 (썸네일 + 제목)
+     <details class="fold">수록곡</details>    ← 또는 <blockquote class="quote">
+   </div>
+   카드 안에서는 썸네일이 옆으로 눕고, 테두리는 카드가 대신 갖는다. */
+.release {
+  max-width: 720px;
+  margin: 16px 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  overflow: hidden;
+}
+.release > .yt {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+}
+/* 카드 전체가 이미 테두리를 갖고 있으므로 머리 링크는 뜨지 않는다. */
+.release > .yt:hover {
+  transform: none;
+  box-shadow: none;
+}
+/* 아래에 내용이 이어질 때만 구분선을 긋는다. */
+.release > .yt:not(:last-child) {
+  border-bottom: 1px solid var(--line);
+}
+.release > .yt .yt-thumb {
+  flex: none;
+  width: 200px;
+  border-right: 1px solid var(--line);
+}
+.release > .yt .yt-play {
+  width: 46px;
+}
+.release > .yt .yt-label {
+  padding: 0 14px 0 0;
+}
+/* 카드 안쪽 블록은 자기 테두리를 벗고 카드 폭을 그대로 쓴다. */
+.release > .fold {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+}
+.release > .quote {
+  margin: 14px 16px;
+}
+/* 좁은 화면에서는 썸네일을 위로 올리고 제목을 아래에 둔다. */
+@media (max-width: 640px) {
+  .release > .yt {
+    display: block;
+  }
+  .release > .yt .yt-thumb {
+    width: 100%;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .release > .yt .yt-label {
+    padding: 10px 12px;
+  }
+}
 
 /* 영상 임베드 — <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/…"></iframe></div>
    16:9 비율을 지키면서 칸 폭에 맞춰 줄어든다. */

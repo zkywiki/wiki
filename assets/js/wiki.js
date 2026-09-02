@@ -5,7 +5,8 @@
      initGlobal()   : 페이지에 한 번만. 테마 토글, 문서 내 검색, 각주 툴팁,
                       문단 접기 클릭 등 화면 전체에 거는 이벤트.
      initDocument() : 문서를 새로 그릴 때마다. 문단 접기 구성, 각주 번호 매기기,
-                      --취소선-- 변환, 경과일 채우기처럼 문서 내용에 붙는 작업.
+                      --취소선-- 변환, 유튜브 카드 만들기, 경과일 채우기처럼
+                      문서 내용에 붙는 작업.
 
    문서를 갈아끼우는 쪽(app.js)이 순서대로 불러 준다.
    ============================================================ */
@@ -55,7 +56,7 @@ function toggleTheme() {
 }
 
 /* ---------- 2. 문단 접기 ---------- */
-const LEVEL = { H2: 2, H3: 3, H4: 4 };
+const LEVEL = { H2: 2, H3: 3, H4: 4, H5: 5 };
 
 /* 문단에 포함시키면 안 되는 꼬리 블록 (분류·푸터) */
 function isTail(el) {
@@ -312,7 +313,81 @@ function doSearch() {
   }
 }
 
-/* ---------- 7. 우측 하단 이동 버튼 ---------- */
+/* ---------- 7. 유튜브 카드 ---------- */
+/* <a class="yt" href="https://www.youtube.com/watch?v=아이디">제목</a>
+   → 썸네일 + 재생 표시가 붙은 카드. 문서에는 링크 한 줄만 쓰면 된다.
+
+   영상을 그대로 심으면(iframe) 문서가 무거워지고 화면도 번잡해지므로,
+   썸네일만 가져와 보여주고 누르면 유튜브 새 탭으로 보낸다.
+   스크립트가 돌지 않아도 평범한 링크로 남는다. */
+const YT_THUMB = (id, size) => `https://i.ytimg.com/vi/${id}/${size}.jpg`;
+
+/* 주소에서 영상 아이디만 뽑는다. watch?v=… 와 youtu.be/… 둘 다 받는다. */
+function ytId(href) {
+  try {
+    const u = new URL(href, location.href);
+    if (u.hostname.endsWith("youtu.be")) return u.pathname.slice(1);
+    return u.searchParams.get("v");
+  } catch (e) {
+    return null;
+  }
+}
+
+function setupVideoCards() {
+  document.querySelectorAll(".article a.yt").forEach((a) => {
+    if (a.querySelector(".yt-thumb")) return; // 이미 카드로 만든 것
+
+    const id = ytId(a.getAttribute("href"));
+    if (!id) return;
+
+    const label = a.textContent.trim();
+    a.textContent = "";
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.setAttribute("aria-label", label + " — 유튜브에서 보기");
+
+    const thumb = document.createElement("span");
+    thumb.className = "yt-thumb";
+
+    const img = document.createElement("img");
+    img.className = "yt-img";
+    img.loading = "lazy";
+    img.alt = "";
+    img.src = YT_THUMB(id, "maxresdefault");
+    /* 고화질 썸네일이 없는 영상이 있다. 이때 유튜브는 오류 대신 120x90 짜리
+       회색 이미지를 돌려주므로, 크기를 보고 항상 있는 쪽으로 내린다. */
+    const fallback = () => {
+      if (img.dataset.fallback) return;
+      img.dataset.fallback = "1";
+      img.src = YT_THUMB(id, "hqdefault");
+    };
+    img.addEventListener("error", fallback);
+    img.addEventListener("load", () => {
+      if (img.naturalWidth <= 120) fallback();
+    });
+
+    const play = document.createElement("img");
+    play.className = "yt-play";
+    play.src = "assets/images/youtube.svg";
+    play.alt = "";
+
+    thumb.append(img, play);
+
+    const cap = document.createElement("span");
+    cap.className = "yt-label";
+    cap.textContent = label;
+
+    /* 영상을 심지 않으므로 '눌러서 유튜브로 간다'는 것을 글로 알려 준다. */
+    const sub = document.createElement("span");
+    sub.className = "yt-sub";
+    sub.textContent = "유튜브에서 보기";
+    cap.append(sub);
+
+    a.append(thumb, cap);
+  });
+}
+
+/* ---------- 8. 우측 하단 이동 버튼 ---------- */
 /* components.js 의 Fab() 이 그린 세 버튼(목차 / 맨 위 / 맨 아래)의 동작.
    상단 바가 58px 높이로 떠 있으므로 목차로 갈 때는 그만큼 위를 비워 둔다. */
 const TOPBAR_GAP = 70;
@@ -444,6 +519,7 @@ export function initDocument() {
   paintToggle();
   applyStrike(); // 각주 안의 --취소선-- 도 함께 처리되도록 먼저
   setupFootnotes();
+  setupVideoCards();
   setupSections();
   fillElapsed();
   paintFab();

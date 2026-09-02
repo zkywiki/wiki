@@ -207,7 +207,7 @@ export const EMAIL = {
 
 ## 문단 접기
 
-`.main` 안의 `h2` / `h3` / `h4` 는 자동으로 접었다 펼 수 있는 제목이 됩니다.
+`.main` 안의 `h2` / `h3` / `h4` / `h5` 는 자동으로 접었다 펼 수 있는 제목이 됩니다.
 HTML 에 표시할 것은 없고, `wiki.js` 가 각 제목 아래 내용을 `.sec-body` 로 감쌉니다.
 
 - 제목을 클릭하거나, 포커스한 뒤 `Enter` / `Space`.
@@ -248,6 +248,48 @@ HTML 에 표시할 것은 없고, `wiki.js` 가 각 제목 아래 내용을 `.se
 을 `<figure>` 안에 더하면 됩니다.
 
 게시 기준은 문서 3장에 적어 두었습니다 — 허락받은 그림만, 요청 시 즉시 삭제.
+
+## 유튜브 영상
+
+영상을 그대로 심지 않고 **썸네일 카드**로 보여 줍니다. 문서에는 링크 한 줄만 씁니다.
+
+```html
+<a class="yt" href="https://www.youtube.com/watch?v=ELLLR6egsNQ">즈키쿠 정규 1집</a>
+```
+
+`wiki.js` 가 유튜브 썸네일과 재생 표시를 채워 카드로 만들고, 누르면 새 탭에서 열립니다.
+주소는 `watch?v=…` 와 `youtu.be/…` 둘 다 됩니다. 고화질 썸네일이 없는 영상은 자동으로
+낮은 쪽으로 내려갑니다.
+
+카드를 여러 장 늘어놓을 때는 `.ytgrid` 로 감쌉니다. 칸 수는 폭에 맞춰 저절로 늘고 줍니다.
+
+```html
+<div class="ytgrid">
+  <a class="yt" href="…">첫 번째</a>
+  <a class="yt" href="…">두 번째</a>
+</div>
+```
+
+영상과 그에 딸린 내용(수록곡, 가사 한 줄)을 한 덩어리로 묶을 때는 `.release` 를 씁니다.
+카드 안에서는 썸네일이 옆으로 눕습니다.
+
+```html
+<div class="release">
+  <a class="yt" href="…">즈키쿠 정규 1집</a>
+  <details class="fold">
+    <summary>TRACK LIST</summary>
+    <div class="fold-body">…</div>
+  </details>
+</div>
+```
+
+영상을 정말 문서 안에서 재생해야 한다면 `.video` 임베드도 그대로 있습니다.
+
+```html
+<div class="video">
+  <iframe src="https://www.youtube-nocookie.com/embed/ELLLR6egsNQ" allowfullscreen></iframe>
+</div>
+```
 
 ## 인용
 
