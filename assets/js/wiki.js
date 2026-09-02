@@ -312,6 +312,35 @@ function doSearch() {
   }
 }
 
+/* ---------- 7. 우측 하단 이동 버튼 ---------- */
+/* components.js 의 Fab() 이 그린 세 버튼(목차 / 맨 위 / 맨 아래)의 동작.
+   상단 바가 58px 높이로 떠 있으므로 목차로 갈 때는 그만큼 위를 비워 둔다. */
+const TOPBAR_GAP = 70;
+
+function scrollToToc() {
+  const toc = document.querySelector(".article .toc");
+  if (!toc) return;
+  const top = window.scrollY + toc.getBoundingClientRect().top - TOPBAR_GAP;
+  window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function scrollToBottom() {
+  window.scrollTo({
+    top: document.documentElement.scrollHeight,
+    behavior: "smooth",
+  });
+}
+
+/* 목차가 없는 문서에서는 목차 버튼을 감춘다. */
+function paintFab() {
+  const btn = document.querySelector(".fab-toc");
+  if (btn) btn.hidden = !document.querySelector(".article .toc");
+}
+
 /* ============================================================
    초기화
    ============================================================ */
@@ -391,6 +420,15 @@ export function initGlobal() {
   window.addEventListener("scroll", hideTip, true);
   window.addEventListener("resize", hideTip);
 
+  /* 우측 하단 이동 버튼 */
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest?.(".fab-btn");
+    if (!b) return;
+    if (b.classList.contains("fab-toc")) scrollToToc();
+    else if (b.classList.contains("fab-top")) scrollToTop();
+    else scrollToBottom();
+  });
+
   /* 검색 */
   document.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && e.target?.id === "q") {
@@ -408,4 +446,5 @@ export function initDocument() {
   setupFootnotes();
   setupSections();
   fillElapsed();
+  paintFab();
 }

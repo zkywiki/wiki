@@ -62,6 +62,12 @@
   --chev-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.41 8.58 12 13.17l4.59-4.59L18 10l-6 6-6-6z'/%3E%3C/svg%3E");
   --chev-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8.59 16.58 13.17 12 8.59 7.41 10 6l6 6-6 6z'/%3E%3C/svg%3E");
   --tip-shadow: rgba(27, 31, 36, 0.18);
+  /* 우측 하단 이동 버튼 아이콘 — Material Design Icons
+     (mdi:format-list-bulleted / mdi:chevron-double-up / mdi:chevron-double-down).
+     화살표와 마찬가지로 mask 로 넣으므로 색은 background-color 가 정한다. */
+  --icon-toc: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 5h14v2H7V5m0 8v-2h14v2H7M4 4.5A1.5 1.5 0 0 1 5.5 6 1.5 1.5 0 0 1 4 7.5 1.5 1.5 0 0 1 2.5 6 1.5 1.5 0 0 1 4 4.5m0 6A1.5 1.5 0 0 1 5.5 12 1.5 1.5 0 0 1 4 13.5 1.5 1.5 0 0 1 2.5 12 1.5 1.5 0 0 1 4 10.5M7 19v-2h14v2H7m-3-2.5A1.5 1.5 0 0 1 5.5 18 1.5 1.5 0 0 1 4 19.5 1.5 1.5 0 0 1 2.5 18 1.5 1.5 0 0 1 4 16.5z'/%3E%3C/svg%3E");
+  --icon-top: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.41 18.41 6 17l6-6 6 6-1.41 1.41L12 13.83l-4.59 4.58m0-6L6 11l6-6 6 6-1.41 1.41L12 7.83l-4.59 4.58z'/%3E%3C/svg%3E");
+  --icon-bottom: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M16.59 5.59 18 7l-6 6-6-6 1.41-1.41L12 10.17l4.59-4.58m0 6L18 13l-6 6-6-6 1.41-1.41L12 16.17l4.59-4.58z'/%3E%3C/svg%3E");
 }
 
 /* OS 가 다크일 때. 단, 사용자가 라이트를 직접 고른 경우는 제외. */
@@ -1247,6 +1253,71 @@ mark {
   margin-top: 28px;
 }
 
+/* ---------- 우측 하단 이동 버튼 ----------
+   <div class="fab">
+     <button class="fab-btn fab-toc|fab-top|fab-bottom">
+   app.js 가 body 끝에 한 번 꽂고, 누를 때의 스크롤은 wiki.js 가 옮긴다.
+   위에서부터 목차 / 맨 위 / 맨 아래 순서다. */
+.fab {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 20; /* 상단 바(10) 위, 각주 툴팁(100) 아래 */
+  display: grid;
+  gap: 8px;
+}
+.fab-btn {
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--panel);
+  cursor: pointer;
+  box-shadow: 0 2px 10px var(--tip-shadow);
+}
+/* 아이콘은 mask 로 얹는다 (색이 테마를 따라가도록) */
+.fab-btn:before {
+  content: "";
+  width: 22px;
+  height: 22px;
+  background-color: var(--muted);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+.fab-toc:before {
+  -webkit-mask-image: var(--icon-toc);
+  mask-image: var(--icon-toc);
+}
+.fab-top:before {
+  -webkit-mask-image: var(--icon-top);
+  mask-image: var(--icon-top);
+}
+.fab-bottom:before {
+  -webkit-mask-image: var(--icon-bottom);
+  mask-image: var(--icon-bottom);
+}
+.fab-btn:hover {
+  border-color: var(--accent);
+}
+.fab-btn:hover:before {
+  background-color: var(--accent);
+}
+.fab-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+/* display:grid 가 hidden 속성을 이기므로 따로 눌러 준다 (목차 없는 문서) */
+.fab-btn[hidden] {
+  display: none;
+}
+
 /* ---------- 반응형 ---------- */
 /* 두 칸이 다 들어가지 않는 폭에서는 우측 박스를 문서 아래로 내린다. */
 @media (max-width: 1400px) {
@@ -1303,5 +1374,18 @@ mark {
   }
   .game-list {
     columns: 1;
+  }
+  .fab {
+    right: 12px;
+    bottom: 12px;
+    gap: 6px;
+  }
+  .fab-btn {
+    width: 38px;
+    height: 38px;
+  }
+  .fab-btn:before {
+    width: 20px;
+    height: 20px;
   }
 }

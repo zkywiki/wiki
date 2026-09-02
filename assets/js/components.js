@@ -96,3 +96,30 @@ export function ShortcutsBox(slug) {
 export function Rail(slug) {
   return RelatedBox(slug) + ShortcutsBox(slug);
 }
+
+/* ---------- 우측 하단 떠 있는 버튼 ----------
+   위에서부터 목차 / 맨 위 / 맨 아래. app.js 가 body 끝에 한 번 꽂고,
+   누를 때의 동작은 wiki.js 가 맡는다. */
+export function Fab() {
+  return `
+    <div class="fab" role="group" aria-label="문서 안 이동">
+      <button
+        class="fab-btn fab-toc"
+        type="button"
+        title="목차"
+        aria-label="목차로 이동"
+      ></button>
+      <button
+        class="fab-btn fab-top"
+        type="button"
+        title="맨 위"
+        aria-label="맨 위로 이동"
+      ></button>
+      <button
+        class="fab-btn fab-bottom"
+        type="button"
+        title="맨 아래"
+        aria-label="맨 아래로 이동"
+      ></button>
+    </div>`;
+}

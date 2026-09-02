@@ -11,7 +11,7 @@
    ============================================================ */
 
 import { SITE, DOCS, HOME } from "./docs.js";
-import { Header, DocHead, Rail } from "./components.js";
+import { Header, DocHead, Rail, Fab } from "./components.js";
 import { initGlobal, initDocument } from "./wiki.js";
 import { SuggestDialog, initSuggest, setSuggestDoc } from "./suggest.js";
 import { HistoryDialog, initHistory, setHistoryDoc } from "./history.js";
@@ -103,7 +103,7 @@ window.addEventListener("popstate", () => render(slugFromUrl(), { keepScroll: tr
 headerEl.innerHTML = Header();
 document.body.insertAdjacentHTML(
   "beforeend",
-  SuggestDialog() + HistoryDialog() + LightboxDialog(),
+  SuggestDialog() + HistoryDialog() + LightboxDialog() + Fab(),
 );
 initGlobal();
 initSuggest();

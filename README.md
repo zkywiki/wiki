@@ -13,9 +13,9 @@
 ├── assets/
 │   ├── js/
 │   │   ├── docs.js               # 사이트 정보 + 문서 등록부   ← 문서 추가는 여기
-│   │   ├── components.js         # 헤더 / 관련 문서 / 바로가기 / 문서 머리말
+│   │   ├── components.js         # 헤더 / 관련 문서 / 바로가기 / 문서 머리말 / 이동 버튼
 │   │   ├── app.js                # 조립 + 라우팅 (?doc=슬러그)
-│   │   ├── wiki.js               # 테마·접기·각주·검색·경과일
+│   │   ├── wiki.js               # 테마·접기·각주·검색·경과일·이동 버튼
 │   │   ├── history.js            # 역사 (문서 파일의 커밋 목록)
 │   │   ├── lightbox.js           # 이미지 크게 보기
 │   │   └── suggest.js            # 편집 제안 메일
@@ -122,6 +122,7 @@ npm run dev     # http://localhost:5173 자동으로 열림
 | `DocHead(doc)`       | 문서 머리말 | 제목, 최근 수정 시각                      |
 | `RelatedBox(slug)`   | 우측 박스 1 | 관련 문서 (`related`, 없으면 나머지 전체) |
 | `ShortcutsBox(slug)` | 우측 박스 2 | 바로가기 (`shortcuts`)                    |
+| `Fab()`              | 우측 하단   | 목차 / 맨 위 / 맨 아래 이동 버튼          |
 
 ## 역사 (편집 내역)
 
