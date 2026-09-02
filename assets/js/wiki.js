@@ -129,7 +129,13 @@ function revealNode(node) {
 /* <span class="note">부연 설명</span> → [1] 윗첨자 + 마우스 오버 툴팁.
    본문과 인포박스를 모두 훑고, 문서에 나오는 순서대로 번호를 매긴다.
    각주가 아니라 그냥 작은 글씨로 둘 곳(항목 이름 등)에는 .note-plain 을 쓴다. */
+/* 각주 안에 링크를 넣을 수 있어야 하므로, 각주에서 마우스가 벗어나도 곧바로
+   닫지 않는다. 잠깐(GRACE) 기다렸다가 닫고, 그 사이에 툴팁 위로 들어오면
+   취소한다. 각주와 툴팁 사이의 빈 틈을 건너갈 시간을 주는 것이다. */
+const GRACE = 220;
+
 let tip = null;
+let hideTimer = 0;
 
 function ensureTip() {
   if (tip) return tip;
@@ -138,14 +144,37 @@ function ensureTip() {
   tip.id = "fn-tip";
   tip.setAttribute("role", "tooltip");
   tip.hidden = true;
+
+  /* 툴팁 위에 있는 동안에는 닫지 않는다 (안의 링크를 누를 수 있도록) */
+  tip.addEventListener("mouseenter", keepTip);
+  tip.addEventListener("mouseleave", dismissTip);
+  tip.addEventListener("focusin", keepTip);
+  tip.addEventListener("focusout", dismissTip);
+  /* 안의 링크를 눌렀으면 볼일이 끝났으므로 닫는다. */
+  tip.addEventListener("click", (e) => {
+    if (e.target.closest("a")) hideTip();
+  });
+
   document.body.appendChild(tip);
   return tip;
 }
 
-function showTip(ref) {
-  const el = ensureTip();
-  el.innerHTML = ref.__note;
-  el.hidden = false;
+/* 예약된 닫기를 취소한다. */
+function keepTip() {
+  clearTimeout(hideTimer);
+  hideTimer = 0;
+}
+
+/* 곧 닫는다 — 그 사이에 툴팁으로 들어오면 keepTip 이 취소한다. */
+function dismissTip() {
+  keepTip();
+  hideTimer = setTimeout(hideTip, GRACE);
+}
+
+/* 각주 옆에 툴팁을 놓는다. 화면 밖으로 나가지 않게 좌우·위아래를 맞춘다. */
+function placeTip(ref) {
+  const el = tip;
+  if (!el || el.hidden) return;
 
   /* 위치를 재기 전에 화면 왼쪽 위로 보내 두어야 크기가 제대로 나온다. */
   el.style.left = "0px";
@@ -167,7 +196,25 @@ function showTip(ref) {
   el.style.top = Math.max(pad, top) + "px";
 }
 
+function showTip(ref) {
+  const el = ensureTip();
+  keepTip(); // 다른 각주로 옮겨 갈 때 예약된 닫기가 남아 있을 수 있다
+  el.innerHTML = ref.__note;
+  el.hidden = false;
+
+  placeTip(ref);
+
+  /* 각주에 그림이 들어 있으면 처음 잴 때는 높이가 0 이라 자리가 틀어진다.
+     다 실리고 나서 한 번 더 잡아 준다. */
+  el.querySelectorAll("img").forEach((img) => {
+    if (img.complete) return;
+    img.addEventListener("load", () => placeTip(ref), { once: true });
+    img.addEventListener("error", () => placeTip(ref), { once: true });
+  });
+}
+
 function hideTip() {
+  keepTip();
   if (tip) tip.hidden = true;
 }
 
@@ -472,14 +519,14 @@ export function initGlobal() {
   });
   document.addEventListener("mouseout", (e) => {
     const fn = e.target.closest?.(".fn");
-    if (fn && !fn.contains(e.relatedTarget)) hideTip();
+    if (fn && !fn.contains(e.relatedTarget)) dismissTip();
   });
   document.addEventListener("focusin", (e) => {
     const fn = e.target.closest?.(".fn");
     if (fn) showTip(fn);
   });
   document.addEventListener("focusout", (e) => {
-    if (e.target.closest?.(".fn")) hideTip();
+    if (e.target.closest?.(".fn")) dismissTip();
   });
   /* 터치 기기에는 마우스 오버가 없으므로 탭으로도 열리게 한다. */
   document.addEventListener("click", (e) => {
