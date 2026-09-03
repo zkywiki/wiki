@@ -67,6 +67,7 @@ export const DOCS = {
         label: "YouTube @쿠포티파이",
         href: "https://www.youtube.com/@쿠포티파이",
       },
+      { label: "네이버카페", href: "https://cafe.naver.com/findzky" },
     ],
   },
 
