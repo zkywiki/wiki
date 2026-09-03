@@ -102,7 +102,12 @@ export const DOCS = {
     updated: "2026-09-01 12:30",
     file: "docs/fanart.html",
     related: ["zky", "cupotify"],
-    shortcuts: [],
+    shortcuts: [
+      {
+        label: "네이버카페 | 팬아트",
+        href: "https://cafe.naver.com/f-e/cafes/31782237/menus/3?viewType=I",
+      },
+    ],
   },
 };
 
