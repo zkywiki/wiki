@@ -527,13 +527,6 @@ textarea.suggest-input {
 .hist-msg.bad {
   color: var(--text);
 }
-.hist-more {
-  margin: 12px 0 0;
-  padding-top: 12px;
-  border-top: 1px solid var(--line);
-  font-size: 13px;
-}
-
 /* 크게 보기 대화상자 — <dialog class="lightbox"> (lightbox.js)
    그림만 떠 있게 보이도록 상자 자체는 투명하게 두고, 뒤 화면은 흐리게 깐다. */
 .lightbox {

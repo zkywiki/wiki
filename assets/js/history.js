@@ -29,15 +29,6 @@ function apiUrl() {
   return `https://api.github.com/repos/${REPO.owner}/${REPO.name}/commits?${q}`;
 }
 
-/* GitHub 에서 같은 목록을 보는 주소 (대화상자 맨 아래 링크) */
-function pageUrl() {
-  return `https://github.com/${REPO.owner}/${REPO.name}/commits/${REPO.branch}`;
-}
-
-function commitUrl(sha) {
-  return `https://github.com/${REPO.owner}/${REPO.name}/commit/${sha}`;
-}
-
 /* ---------- 표시용 다듬기 ---------- */
 
 /* 커밋 시각은 UTC 로 온다. 한국 시각으로 "2026-09-01 12:30" 처럼 고친다. */
@@ -124,13 +115,7 @@ function CommitItem(c) {
       <div class="hist-title">${esc(title)}</div>
       ${body ? `<pre class="hist-detail">${esc(body)}</pre>` : ""}
       <div class="hist-meta">
-        <a
-          class="hist-sha"
-          href="${esc(commitUrl(sha))}"
-          target="_blank"
-          rel="noopener"
-          >${esc(sha.slice(0, 7))}</a
-        >
+        <span class="hist-sha">${esc(sha.slice(0, 7))}</span>
       </div>
     </li>`;
 }
@@ -140,13 +125,7 @@ function List(commits) {
     return `<p class="hist-msg">아직 편집 내역이 없습니다.</p>`;
   }
 
-  return `
-    <ol class="hist-list">${commits.map(CommitItem).join("")}</ol>
-    <p class="hist-more">
-      <a href="${esc(pageUrl())}" target="_blank" rel="noopener"
-        >GitHub 에서 전체 내역 보기</a
-      >
-    </p>`;
+  return `<ol class="hist-list">${commits.map(CommitItem).join("")}</ol>`;
 }
 
 /* ---------- 동작 ---------- */
@@ -188,12 +167,7 @@ async function load() {
     body.innerHTML = List(await fetchCommits());
   } catch (err) {
     body.innerHTML = `
-      <p class="hist-msg bad">불러오지 못했습니다 — ${esc(err.message)}</p>
-      <p class="hist-more">
-        <a href="${esc(pageUrl())}" target="_blank" rel="noopener"
-          >GitHub 에서 보기</a
-        >
-      </p>`;
+      <p class="hist-msg bad">불러오지 못했습니다 — ${esc(err.message)}</p>`;
   }
 }
 
