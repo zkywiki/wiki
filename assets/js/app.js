@@ -12,9 +12,9 @@
 
 import { SITE, DOCS, HOME } from "./docs.js";
 import { Header, DocHead, Rail, Fab } from "./components.js";
-import { initGlobal, initDocument } from "./wiki.js";
+import { initGlobal, initDocument, revealTarget } from "./wiki.js";
 import { SuggestDialog, initSuggest, setSuggestDoc } from "./suggest.js";
-import { HistoryDialog, initHistory, setHistoryDoc } from "./history.js";
+import { HistoryDialog, initHistory } from "./history.js";
 import {
   LightboxDialog,
   initLightbox,
@@ -67,7 +67,6 @@ async function render(slug, { keepScroll = false } = {}) {
 
   initDocument();
   setSuggestDoc(slug); // 제안 메일에 어느 문서인지 담기 위해
-  setHistoryDoc(slug); // 역사에서 어느 파일의 커밋을 읽을지
   setupLightboxTargets(); // 본문 그림을 눌러서 크게 볼 수 있게
 
   /* 주소에 #앵커가 붙어 있으면 그 문단으로, 아니면 문서 맨 위로. */
@@ -87,12 +86,24 @@ document.addEventListener("click", (e) => {
   /* 새 탭으로 열려는 클릭은 브라우저에 맡긴다. */
   if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
 
-  e.preventDefault();
   const href = a.getAttribute("href");
-  const slug = new URLSearchParams(href.slice(1)).get("doc");
-  if (!DOCS[slug]) return;
 
-  if (slug === slugFromUrl() && !location.hash) return; // 같은 문서면 아무것도 안 한다
+  /* ?doc=<슬러그>#<앵커> 형태도 받는다. URLSearchParams 는 # 를 떼어 주지
+     않으므로(슬러그가 "cuzky#jjambbong" 이 되어 버린다) 먼저 잘라 낸다. */
+  const [query, hash = ""] = href.slice(1).split("#");
+  const slug = new URLSearchParams(query).get("doc");
+  if (!DOCS[slug]) return; // 모르는 슬러그는 브라우저에 맡긴다
+
+  e.preventDefault();
+
+  /* 같은 문서를 가리키면 본문은 그대로 두고 해당 문단으로만 옮긴다. */
+  if (slug === slugFromUrl()) {
+    if (!hash || "#" + hash === location.hash) return;
+    history.pushState({ slug }, "", href);
+    revealTarget(decodeURIComponent(hash));
+    return;
+  }
+
   history.pushState({ slug }, "", href);
   render(slug);
 });

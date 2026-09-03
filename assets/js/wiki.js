@@ -102,8 +102,9 @@ function setSection(h, open) {
   h.__body.hidden = !open;
 }
 
-/* 접혀 있는 문단으로 이동할 때(목차 클릭, #앵커 링크) 자동으로 펼친다. */
-function revealTarget(id) {
+/* 접혀 있는 문단으로 이동할 때(목차 클릭, #앵커 링크) 자동으로 펼친다.
+   다른 문서에서 ?doc=<슬러그>#<앵커> 로 들어올 때도 app.js 가 이걸 쓴다. */
+export function revealTarget(id) {
   const el = id && document.getElementById(id);
   if (!el) return;
 

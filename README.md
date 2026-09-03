@@ -16,7 +16,7 @@
 │   │   ├── components.js         # 헤더 / 관련 문서 / 바로가기 / 문서 머리말 / 이동 버튼
 │   │   ├── app.js                # 조립 + 라우팅 (?doc=슬러그)
 │   │   ├── wiki.js               # 테마·접기·각주·검색·경과일·이동 버튼
-│   │   ├── history.js            # 역사 (문서 파일의 커밋 목록)
+│   │   ├── history.js            # 역사 (위키 전체 커밋 목록)
 │   │   ├── lightbox.js           # 이미지 크게 보기
 │   │   └── suggest.js            # 편집 제안 메일
 │   ├── images/                   # 문서에 쓰는 그림 + 아이콘·파비콘
@@ -127,17 +127,18 @@ npm run dev     # http://localhost:5173 자동으로 열림
 
 ## 역사 (편집 내역)
 
-헤더의 **역사** 버튼을 누르면 지금 보고 있는 문서의 편집 내역이 대화상자로 열립니다.
-이 위키는 저장소 파일을 그대로 배포하므로, 한 문서의 편집 내역은 곧 그 문서 파일의
-커밋 목록입니다. `assets/js/history.js` 가 GitHub REST API 로 읽어 옵니다.
+헤더의 **역사** 버튼을 누르면 위키 전체의 편집 내역이 대화상자로 열립니다.
+어느 문서에서 열어도 같은 목록이고, 최신 순으로 늘어놓습니다 — 문서별로 나누지 않습니다.
+이 위키는 저장소 파일을 그대로 배포하므로, 편집 내역은 곧 저장소의 커밋 목록입니다.
+`assets/js/history.js` 가 GitHub REST API 로 읽어 옵니다.
 
 ```
-GET https://api.github.com/repos/{owner}/{repo}/commits?path=docs/<슬러그>.html&sha=main
+GET https://api.github.com/repos/{owner}/{repo}/commits?sha=main&per_page=100
 ```
 
 저장소 주소는 `assets/js/docs.js` 의 `REPO` 에 있습니다. 공개 저장소라 토큰은 필요 없지만,
 그만큼 **IP 당 시간당 60회** 제한이 걸립니다. 그래서 버튼을 눌러 열 때 한 번만 부르고
-문서별로 캐시해 둡니다. 한도를 넘기면 안내 문구와 함께 GitHub 링크를 보여 줍니다.
+캐시해 둡니다. 한도를 넘기면 안내 문구와 함께 GitHub 링크를 보여 줍니다.
 
 커밋마다 한국 시각(`2026-09-01 12:30`), 상대 시각(`3일 전`), 제목, 본문,
 짧은 해시(누르면 GitHub 커밋 화면)를 보여 줍니다.

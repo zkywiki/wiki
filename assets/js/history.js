@@ -1,28 +1,28 @@
 /* ============================================================
-   history.js — 역사 (문서 편집 내역)
+   history.js — 역사 (위키 전체 편집 내역)
 
-   이 위키는 저장소 파일을 그대로 배포하므로, 한 문서의 편집 내역은 곧
-   그 문서 파일(docs/<슬러그>.html)의 커밋 목록이다. 헤더의 "역사" 버튼을
-   누르면 GitHub REST API 로 읽어 와 대화상자에 시간순으로 보여 준다.
+   이 위키는 저장소 파일을 그대로 배포하므로, 편집 내역은 곧 저장소의 커밋
+   목록이다. 헤더의 "역사" 버튼을 누르면 GitHub REST API 로 읽어 와
+   대화상자에 시간순(최신순)으로 보여 준다. 어느 문서에서 열어도 같은
+   목록이다 — 문서별로 나누지 않는다.
 
-     GET /repos/{owner}/{repo}/commits?path=docs/<슬러그>.html&sha=<브랜치>
+     GET /repos/{owner}/{repo}/commits?sha=<브랜치>
 
    토큰 없이 부르기 때문에 IP 당 시간당 60회 제한이 있다. 그래서 버튼을 눌러
-   대화상자를 열 때 처음 한 번만 부르고, 문서별로 캐시해 둔다.
+   대화상자를 열 때 처음 한 번만 부르고 캐시해 둔다.
    저장소 주소는 assets/js/docs.js 의 REPO 에 있다.
    ============================================================ */
 
-import { DOCS, REPO } from "./docs.js";
+import { REPO } from "./docs.js";
 import { esc } from "./components.js";
 
-const PER_PAGE = 40; // 한 문서에서 보여 줄 최대 커밋 수
+const PER_PAGE = 100; // 한 번에 보여 줄 최대 커밋 수 (GitHub 상한)
 
-/* 문서 파일별 커밋 목록. 한 번 읽으면 다시 부르지 않는다. */
-const cache = new Map();
+/* 한 번 읽은 커밋 목록. 다시 부르지 않는다. */
+let cache = null;
 
-function apiUrl(file) {
+function apiUrl() {
   const q = new URLSearchParams({
-    path: file,
     sha: REPO.branch,
     per_page: String(PER_PAGE),
   });
@@ -30,8 +30,8 @@ function apiUrl(file) {
 }
 
 /* GitHub 에서 같은 목록을 보는 주소 (대화상자 맨 아래 링크) */
-function pageUrl(file) {
-  return `https://github.com/${REPO.owner}/${REPO.name}/commits/${REPO.branch}/${file}`;
+function pageUrl() {
+  return `https://github.com/${REPO.owner}/${REPO.name}/commits/${REPO.branch}`;
 }
 
 function commitUrl(sha) {
@@ -135,7 +135,7 @@ function CommitItem(c) {
     </li>`;
 }
 
-function List(commits, file) {
+function List(commits) {
   if (!commits.length) {
     return `<p class="hist-msg">아직 편집 내역이 없습니다.</p>`;
   }
@@ -143,29 +143,18 @@ function List(commits, file) {
   return `
     <ol class="hist-list">${commits.map(CommitItem).join("")}</ol>
     <p class="hist-more">
-      <a href="${esc(pageUrl(file))}" target="_blank" rel="noopener"
+      <a href="${esc(pageUrl())}" target="_blank" rel="noopener"
         >GitHub 에서 전체 내역 보기</a
       >
     </p>`;
 }
 
 /* ---------- 동작 ---------- */
-let currentSlug = null;
 
-/* 문서가 바뀔 때마다 app.js 가 알려준다. */
-export function setHistoryDoc(slug) {
-  currentSlug = slug;
+async function fetchCommits() {
+  if (cache) return cache;
 
-  /* 다른 문서로 옮겼으면 이전 문서의 목록은 지워 둔다.
-     (닫혀 있는 대화상자를 미리 채워 두지 않는다 — 열 때 부른다) */
-  const body = document.getElementById("hist-body");
-  if (body) body.innerHTML = "";
-}
-
-async function fetchCommits(file) {
-  if (cache.has(file)) return cache.get(file);
-
-  const res = await fetch(apiUrl(file), {
+  const res = await fetch(apiUrl(), {
     headers: { Accept: "application/vnd.github+json" },
   });
 
@@ -178,27 +167,30 @@ async function fetchCommits(file) {
     throw new Error(reason);
   }
 
-  const list = await res.json();
-  cache.set(file, list);
-  return list;
+  cache = await res.json();
+  return cache;
 }
 
 async function load() {
-  const doc = DOCS[currentSlug];
   const body = document.getElementById("hist-body");
   const head = document.getElementById("hist-doc");
-  if (!doc || !body) return;
+  if (!body) return;
 
-  head.textContent = `문서: ${doc.title} (${doc.file})`;
+  /* 이미 채워 둔 목록이 있으면 그대로 둔다 (다시 열 때 깜빡이지 않게) */
+  if (body.querySelector(".hist-list")) return;
+
+  if (head) {
+    head.textContent = `위키 전체 편집 내역 — ${REPO.owner}/${REPO.name} (${REPO.branch})`;
+  }
   body.innerHTML = `<p class="hist-msg">편집 내역을 불러오는 중…</p>`;
 
   try {
-    body.innerHTML = List(await fetchCommits(doc.file), doc.file);
+    body.innerHTML = List(await fetchCommits());
   } catch (err) {
     body.innerHTML = `
       <p class="hist-msg bad">불러오지 못했습니다 — ${esc(err.message)}</p>
       <p class="hist-more">
-        <a href="${esc(pageUrl(doc.file))}" target="_blank" rel="noopener"
+        <a href="${esc(pageUrl())}" target="_blank" rel="noopener"
           >GitHub 에서 보기</a
         >
       </p>`;
