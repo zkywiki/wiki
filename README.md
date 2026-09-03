@@ -23,7 +23,8 @@
 │   ├── fanart/                   # 시청자 팬아트 (문서 그림과 구분해 둔다)
 │   └── wiki.css                  # 공통 스타일 + 테마 색상 토큰
 ├── docs/
-│   ├── cuzky.html                # 즈키쿠 문서 본문
+│   ├── zky.html                  # 즈키쿠 문서 본문
+│   ├── cuzky.html                # 쿠즈키(캐릭터) 문서 본문
 │   ├── cupotify.html             # 쿠포티파이 문서 본문
 │   └── fanart.html               # 팬아트 문서 본문
 ├── package.json / vite.config.js # 로컬 개발 서버(HMR) 전용
@@ -74,7 +75,7 @@ npm run dev     # http://localhost:5173 자동으로 열림
      title: "메이플랜드",
      updated: "2026-09-01 10:00",
      file: "docs/mapleland.html",
-     related: ["cuzky"],                                  // 관련 문서 박스
+     related: ["zky"],                                    // 관련 문서 박스
      shortcuts: [{ label: "공식 사이트", href: "https://…" }], // 바로가기 박스
    },
    ```

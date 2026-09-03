@@ -51,11 +51,11 @@ export const REPO = {
 
 /* 문서를 여는 주소는 ?doc=<슬러그> 다. */
 export const DOCS = {
-  cuzky: {
+  zky: {
     title: "즈키쿠",
-    updated: "2026-08-31 17:44",
-    file: "docs/cuzky.html",
-    related: ["cupotify", "fanart"], // 관련 문서 박스
+    updated: "2026-09-03 11:52",
+    file: "docs/zky.html",
+    related: ["cuzky", "cupotify", "fanart"], // 관련 문서 박스
     shortcuts: [
       // 바로가기 박스
       {
@@ -70,11 +70,24 @@ export const DOCS = {
     ],
   },
 
+  cuzky: {
+    title: "쿠즈키",
+    updated: "2026-09-03 11:52",
+    file: "docs/cuzky.html",
+    related: ["zky", "cupotify"],
+    shortcuts: [
+      {
+        label: "CHZZK 방송국",
+        href: "https://chzzk.naver.com/25d498f6a601853e6b1d16d2e7884494",
+      },
+    ],
+  },
+
   cupotify: {
     title: "쿠포티파이",
     updated: "2026-08-31 18:00",
     file: "docs/cupotify.html",
-    related: ["cuzky"],
+    related: ["zky"],
     shortcuts: [
       {
         label: "YouTube @쿠포티파이",
@@ -87,10 +100,10 @@ export const DOCS = {
     title: "팬아트",
     updated: "2026-09-01 12:30",
     file: "docs/fanart.html",
-    related: ["cuzky", "cupotify"],
+    related: ["zky", "cupotify"],
     shortcuts: [],
   },
 };
 
 /* 슬러그가 없거나 잘못됐을 때 열 문서 */
-export const HOME = "cuzky";
+export const HOME = "zky";

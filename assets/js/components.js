@@ -5,7 +5,7 @@
    문서 본문을 뺀 나머지 화면(헤더, 우측 박스, 문서 머리말)이 여기 모여 있다.
    ============================================================ */
 
-import { SITE, DOCS } from "./docs.js";
+import { SITE, DOCS, HOME } from "./docs.js";
 
 /* 문자열을 HTML 에 그대로 넣어도 안전하게. 등록부 값이 그대로 들어가므로 항상 통과시킨다. */
 export function esc(s) {
@@ -31,7 +31,7 @@ export function docHref(slug) {
 export function Header() {
   return `
     <div class="topbar-inner">
-      <a class="brand" href="${docHref("cuzky")}"
+      <a class="brand" href="${docHref(HOME)}"
         >${esc(SITE.name)}<span>${esc(SITE.nameAccent)}</span></a
       >
       <div class="search">
