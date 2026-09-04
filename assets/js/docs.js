@@ -53,9 +53,9 @@ export const REPO = {
 export const DOCS = {
   zky: {
     title: "즈키쿠",
-    updated: "2026-09-03 11:52",
+    updated: "2026-09-04 13:20",
     file: "docs/zky.html",
-    related: ["cuzky", "cupotify", "fanart"], // 관련 문서 박스
+    related: ["cuzky", "concert", "cupotify", "fanart"], // 관련 문서 박스
     shortcuts: [
       // 바로가기 박스
       {
@@ -93,6 +93,19 @@ export const DOCS = {
       {
         label: "YouTube @쿠포티파이",
         href: "https://www.youtube.com/@쿠포티파이",
+      },
+    ],
+  },
+
+  concert: {
+    title: "쿠린이 콘서트",
+    updated: "2026-09-04 15:05",
+    file: "docs/concert.html",
+    related: ["zky", "cupotify"],
+    shortcuts: [
+      {
+        label: "신청곡 링크",
+        href: "https://docs.google.com/forms/d/1ue6-xKmnslr6nffJwsG-WV6nsISAa5JC1cgpmD4dkXI/viewform?edit_requested=true",
       },
     ],
   },
