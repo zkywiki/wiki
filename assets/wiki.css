@@ -62,6 +62,8 @@
   --chev-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.41 8.58 12 13.17l4.59-4.59L18 10l-6 6-6-6z'/%3E%3C/svg%3E");
   --chev-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8.59 16.58 13.17 12 8.59 7.41 10 6l6 6-6 6z'/%3E%3C/svg%3E");
   --tip-shadow: rgba(27, 31, 36, 0.18);
+  /* 곡 목록 한 줄이 앞으로 나올 때의 옅은 그림자 (--tip-shadow 보다 흐리다) */
+  --row-shadow: rgba(27, 31, 36, 0.07);
   /* 우측 하단 이동 버튼 아이콘 — Material Design Icons
      (mdi:format-list-bulleted / mdi:chevron-double-up / mdi:chevron-double-down).
      화살표와 마찬가지로 mask 로 넣으므로 색은 background-color 가 정한다. */
@@ -101,6 +103,7 @@
     --mark-text: #ffeaa7;
     --fn: #ec9f19;
     --tip-shadow: rgba(0, 0, 0, 0.55);
+    --row-shadow: rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -134,6 +137,7 @@
   --mark-text: #ffeaa7;
   --fn: #ec9f19;
   --tip-shadow: rgba(0, 0, 0, 0.55);
+  --row-shadow: rgba(0, 0, 0, 0.3);
 }
 
 /* ---------- 기본 요소 ---------- */
@@ -1430,7 +1434,11 @@ mark {
    방송 날짜 하나가 .songday 하나다. 그 아래 곡을 <li> 로 죽 나열한다.
    한 줄은 곡 제목 · 가수 · 다시보기 링크 세 칸이고, 칸 폭을 li 마다 똑같이
    잡아 두었으므로 줄이 늘어나도 세로로 가지런히 맞는다.
-   좁은 화면에서는 가수가 곡 제목 아래로 내려간다 (맨 아래 반응형 규칙). */
+   좁은 화면에서는 가수가 곡 제목 아래로 내려간다 (맨 아래 반응형 규칙).
+
+   줄 어디를 눌러도 다시보기로 넘어간다. .song-link 의 ::after 를 줄 전체에
+   덮어 링크의 누를 수 있는 범위를 넓히는 방식이라 자바스크립트가 필요 없다.
+   덮개 위로 올라와야 하는 것(각주 [1])에는 따로 z-index 를 준다. */
 .songday {
   margin: 0 0 20px;
 }
@@ -1456,14 +1464,38 @@ mark {
   list-style: none;
 }
 .songday li {
+  position: relative; /* .song-link::after 덮개의 기준 */
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 30%) 28px;
   align-items: center;
   column-gap: 12px;
-  padding: 6px 2px;
+  margin: 0 -6px;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition:
+    transform 0.18s cubic-bezier(0.2, 0.7, 0.3, 1),
+    background-color 0.18s ease,
+    font-size 0.3s ease-in-out,
+    box-shadow 0.18s ease;
 }
 .songday li + li {
   border-top: 1px solid var(--soft-line);
+}
+@media (hover: hover) {
+  .songday li:hover {
+    transform: scale(1.02);
+    box-shadow: 0 1px 16px var(--row-shadow);
+    border-top-color: transparent;
+    z-index: 2;
+  }
+
+  .songday li:hover + li {
+    border-top-color: transparent;
+  }
+}
+/* 키보드로 링크에 초점이 왔을 때도 같은 모양으로 알려 준다 */
+.songday li:focus-within {
+  background: var(--soft);
 }
 .song-title {
   font-size: 14px;
@@ -1476,6 +1508,19 @@ mark {
 /* 아이콘만 있는 링크라 로고 뒤 여백이 필요 없다 */
 .song-link {
   text-align: center;
+}
+/* 줄 전체를 링크의 누를 수 있는 범위로 만드는 덮개 */
+.song-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+/* 덮개보다 위에 있어야 마우스를 올릴 수 있는 것들 */
+.songday li .fn,
+.songday li a:not(.song-link) {
+  position: relative;
+  z-index: 1;
 }
 .song-link .platform-logo {
   height: 18px;
