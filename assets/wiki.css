@@ -1370,6 +1370,19 @@ mark {
   border-left: 2px solid var(--line);
 }
 
+/* 글줄 안에 끼우는 게임 아이템 아이콘 —
+   <img class="item-icon" src="assets/images/…png" alt="" />
+   메이플랜드 아이템 아이콘처럼 작은 그림을 이름 앞에 붙일 때 쓴다.
+   원본이 작으므로 크기는 건드리지 않고 글줄에 맞춰 세로만 맞춘다.
+   (.gallery 안에 넣으면 라이트박스가 집어가므로 본문에만 쓴다) */
+.item-icon {
+  display: inline-block;
+  width: auto;
+  height: 22px;
+  vertical-align: -6px;
+  margin-right: 2px;
+}
+
 /* 팬아트 갤러리 — <div class="gallery"><figure class="art">…</figure></div>
 
    그림마다 크기와 비율이 제각각이라 격자에 맞추면 빈 자리가 생기거나 억지로
