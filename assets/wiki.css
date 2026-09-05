@@ -320,6 +320,9 @@ h2.sec-head[aria-expanded="false"] {
 /* 편집 제안 대화상자 */
 .suggest {
   width: min(520px, calc(100vw - 32px));
+  /* 그림 미리보기까지 붙으면 길어진다 — 화면을 넘기면 안쪽에서 스크롤한다 */
+  max-height: min(88vh, 820px);
+  overflow: auto;
   padding: 0;
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -375,6 +378,98 @@ h2.sec-head[aria-expanded="false"] {
 textarea.suggest-input {
   resize: vertical;
   line-height: 1.6;
+}
+
+/* 이미지 붙이기 — <input type="file"> 의 기본 모양은 브라우저마다 제각각이라
+   눈에 보이지 않게 숨겨 두고 <label> 을 버튼처럼 쓴다.
+   고른 그림은 아래에 네모난 미리보기로 늘어놓고 오른쪽 위 ✕ 로 뺀다.
+   (docs.js 의 IMGBB.key 가 비어 있으면 이 칸 자체가 나오지 않는다) */
+.suggest-files {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.suggest-pick {
+  position: relative;
+  flex: none; /* 옆의 글자가 길어져도 버튼은 찌그러지지 않는다 */
+  border: 1px dashed var(--line);
+  border-radius: 7px;
+  background: var(--soft);
+  padding: 7px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.suggest-pick:hover {
+  border-color: var(--accent);
+}
+/* 초점은 숨은 input 이 받으므로, 테두리는 label 이 대신 그려 준다 */
+.suggest-pick:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+/* display:none 으로 지우면 키보드로 고를 수 없다 — 보이지만 않게 둔다 */
+.suggest-file {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+/* 장수를 3장으로 묶어 둔 사정을 알리는 한 줄 — 작은 회색 주석으로 깐다 */
+.suggest-filenote {
+  margin: 7px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.suggest-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.suggest-thumbs:empty {
+  margin: 0;
+}
+.suggest-thumb {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--soft);
+  overflow: hidden;
+}
+.suggest-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.suggest-thumb-x {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.62);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+}
+.suggest-thumb-x:hover {
+  background: rgba(0, 0, 0, 0.85);
 }
 /* 보내는 중 / 성공 / 실패 안내 */
 .suggest-msg {

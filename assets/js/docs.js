@@ -27,13 +27,34 @@ export const SITE = {
    반대로 Private Key 는 절대 이 파일에 넣지 말 것 — 소스 보기로 그대로 노출된다.
 
    EmailJS 템플릿에서 쓸 수 있는 변수는 params 에 담아 보내는 이름들이다.
-   suggest.js 가 보내는 것: doc_title, doc_url, type, from, message
+   suggest.js 가 보내는 것: doc_title, doc_url, type, from, message, images
    받는 주소는 EmailJS 템플릿의 "To Email" 에 설정한다 (코드에 적지 않는다).
    ============================================================ */
 export const EMAIL = {
   publicKey: "7GRnS0Lk7LJ0ptiqL",
   serviceId: "service_vvp0san",
   templateId: "template_qy14ja6",
+};
+
+/* ============================================================
+   제보 이미지 올리기 (imgbb)
+
+   EmailJS 는 유료 플랜부터 첨부파일을 지원한다. 그래서 그림을 메일에 붙이는
+   대신 imgbb 에 먼저 올리고, 메일 본문에는 그 주소만 적어 보낸다.
+
+   key 는 imgbb.com → 로그인 → About → API → Add API key 에서 받는다.
+   브라우저에서 그대로 쓰는 키라 소스 보기로 노출된다 — 남이 제 그림을 올리는
+   데 쓸 수도 있으니, 그런 낌새가 보이면 imgbb 에서 새로 발급해 갈아 끼운다.
+
+   key 를 비워 두면 편집 제안 창에 이미지 칸이 아예 나오지 않는다.
+   (글만 보내는 지금까지의 동작 그대로다)
+
+   expireDays 는 올린 그림이 저절로 지워지기까지의 날짜다.
+   imgbb 가 허용하는 최대는 180일이고, 0 으로 두면 지우지 않는다.
+   ============================================================ */
+export const IMGBB = {
+  key: "72de487a42913976bb892618c125bafe",
+  expireDays: 180,
 };
 
 /* ============================================================
