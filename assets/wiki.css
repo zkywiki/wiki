@@ -1449,6 +1449,26 @@ mark {
   color: var(--muted);
 }
 
+/* 크기 통일 갤러리 — <div class="gallery uniform">
+   같은 장면을 이어서 캡처한 그림처럼 원본 크기가 조금씩 다를 때. 단(column)으로
+   흘리는 대신 격자에 올려 칸 크기를 맞추고, 그림은 잘라내지 않고(contain) 칸
+   안에 맞춰 넣는다 — 말풍선이 잘리면 대사를 읽을 수 없기 때문. */
+.gallery.uniform {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+.gallery.uniform .art {
+  width: auto;
+  margin: 0;
+}
+.gallery.uniform .art img {
+  width: 100%;
+  aspect-ratio: 11 / 10;
+  object-fit: contain;
+  background: var(--panel);
+}
+
 /* 곡 해설 목록 — <ol class="tracknotes">
    곡마다 설명이 붙는 경우. 번호는 CSS 카운터가 매긴다. */
 .tracknotes {
