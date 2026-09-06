@@ -990,7 +990,6 @@ textarea.suggest-input {
   padding-left: 20px;
 }
 .toc li {
-  margin: 3px 0;
   counter-increment: toc;
 }
 .toc-no {
