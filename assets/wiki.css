@@ -1464,9 +1464,14 @@ mark {
 }
 .gallery.uniform .art img {
   width: 100%;
-  aspect-ratio: 11 / 10;
+  aspect-ratio: var(--shot, 11 / 10);
   object-fit: contain;
   background: var(--panel);
+}
+/* 가로로 긴 장면(전체 화면 캡처)을 담을 때 — 칸을 넓히고 비율만 바꾼다. */
+.gallery.uniform.wide {
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  --shot: 16 / 9;
 }
 
 /* 곡 해설 목록 — <ol class="tracknotes">

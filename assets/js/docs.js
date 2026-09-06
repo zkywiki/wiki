@@ -94,7 +94,7 @@ export const DOCS = {
 
   cuzky: {
     title: "쿠즈키",
-    updated: "2026-09-06 20:35",
+    updated: "2026-09-06 22:41",
     file: "docs/cuzky.html",
     related: ["zky", "cupotify"],
     shortcuts: [
@@ -120,7 +120,7 @@ export const DOCS = {
 
   concert: {
     title: "쿠린이 콘서트",
-    updated: "2026-09-04 15:05",
+    updated: "2026-09-06 22:41",
     file: "docs/concert.html",
     related: ["zky", "cupotify"],
     shortcuts: [
