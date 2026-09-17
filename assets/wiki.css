@@ -1089,6 +1089,12 @@ textarea.suggest-input {
 .strike {
   text-decoration: line-through;
   color: var(--muted);
+  transition: color 0.15s;
+}
+/* 호버·포커스하면 취소선이 사라져 곁말을 그대로 읽을 수 있다. */
+.strike:hover,
+.strike:focus-visible {
+  text-decoration-line: none;
 }
 
 /* ---------- 각주 ----------
