@@ -1479,6 +1479,10 @@ mark {
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   --shot: 16 / 9;
 }
+/* 굿즈·현물 사진을 담을 때 — 사진기 기본 비율(4:3)에 맞춘다. */
+.gallery.uniform.photo {
+  --shot: 4 / 3;
+}
 
 /* 곡 해설 목록 — <ol class="tracknotes">
    곡마다 설명이 붙는 경우. 번호는 CSS 카운터가 매긴다. */
