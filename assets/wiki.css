@@ -1084,6 +1084,27 @@ textarea.suggest-input {
   background: var(--answer-bg);
 }
 
+/* 회차 머리말 — <div class="exam-meta">2025. 12. 09<a href="..."><img class="platform-logo" …></a></div>
+   모의고사처럼 회차마다 날짜와 다시보기가 붙는 문답 묶음의 머리에 둔다.
+   날짜는 왼쪽, 링크는 오른쪽 끝 (.songday-date 와 같은 모양새). */
+.exam-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 2px 5px;
+  border-bottom: 2px solid var(--line);
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.exam-meta a {
+  margin-left: auto; /* 오른쪽 끝으로 */
+  line-height: 0; /* 로고 아래 여백 없애기 */
+}
+.exam-meta .platform-logo {
+  margin-right: 0;
+}
+
 /* 취소선 — 본문에 --이렇게-- 라고 쓰면 wiki.js 가 <s class="strike"> 로 바꾼다.
    속마음·정정 같은 곁말에 쓴다. */
 .strike {
