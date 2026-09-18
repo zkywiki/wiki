@@ -38,6 +38,14 @@ export function Header() {
         <input id="q" placeholder="${esc(SITE.searchPlaceholder)}" />
       </div>
       <div class="topbar-actions">
+        <button
+          class="about-open"
+          type="button"
+          title="즈키위키란?"
+          aria-label="즈키위키란?"
+        >
+          ?
+        </button>
         <button class="history-open" type="button">역사</button>
         <button class="suggest-open" type="button">편집 제안</button>
         <button
@@ -62,10 +70,7 @@ export function RelatedBox(slug) {
   /* 등록부에 related 가 없으면 자기 자신을 뺀 전체 문서를 보여준다. */
   const list = (doc.related || Object.keys(DOCS).filter((s) => s !== slug))
     .filter((s) => DOCS[s])
-    .map(
-      (s) =>
-        `<li><a href="${docHref(s)}">${esc(DOCS[s].title)}</a></li>`,
-    )
+    .map((s) => `<li><a href="${docHref(s)}">${esc(DOCS[s].title)}</a></li>`)
     .join("");
 
   return `

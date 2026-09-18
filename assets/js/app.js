@@ -15,6 +15,7 @@ import { Header, DocHead, Rail, Fab } from "./components.js";
 import { initGlobal, initDocument, revealTarget } from "./wiki.js";
 import { SuggestDialog, initSuggest, setSuggestDoc } from "./suggest.js";
 import { HistoryDialog, initHistory } from "./history.js";
+import { AboutDialog, initAbout } from "./about.js";
 import {
   LightboxDialog,
   initLightbox,
@@ -114,10 +115,11 @@ window.addEventListener("popstate", () => render(slugFromUrl(), { keepScroll: tr
 headerEl.innerHTML = Header();
 document.body.insertAdjacentHTML(
   "beforeend",
-  SuggestDialog() + HistoryDialog() + LightboxDialog() + Fab(),
+  SuggestDialog() + HistoryDialog() + AboutDialog() + LightboxDialog() + Fab(),
 );
 initGlobal();
 initSuggest();
 initHistory();
+initAbout();
 initLightbox();
 render(slugFromUrl(), { keepScroll: true });
