@@ -67,8 +67,11 @@ function setupSections() {
   const main = document.querySelector(".article .main");
   if (!main) return;
 
-  /* 감싸기 전에 제목 목록을 먼저 확보한다 (아래에서 DOM 을 옮기기 때문) */
-  const headings = [...main.children].filter((el) => LEVEL[el.tagName]);
+  /* 감싸기 전에 제목 목록을 먼저 확보한다 (아래에서 DOM 을 옮기기 때문).
+     class="no-fold" 가 붙은 제목은 그냥 제목으로 두고 접지 않는다. */
+  const headings = [...main.children].filter(
+    (el) => LEVEL[el.tagName] && !el.classList.contains("no-fold"),
+  );
 
   headings.forEach((h) => {
     const level = LEVEL[h.tagName];

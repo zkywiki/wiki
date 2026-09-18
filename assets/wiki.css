@@ -192,7 +192,8 @@ h5 {
 
 /* ---------- 문단 접기 ----------
    .main 안의 h2/h3/h4/h5 는 wiki.js 가 자동으로 접기 가능한 제목(.sec-head)으로 만들고,
-   그 아래 내용을 .sec-body 로 감싼다. HTML 에는 따로 표시할 것이 없다. */
+   그 아래 내용을 .sec-body 로 감싼다. HTML 에는 따로 표시할 것이 없다.
+   접히면 안 되는 제목에는 <h4 class="no-fold"> 처럼 no-fold 를 붙인다. */
 .sec-head {
   cursor: pointer;
   -webkit-user-select: none;
