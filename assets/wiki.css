@@ -738,10 +738,13 @@ textarea.suggest-input {
 /* 화면 좌우를 다 쓰되, 안쪽은 [문서 | 우측 박스] 두 칸으로 나누고 가운데 정렬한다. */
 .wrap {
   width: calc(100% - 32px);
+  /* 1032(문서) + 24(간격) + 300(우측 박스) */
+  max-width: 1356px;
   margin: 26px auto 60px;
   display: grid;
-  grid-template-columns: minmax(0, 1032px) 300px;
-  justify-content: center;
+  /* 문서 칸을 1fr 로 둔다. minmax(0, 1032px) 로 두면 내용이 적은 문서
+     (쿠린이 콘서트)에서 칸이 글 폭까지 줄어들어 문서마다 폭이 달라진다. */
+  grid-template-columns: minmax(0, 1fr) 300px;
   align-items: start;
   gap: 24px;
 }
@@ -765,17 +768,20 @@ textarea.suggest-input {
 .rail-title {
   font-weight: 800;
   margin-bottom: 8px;
+  font-size: 18px;
 }
 .rail-list {
   margin: 0;
-  padding-left: 18px;
+  padding-left: 0;
 }
 .rail-list li {
-  margin: 4px 0;
+  list-style-type: none;
 }
 .article {
   max-width: 1032px;
-  margin-inline: auto; /* 화면이 더 넓으면 가운데 정렬 */
+  /* margin-inline: auto 를 주면 안 된다 — 격자 칸 안에서 자동 여백이 남는 자리를
+     먹으면서 상자가 글 폭까지 줄어든다(내용이 적은 문서만 좁아진다).
+     가운데 정렬은 .wrap 이 max-width + margin: auto 로 이미 맡고 있다. */
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -1821,7 +1827,8 @@ mark {
 /* 두 칸이 다 들어가지 않는 폭에서는 우측 박스를 문서 아래로 내린다. */
 @media (max-width: 1400px) {
   .wrap {
-    grid-template-columns: minmax(0, 1032px);
+    max-width: 1032px;
+    grid-template-columns: minmax(0, 1fr);
   }
   .rail {
     position: static;
