@@ -1505,6 +1505,16 @@ mark {
 .gallery.uniform.photo {
   --shot: 4 / 3;
 }
+/* 접기 안에 들어간 갤러리는 바깥 여백을 접기 상자에 맡긴다. */
+.fold-body > .gallery {
+  margin: 0;
+}
+
+/* 2열 고정 — 사진이 넷일 때 3 + 1 로 깨지지 않게 2 × 2 로 앉힌다.
+   좁은 화면에서는 맨 아래 반응형 규칙이 한 줄로 되돌린다. */
+.gallery.uniform.cols2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 
 /* 곡 해설 목록 — <ol class="tracknotes">
    곡마다 설명이 붙는 경우. 번호는 CSS 카운터가 매긴다. */
@@ -1840,6 +1850,10 @@ mark {
   .wrap {
     width: calc(100% - 16px);
     margin-top: 12px;
+  }
+  /* 2열 고정 갤러리는 좁은 화면에서 한 장씩 */
+  .gallery.uniform.cols2 {
+    grid-template-columns: 1fr;
   }
   .article {
     padding: 20px 14px;
