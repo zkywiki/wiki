@@ -885,6 +885,10 @@ textarea.suggest-input {
 .layout > .toc {
   grid-area: 1 / 1;
   margin: 0; /* 격자가 간격을 만들므로 기본 위아래 여백은 없앤다 */
+  /* 칸 폭을 다 채우지 않고 내용만큼만 차지한다 */
+  justify-self: start;
+  min-width: 240px;
+  max-width: 100%;
 }
 .side {
   grid-area: 1 / 2;
@@ -1057,6 +1061,22 @@ textarea.suggest-input {
 .toc-title {
   font-weight: 800;
   margin-bottom: 6px;
+}
+/* 목차 제목은 문단 제목처럼 눌러서 접는다 (wiki.js 의 setupToc).
+   접히면 아래 목록이 없으므로 제목 아래 여백도 없앤다. */
+.toc-title[aria-expanded="false"] {
+  margin-bottom: 0;
+}
+/* 접기 아이콘은 글자 앞이 아니라 우측 상단에 둔다. */
+.toc-title.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.toc-title.sec-head:before {
+  order: 1;
+  margin-left: auto;
+  margin-right: 0;
 }
 /* 번호를 링크로 만들기 위해 <ol> 의 자동 마커 대신 CSS 카운터를 쓴다.
    (마커에는 링크를 걸 수 없다)

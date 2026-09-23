@@ -99,6 +99,21 @@ function setupSections() {
   });
 }
 
+/* 목차도 문단처럼 접는다. 제목(.toc-title)을 누르면 목록(<ol>)이 접힌다.
+   클릭·키보드 처리는 문단 접기와 같은 것을 그대로 쓴다. */
+function setupToc() {
+  const toc = document.querySelector(".article .toc");
+  const title = toc?.querySelector(".toc-title");
+  const list = toc?.querySelector("ol");
+  if (!title || !list) return;
+
+  title.classList.add("sec-head");
+  title.setAttribute("role", "button");
+  title.setAttribute("tabindex", "0");
+  title.setAttribute("aria-expanded", "true");
+  title.__body = list;
+}
+
 function setSection(h, open) {
   if (!h.__body) return;
   h.setAttribute("aria-expanded", open ? "true" : "false");
@@ -446,6 +461,8 @@ const TOPBAR_GAP = 70;
 function scrollToToc() {
   const toc = document.querySelector(".article .toc");
   if (!toc) return;
+  const title = toc.querySelector(".toc-title");
+  if (title) setSection(title, true); // 접혀 있으면 펼친 채로 보여 준다
   const top = window.scrollY + toc.getBoundingClientRect().top - TOPBAR_GAP;
   window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
 }
@@ -572,6 +589,7 @@ export function initDocument() {
   setupFootnotes();
   setupVideoCards();
   setupSections();
+  setupToc();
   fillElapsed();
   paintFab();
 }
