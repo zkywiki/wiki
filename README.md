@@ -117,13 +117,13 @@ npm run dev     # http://localhost:5173 자동으로 열림
 
 `assets/js/components.js` 의 함수들이 HTML 문자열을 돌려주고 `app.js` 가 자리에 꽂습니다.
 
-| 함수                 | 자리        | 내용                                      |
-| -------------------- | ----------- | ----------------------------------------- |
+| 함수                 | 자리        | 내용                                       |
+| -------------------- | ----------- | ------------------------------------------ |
 | `Header()`           | 상단 바     | 브랜드, 검색창, 역사, 편집 제안, 테마 토글 |
-| `DocHead(doc)`       | 문서 머리말 | 제목, 최근 수정 시각                      |
-| `RelatedBox(slug)`   | 우측 박스 1 | 관련 문서 (`related`, 없으면 나머지 전체) |
-| `ShortcutsBox(slug)` | 우측 박스 2 | 바로가기 (`shortcuts`)                    |
-| `Fab()`              | 우측 하단   | 목차 / 맨 위 / 맨 아래 이동 버튼          |
+| `DocHead(doc)`       | 문서 머리말 | 제목, 최근 수정 시각                       |
+| `RelatedBox(slug)`   | 우측 박스 1 | 관련 문서 (`related`, 없으면 나머지 전체)  |
+| `ShortcutsBox(slug)` | 우측 박스 2 | 바로가기 (`shortcuts`)                     |
+| `Fab()`              | 우측 하단   | 목차 / 맨 위 / 맨 아래 이동 버튼           |
 
 ## 역사 (편집 내역)
 
@@ -180,11 +180,11 @@ export const EMAIL = {
 
 템플릿이 쓰는 변수는 세 개입니다.
 
-| 변수          | 내용                                  |
-| ------------- | ------------------------------------- |
-| `{{name}}`    | 작성자 (안 적으면 `(밝히지 않음)`)    |
-| `{{message}}` | 문서·주소·종류 + 제안 내용            |
-| `{{time}}`    | 보낸 시각 (작성자의 현지 시간)        |
+| 변수          | 내용                               |
+| ------------- | ---------------------------------- |
+| `{{name}}`    | 작성자 (안 적으면 `(밝히지 않음)`) |
+| `{{message}}` | 문서·주소·종류 + 제안 내용         |
+| `{{time}}`    | 보낸 시각 (작성자의 현지 시간)     |
 
 `{{message}}` 는 여러 줄입니다. HTML 템플릿에서는 줄바꿈이 그냥 무시되므로 이렇게 감싸세요.
 
@@ -256,7 +256,9 @@ HTML 에 표시할 것은 없고, `wiki.js` 가 각 제목 아래 내용을 `.se
 영상을 그대로 심지 않고 **썸네일 카드**로 보여 줍니다. 문서에는 링크 한 줄만 씁니다.
 
 ```html
-<a class="yt" href="https://www.youtube.com/watch?v=ELLLR6egsNQ">즈키쿠 정규 1집</a>
+<a class="yt" href="https://www.youtube.com/watch?v=ELLLR6egsNQ"
+  >즈키쿠 정규 1집</a
+>
 ```
 
 `wiki.js` 가 유튜브 썸네일과 재생 표시를 채워 카드로 만들고, 누르면 새 탭에서 열립니다.
@@ -289,7 +291,10 @@ HTML 에 표시할 것은 없고, `wiki.js` 가 각 제목 아래 내용을 `.se
 
 ```html
 <div class="video">
-  <iframe src="https://www.youtube-nocookie.com/embed/ELLLR6egsNQ" allowfullscreen></iframe>
+  <iframe
+    src="https://www.youtube-nocookie.com/embed/ELLLR6egsNQ"
+    allowfullscreen
+  ></iframe>
 </div>
 ```
 
@@ -334,7 +339,6 @@ HTML 에 표시할 것은 없고, `wiki.js` 가 각 제목 아래 내용을 `.se
 
 ```html
 데뷔일<span class="elapsed" data-since="2025-10-16"></span>
-<!-- → 데뷔일 · 319일 경과 -->
 ```
 
 미래 날짜면 `N일 남음` 으로 나옵니다.
