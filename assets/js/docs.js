@@ -157,7 +157,7 @@ export const DOCS = {
 
   fanart: {
     title: "팬아트",
-    updated: "2026-09-06 12:30",
+    updated: "2026-09-25 16:35",
     file: "docs/fanart.html",
     related: ["zky", "cupotify"],
     shortcuts: [
