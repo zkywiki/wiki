@@ -1048,6 +1048,30 @@ textarea.suggest-input {
 .datatable .center {
   text-align: center;
 }
+/* 아바타 표 — 이름 | 그림 | 설명. 그림 칸은 여백 없이 꽉 채운다.
+   <table class="datatable avatar-table"><tr><th>이름</th><td class="img"><img …></td><td>설명</td></tr></table> */
+.avatar-table {
+  width: 100%;
+}
+.avatar-table td.img {
+  width: 300px;
+  padding: 0;
+  background: linear-gradient(135deg, var(--ph-1), var(--ph-2));
+}
+.avatar-table td.img img {
+  display: block;
+  width: 100%;
+  height: auto;
+  cursor: zoom-in;
+}
+.avatar-table td {
+  line-height: 1.7;
+}
+@media (max-width: 640px) {
+  .avatar-table td.img {
+    width: 40%;
+  }
+}
 
 /* ---------- 목차 ----------
    <nav class="toc"><div class="toc-title">목차</div><ol>...</ol></nav> */
@@ -1263,6 +1287,15 @@ textarea.suggest-input {
   margin: 8px auto 2px;
   border-radius: 6px;
   background: linear-gradient(135deg, var(--ph-1), var(--ph-2));
+}
+/* 각주 안의 아이템 아이콘은 큰 그림처럼 줄바꿈하지 않고 글줄에 그대로 둔다 */
+.fn-tip img.item-icon {
+  display: inline-block;
+  height: 18px;
+  margin: 0 2px 0 0;
+  vertical-align: -4px;
+  border-radius: 0;
+  background: none;
 }
 
 /* ---------- 작은 조각들 ---------- */

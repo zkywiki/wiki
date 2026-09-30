@@ -1,7 +1,7 @@
 /* ============================================================
    lightbox.js — 이미지 크게 보기
 
-   문서 본문의 그림(.gallery 의 팬아트, .small-card 의 썸네일)을 누르면
+   문서 본문의 그림(.gallery 의 팬아트, .small-card 의 썸네일, .avatar-table 의 아바타)을 누르면
    화면 가운데에 원래 크기로 띄운다. 뒤쪽 화면은 어둡게 깔고 흐리게 처리한다.
 
    본문은 문서를 넘길 때마다 통째로 갈리므로, 그림 하나하나에 이벤트를 걸지
@@ -9,7 +9,7 @@
    ============================================================ */
 
 /* 크게 볼 수 있는 그림. 여기에 해당하면 커서가 돋보기로 바뀐다(.css) */
-const TARGET = ".gallery img, .small-card .img img";
+const TARGET = ".gallery img, .small-card .img img, .avatar-table td.img img";
 
 export function LightboxDialog() {
   return `
