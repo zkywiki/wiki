@@ -144,7 +144,7 @@ export const DOCS = {
 
   concert: {
     title: "쿠린이 콘서트",
-    updated: "2026-09-18 15:57",
+    updated: "2026-10-10 03:06",
     file: "docs/concert.html",
     related: ["zky", "cupotify"],
     shortcuts: [
