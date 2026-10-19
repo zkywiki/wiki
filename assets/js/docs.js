@@ -100,7 +100,7 @@ export const DOCS = {
     title: "즈키쿠",
     updated: "2026-10-19 20:17",
     file: "docs/zky.html",
-    related: ["cuzky", "concert", "cupotify", "fanart"], // 관련 문서 박스
+    related: ["cuzky", "concert", "cupotify"], // 관련 문서 박스
     shortcuts: [
       // 바로가기 박스
       {
@@ -151,19 +151,6 @@ export const DOCS = {
       {
         label: "신청곡 링크",
         href: "https://docs.google.com/forms/d/1ue6-xKmnslr6nffJwsG-WV6nsISAa5JC1cgpmD4dkXI/viewform?edit_requested=true",
-      },
-    ],
-  },
-
-  fanart: {
-    title: "팬아트",
-    updated: "2026-09-25 16:35",
-    file: "docs/fanart.html",
-    related: ["zky", "cupotify"],
-    shortcuts: [
-      {
-        label: "네이버카페 | 팬아트",
-        href: "https://cafe.naver.com/f-e/cafes/31782237/menus/3?viewType=I",
       },
     ],
   },
