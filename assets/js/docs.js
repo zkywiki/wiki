@@ -98,7 +98,7 @@ export const REPO = {
 export const DOCS = {
   zky: {
     title: "즈키쿠",
-    updated: "2026-11-02 23:20",
+    updated: "2026-11-05 15:48",
     file: "docs/zky.html",
     related: ["cuzky", "concert", "cupotify"], // 관련 문서 박스
     shortcuts: [
@@ -144,7 +144,7 @@ export const DOCS = {
 
   concert: {
     title: "쿠린이 콘서트",
-    updated: "2026-10-10 03:06",
+    updated: "2026-11-05 15:48",
     file: "docs/concert.html",
     related: ["zky", "cupotify"],
     shortcuts: [
