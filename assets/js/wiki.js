@@ -192,7 +192,8 @@ function dismissTip() {
   hideTimer = setTimeout(hideTip, GRACE);
 }
 
-/* 각주 옆에 툴팁을 놓는다. 화면 밖으로 나가지 않게 좌우·위아래를 맞춘다. */
+/* 툴팁은 각주·장비 칸 모두 위에 띄운다. 화면 밖으로 나가지 않게 좌우를 맞추고,
+   위가 좁을 때만 아래로 내린다. */
 function placeTip(ref) {
   const el = tip;
   if (!el || el.hidden) return;
@@ -205,22 +206,12 @@ function placeTip(ref) {
   const t = el.getBoundingClientRect();
   const pad = 8;
 
-  /* 장비 칸은 장비창을 가리지 않도록 옆에 띄운다 (오른쪽, 좁으면 왼쪽). */
-  if (ref.__tipClass && window.innerWidth >= 600) {
-    let x = r.right + pad;
-    if (x + t.width > window.innerWidth - pad) x = r.left - t.width - pad;
-    let y = Math.min(r.top, window.innerHeight - t.height - pad);
-    el.style.left = Math.max(pad, x) + "px";
-    el.style.top = Math.max(pad, y) + "px";
-    return;
-  }
-
   let left = r.left + r.width / 2 - t.width / 2;
   left = Math.max(pad, Math.min(left, window.innerWidth - t.width - pad));
 
-  let top = r.bottom + pad; // 기본은 각주 아래
-  if (top + t.height > window.innerHeight - pad) {
-    top = r.top - t.height - pad; // 아래가 좁으면 위로
+  let top = r.top - t.height - pad; // 기본은 위
+  if (top < pad) {
+    top = r.bottom + pad; // 위가 좁으면 아래로
   }
 
   el.style.left = left + "px";
