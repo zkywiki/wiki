@@ -16,6 +16,7 @@ import { initGlobal, initDocument, revealTarget } from "./wiki.js";
 import { SuggestDialog, initSuggest, setSuggestDoc } from "./suggest.js";
 import { HistoryDialog, initHistory } from "./history.js";
 import { AboutDialog, initAbout } from "./about.js";
+import { setDocCursor } from "./cursor.js";
 import {
   LightboxDialog,
   initLightbox,
@@ -50,6 +51,7 @@ async function loadBody(doc) {
 async function render(slug, { keepScroll = false } = {}) {
   const doc = DOCS[slug];
   document.title = `${doc.title} - ${siteName}`;
+  setDocCursor(slug); // 메이플 커서 (문서별 예외는 cursor.js 의 THEMES)
 
   let body;
   try {

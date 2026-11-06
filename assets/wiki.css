@@ -2155,3 +2155,32 @@ mark {
 .item-tip .mt-dim {
   color: #8a8f9c;
 }
+
+/* ===== 메이플 마우스 커서 (기본 / 클릭) =====
+   body[data-cursor] 와 --cur-* 변수는 assets/js/cursor.js 가 넣는다.
+   움직이는 커서는 JS 가 변수를 프레임마다 바꿔서 흉내 낸다. */
+body[data-cursor],
+body[data-cursor] * {
+  cursor: var(--cur-default, auto);
+}
+body[data-cursor]
+  :is(
+    a[href],
+    button,
+    summary,
+    label,
+    select,
+    [role="button"],
+    .sec-head,
+    .songday li,
+    .eq-slot,
+    .avatar-table td.img img,
+    .art img,
+    .small-card .img img
+  ),
+body[data-cursor] :is(a[href], button, summary, [role="button"]) * {
+  cursor: var(--cur-pointer, pointer);
+}
+body[data-cursor] .lightbox-figure {
+  cursor: var(--cur-default, default);
+}
