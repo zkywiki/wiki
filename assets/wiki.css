@@ -38,7 +38,8 @@
   --line: #d0d7de; /* 테두리·구분선 */
   --accent: #00a495; /* 강조색 (브랜드, 답변 라인) */
   --accent-text: #fff; /* 강조색 배경 위에 얹는 글자색 */
-  --link: #0275d8; /* 링크 */
+  --link: #0275d8; /* 링크 (위키 안 문서) */
+  --link-ext: #1a8a3a; /* 외부 사이트 링크 */
 
   --soft: #fafbfc; /* 옅은 면 (목차, 접기 머리, 분류 칩) */
   --soft-line: #dddddd; /* 옅은 구분선 */
@@ -85,6 +86,7 @@
     --accent: #2ee6d0;
     --accent-text: #0d1117;
     --link: #ec9f19;
+    --link-ext: #009900;
 
     --soft: #1c2128;
     --soft-line: #30363d;
@@ -119,6 +121,7 @@
   --accent: #2ee6d0;
   --accent-text: #0d1117;
   --link: #ec9f19;
+  --link-ext: #009900;
 
   --soft: #1c2128;
   --soft-line: #30363d;
@@ -163,6 +166,11 @@ a {
 }
 a:hover {
   text-decoration: underline;
+}
+/* 외부 사이트로 나가는 링크는 색을 달리한다.
+   :where 로 감싸 우선순위를 a 와 같게 두어, 따로 색을 정한 버튼·카드 링크는 건드리지 않는다. */
+a:where([href^="http://"], [href^="https://"]) {
+  color: var(--link-ext);
 }
 
 p {
@@ -851,6 +859,10 @@ textarea.suggest-input {
 }
 .rail-list li {
   list-style-type: none;
+}
+/* 관련 문서·바로가기 카드의 링크는 내부/외부 구분 없이 기존 링크색을 쓴다 */
+.rail-list a {
+  color: var(--link);
 }
 .article {
   max-width: 1032px;
