@@ -2169,7 +2169,9 @@ mark {
   margin: 6px -10px 0;
   padding: 4px 0 6px;
   border-bottom: 1px dashed #5a6a8a;
-  margin-inline: 10px;
+  & > span {
+    padding-inline: 2.5px;
+  }
 }
 .item-tip .mt-stats {
   padding: 6px 0;
