@@ -1643,6 +1643,10 @@ mark {
 .fold-body > .gallery {
   margin: 0;
 }
+/* 접기 하나에 갤러리를 여러 개 넣으면 사이를 띄운다 */
+.fold-body > .gallery + .gallery {
+  margin-top: 12px;
+}
 
 /* 2열 고정 — 사진이 넷일 때 3 + 1 로 깨지지 않게 2 × 2 로 앉힌다.
    좁은 화면에서는 맨 아래 반응형 규칙이 한 줄로 되돌린다. */
@@ -2038,4 +2042,116 @@ mark {
     width: 20px;
     height: 20px;
   }
+}
+
+/* ---------- 장비창 ----------
+   메이플 장비창 그림(176×315) 위에 칸(.eq-slot)을 겹쳐 놓는다.
+   칸은 32px 정사각형이 33px 간격으로 놓여 있고, 첫 칸이 (6, 55) 에서 시작한다.
+   그림을 2배로 키워 보여 주되 좁은 화면에서는 같은 비율로 줄어든다. */
+.eq-inv {
+  position: relative;
+  width: 352px;
+  max-width: 100%;
+  aspect-ratio: 176 / 315;
+  margin: 0 0 20px;
+}
+/* 장비창 위 안내 문구 */
+.eq-beta {
+  margin: 12px 0 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.eq-bg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.eq-slot {
+  position: absolute;
+  left: calc((6 + 33 * var(--c)) / 176 * 100%);
+  top: calc((55 + 33 * var(--r)) / 315 * 100%);
+  width: calc(32 / 176 * 100%);
+  height: calc(32 / 315 * 100%);
+  padding: 2px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+}
+.eq-slot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.eq-slot:hover,
+.eq-slot:focus-visible {
+  outline: 2px solid #f5a623;
+  outline-offset: -1px;
+}
+
+/* 장비 툴팁 — 게임 속 아이템 툴팁처럼 테마와 상관없이 어두운 남색 */
+.fn-tip.item-tip {
+  width: 240px;
+  max-width: calc(100vw - 16px);
+  padding: 8px 10px 10px;
+  background: rgba(20, 28, 48, 0.94);
+  color: #fff;
+  border: 1px solid #5a6a8a;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1.45;
+  text-align: center;
+  pointer-events: none; /* 안에 링크가 없다. 좁은 화면에서 칸을 덮어도 탭이 칸으로 가도록 */
+}
+.item-tip ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.item-tip .mt-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffcc33;
+  margin-bottom: 6px;
+}
+.item-tip .mt-head {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  text-align: left;
+}
+.fn-tip.item-tip img.mt-icon {
+  width: 72px;
+  height: auto;
+  max-height: none;
+  margin: 2px 0 0;
+  border-radius: 4px;
+  background: #fff;
+  image-rendering: pixelated;
+  flex: none;
+}
+.item-tip .mt-req {
+  font-size: 11px;
+}
+.item-tip .mt-jobs {
+  margin: 6px -10px 0;
+  padding: 4px 0 6px;
+  border-bottom: 1px dashed #5a6a8a;
+  margin-inline: 10px;
+}
+.item-tip .mt-stats {
+  padding: 6px 0;
+}
+.item-tip .mt-foot {
+  padding-top: 6px;
+  border-top: 1px dashed #5a6a8a;
+}
+.item-tip .mt-bad {
+  color: #ff5050;
+}
+.item-tip .mt-dim {
+  color: #8a8f9c;
 }

@@ -118,7 +118,7 @@ export const DOCS = {
 
   cuzky: {
     title: "쿠즈키",
-    updated: "2026-09-06 22:41",
+    updated: "2026-11-07 01:03",
     file: "docs/cuzky.html",
     related: ["zky", "cupotify"],
     shortcuts: [

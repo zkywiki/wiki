@@ -155,6 +155,8 @@ const GRACE = 220;
 
 let tip = null;
 let hideTimer = 0;
+let shownRef = null; // 지금 툴팁을 띄운 각주·칸과 그 시각
+let shownAt = 0;
 
 function ensureTip() {
   if (tip) return tip;
@@ -203,6 +205,16 @@ function placeTip(ref) {
   const t = el.getBoundingClientRect();
   const pad = 8;
 
+  /* 장비 칸은 장비창을 가리지 않도록 옆에 띄운다 (오른쪽, 좁으면 왼쪽). */
+  if (ref.__tipClass && window.innerWidth >= 600) {
+    let x = r.right + pad;
+    if (x + t.width > window.innerWidth - pad) x = r.left - t.width - pad;
+    let y = Math.min(r.top, window.innerHeight - t.height - pad);
+    el.style.left = Math.max(pad, x) + "px";
+    el.style.top = Math.max(pad, y) + "px";
+    return;
+  }
+
   let left = r.left + r.width / 2 - t.width / 2;
   left = Math.max(pad, Math.min(left, window.innerWidth - t.width - pad));
 
@@ -216,10 +228,15 @@ function placeTip(ref) {
 }
 
 function showTip(ref) {
+  if (!ref.__note) return; // 내용이 없는 칸
   const el = ensureTip();
   keepTip(); // 다른 각주로 옮겨 갈 때 예약된 닫기가 남아 있을 수 있다
   el.innerHTML = ref.__note;
+  el.className = "fn-tip" + (ref.__tipClass ? " " + ref.__tipClass : "");
   el.hidden = false;
+
+  shownRef = ref;
+  shownAt = Date.now();
 
   placeTip(ref);
 
@@ -235,6 +252,21 @@ function showTip(ref) {
 function hideTip() {
   keepTip();
   if (tip) tip.hidden = true;
+}
+
+/* 툴팁을 띄우는 것: 각주 [1] 과 장비창 칸 */
+const TIP_REF = ".fn, .eq-slot";
+
+/* 장비창 칸 안의 .eq-data 를 떼어 내어 툴팁 내용으로 쓴다.
+   (각주와 같은 툴팁을 쓰되, 메이플 아이템 툴팁 모양으로 바꿔 입힌다) */
+function setupEquip() {
+  document.querySelectorAll(".eq-slot").forEach((slot) => {
+    const data = slot.querySelector(".eq-data");
+    if (!data) return;
+    slot.__note = data.innerHTML;
+    slot.__tipClass = "item-tip";
+    data.remove();
+  });
 }
 
 function setupFootnotes() {
@@ -534,27 +566,48 @@ export function initGlobal() {
   });
 
   /* 각주 툴팁 */
+  /* 터치하면 브라우저가 흉내 낸 mouseover·mouseout 이 뒤따라와서, 탭으로 연
+     툴팁을 곧바로 닫아 버린다. 터치 직후의 마우스 이벤트는 무시하고 탭(click)
+     으로만 열고 닫는다. */
+  let lastTouch = 0;
+  const byTouch = () => Date.now() - lastTouch < 1000;
+  document.addEventListener(
+    "touchstart",
+    () => {
+      lastTouch = Date.now();
+    },
+    { passive: true, capture: true },
+  );
   document.addEventListener("mouseover", (e) => {
-    const fn = e.target.closest?.(".fn");
+    if (byTouch()) return;
+    const fn = e.target.closest?.(TIP_REF);
     if (fn) showTip(fn);
   });
   document.addEventListener("mouseout", (e) => {
-    const fn = e.target.closest?.(".fn");
+    if (byTouch()) return;
+    const fn = e.target.closest?.(TIP_REF);
     if (fn && !fn.contains(e.relatedTarget)) dismissTip();
   });
   document.addEventListener("focusin", (e) => {
-    const fn = e.target.closest?.(".fn");
+    const fn = e.target.closest?.(TIP_REF);
     if (fn) showTip(fn);
   });
   document.addEventListener("focusout", (e) => {
-    if (e.target.closest?.(".fn")) dismissTip();
+    if (e.target.closest?.(TIP_REF)) dismissTip();
   });
   /* 터치 기기에는 마우스 오버가 없으므로 탭으로도 열리게 한다. */
   document.addEventListener("click", (e) => {
-    const fn = e.target.closest?.(".fn");
-    if (!fn) return;
+    const fn = e.target.closest?.(TIP_REF);
+    if (!fn) {
+      /* 툴팁 바깥을 누르면 닫는다 (터치에서는 mouseout 이 없으므로) */
+      if (tip && !tip.hidden && !e.target.closest?.(".fn-tip")) hideTip();
+      return;
+    }
     e.stopPropagation();
-    if (tip && !tip.hidden) hideTip();
+    /* 누르는 순간 포커스(focusin)로 먼저 열려 있을 수 있다. 방금 같은 것으로
+       열린 거라면 닫지 않고 그대로 둔다. */
+    const justOpened = shownRef === fn && Date.now() - shownAt < 500;
+    if (tip && !tip.hidden && !justOpened) hideTip();
     else showTip(fn);
   });
   document.addEventListener("keydown", (e) => {
@@ -587,6 +640,7 @@ export function initDocument() {
   paintToggle();
   applyStrike(); // 각주 안의 --취소선-- 도 함께 처리되도록 먼저
   setupFootnotes();
+  setupEquip();
   setupVideoCards();
   setupSections();
   setupToc();
