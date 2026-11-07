@@ -2121,8 +2121,27 @@ mark {
   outline-offset: -1px;
 }
 
+/* 장비 툴팁 전용 글꼴: 갈무리 (픽셀 글꼴, SIL OFL 1.1 — https://galmuri.quiple.dev)
+   Galmuri11 은 12px, Galmuri14 는 15px 에서 또렷하게 나오도록 만들어진 글꼴이다.
+   장비 툴팁을 처음 띄울 때 한 번만 받는다. */
+@font-face {
+  font-family: Galmuri11;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/npm/galmuri@2.40.3/dist/Galmuri11.woff2")
+    format("woff2");
+}
+@font-face {
+  font-family: Galmuri14;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/npm/galmuri@2.40.3/dist/Galmuri14.woff2")
+    format("woff2");
+}
+
 /* 장비 툴팁 — 게임 속 아이템 툴팁처럼 테마와 상관없이 어두운 남색 */
 .fn-tip.item-tip {
+  font-family: Galmuri11, sans-serif;
   width: 240px;
   max-width: calc(100vw - 16px);
   padding: 8px 10px 10px;
@@ -2141,8 +2160,9 @@ mark {
   padding: 0;
 }
 .item-tip .mt-name {
+  font-family: Galmuri14, sans-serif;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 400; /* 픽셀 글꼴은 굵게 하면 뭉개진다 */
   color: #ffcc33;
   margin-bottom: 6px;
 }
@@ -2184,7 +2204,8 @@ mark {
   flex: none;
 }
 .item-tip .mt-req {
-  font-size: 11px;
+  font-size: 12px; /* Galmuri11 이 또렷한 크기 */
+  line-height: 1.3;
 }
 .item-tip .mt-jobs {
   margin: 6px -10px 0;
