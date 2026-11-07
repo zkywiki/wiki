@@ -2150,6 +2150,18 @@ mark {
 .item-tip .mt-name.mt-blue {
   color: #5f9deb;
 }
+/* 흰 이름 아이템 */
+.item-tip .mt-name.mt-white {
+  color: #fff;
+}
+/* 빨강 이름 아이템 */
+.item-tip .mt-name.mt-red {
+  color: #f80870;
+}
+/* 보라 이름 아이템 */
+.item-tip .mt-name.mt-purple {
+  color: #b858f8;
+}
 /* 이름 아래 붙는 한 줄 표시 (교환 불가 등) */
 .item-tip .mt-tag {
   margin: -4px 0 6px;
