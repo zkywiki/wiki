@@ -192,8 +192,9 @@ function dismissTip() {
   hideTimer = setTimeout(hideTip, GRACE);
 }
 
-/* 툴팁은 각주·장비 칸 모두 항상 위에 띄운다. 화면 밖으로 나가지 않게 좌우를 맞추고,
-   위가 좁으면 화면 위쪽에 붙여 둔다. */
+/* 각주 툴팁은 항상 위에 띄운다. 화면 밖으로 나가지 않게 좌우를 맞추고,
+   위가 좁으면 화면 위쪽에 붙여 둔다.
+   장비 칸 툴팁은 장비창을 가리지 않도록 오른쪽에 띄운다 (오른쪽이 좁으면 왼쪽). */
 function placeTip(ref) {
   const el = tip;
   if (!el || el.hidden) return;
@@ -205,6 +206,15 @@ function placeTip(ref) {
   const r = ref.getBoundingClientRect();
   const t = el.getBoundingClientRect();
   const pad = 8;
+
+  if (ref.__tipClass === "item-tip") {
+    let x = r.right + pad;
+    if (x + t.width > window.innerWidth - pad) x = r.left - t.width - pad;
+    const y = Math.min(r.top, window.innerHeight - t.height - pad);
+    el.style.left = Math.max(pad, x) + "px";
+    el.style.top = Math.max(pad, y) + "px";
+    return;
+  }
 
   let left = r.left + r.width / 2 - t.width / 2;
   left = Math.max(pad, Math.min(left, window.innerWidth - t.width - pad));

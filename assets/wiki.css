@@ -2146,6 +2146,15 @@ mark {
   color: #ffcc33;
   margin-bottom: 6px;
 }
+/* 파란 이름 아이템 */
+.item-tip .mt-name.mt-blue {
+  color: #5f9deb;
+}
+/* 이름 아래 붙는 한 줄 표시 (교환 불가 등) */
+.item-tip .mt-tag {
+  margin: -4px 0 6px;
+  color: #ff9933;
+}
 .item-tip .mt-head {
   display: flex;
   gap: 10px;
