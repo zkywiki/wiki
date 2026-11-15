@@ -131,7 +131,7 @@ export const DOCS = {
 
   cupotify: {
     title: "쿠포티파이",
-    updated: "2026-11-07 18:31",
+    updated: "2026-11-16 01:05",
     file: "docs/cupotify.html",
     related: ["zky"],
     shortcuts: [
